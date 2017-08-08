@@ -1,0 +1,25 @@
+{
+    "name": "zodream/wechat",
+    "description": "wechat api client",
+    "keywords": ["wechat api client", "zodream"],
+    "homepage": "https://github.com/zodream/wechat",
+    "license": "Apache Licence 2.0",
+    "authors": [
+        {
+            "name" : "Jason Zou",
+            "email" : "zodream@fixmail.com",
+            "homepage" : "http://www.zodream.cn/",
+            "role" : "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.6.0",
+        "zodream/zodream": "*",
+        "zodream/thirdparty": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Zodream\\Domain\\ThirdParty\\WeChat\\": "src/"
+        }
+    }
+}
