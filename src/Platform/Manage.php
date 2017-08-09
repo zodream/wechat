@@ -1,5 +1,5 @@
 <?php
-namespace Zodream\Domain\ThirdParty\WeChat\Platform;
+namespace Zodream\ThirdParty\WeChat\Platform;
 
 use Zodream\Infrastructure\Http\Component\Uri;
 use Zodream\Infrastructure\Http\Request;

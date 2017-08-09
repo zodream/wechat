@@ -1,5 +1,5 @@
 <?php
-namespace Zodream\Domain\ThirdParty\WeChat;
+namespace Zodream\ThirdParty\WeChat;
 /**
  * 群发
  * @package Zodream\Domain\ThirdParty\WeChat

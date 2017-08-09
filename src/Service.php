@@ -1,5 +1,5 @@
 <?php
-namespace Zodream\Domain\ThirdParty\WeChat;
+namespace Zodream\ThirdParty\WeChat;
 /**
  * Created by PhpStorm.
  * User: zx648

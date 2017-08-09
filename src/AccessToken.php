@@ -1,5 +1,5 @@
 <?php
-namespace Zodream\Domain\ThirdParty\WeChat;
+namespace Zodream\ThirdParty\WeChat;
 
 
 use Zodream\Service\Factory;

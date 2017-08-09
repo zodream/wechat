@@ -1,5 +1,5 @@
 <?php
-namespace Zodream\Domain\ThirdParty\WeChat;
+namespace Zodream\ThirdParty\WeChat;
 /**
  * 模板消息
  * User: zx648

@@ -19,7 +19,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Zodream\\Domain\\ThirdParty\\WeChat\\": "src/"
+            "Zodream\\ThirdParty\\WeChat\\": "src/"
         }
     }
 }
