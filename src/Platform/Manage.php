@@ -1,7 +1,7 @@
 <?php
 namespace Zodream\ThirdParty\WeChat\Platform;
 
-use Zodream\Infrastructure\Http\Component\Uri;
+use Zodream\Http\Uri;
 use Zodream\Infrastructure\Http\Request;
 use Zodream\Service\Factory;
 

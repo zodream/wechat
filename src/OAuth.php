@@ -7,7 +7,7 @@ namespace Zodream\ThirdParty\WeChat;
  * Date: 2016/8/20
  * Time: 10:23
  */
-use Zodream\Infrastructure\Http\Component\Uri;
+use Zodream\Http\Uri;
 use Zodream\Service\Factory;
 use Zodream\Infrastructure\ObjectExpand\StringExpand;
 use Zodream\Infrastructure\Http\Request;
