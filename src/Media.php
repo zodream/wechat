@@ -7,8 +7,8 @@ namespace Zodream\ThirdParty\WeChat;
  * Date: 2016/8/20
  * Time: 10:39
  */
-use Zodream\Infrastructure\Disk\File;
-use Zodream\Infrastructure\ObjectExpand\JsonExpand;
+use Zodream\Disk\File;
+use Zodream\Helpers\Json;
 
 class Media extends BaseWeChat {
     const IMAGE = 'image';
@@ -128,7 +128,7 @@ class Media extends BaseWeChat {
         if ($type == self::VIDEO) {
             $url->setScheme('http');
         }
-        return $this->http->setUrl($url)->request()->download($file);
+        return $this->http->download($url, $file);
     }
 
     /**
@@ -159,8 +159,7 @@ class Media extends BaseWeChat {
             'media' => '@'.$file
         ]);
         if ($type == self::VIDEO) {
-            $args = JsonExpand::decode($this->http
-                ->request(false)->post([
+            $args = Json::decode($this->http->post([
                 'description' => json_encode([
                     'title' => $title,
                     'introduction' => $introduction
@@ -175,7 +174,7 @@ class Media extends BaseWeChat {
             'media_id' => $mediaId
         ]);
         if (empty($file)) {
-            return JsonExpand::decode($args);
+            return Json::decode($args);
         }
         if (!$file instanceof File) {
             $file = new File($file);

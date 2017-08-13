@@ -2,10 +2,10 @@
 namespace Zodream\ThirdParty\WeChat\Platform;
 
 
-use Zodream\Domain\ThirdParty\WeChat\Aes;
+use Zodream\Helpers\Xml;
+use Zodream\ThirdParty\WeChat\Aes;
 use Zodream\Infrastructure\Base\MagicObject;
 use Zodream\Infrastructure\Http\Request;
-use Zodream\Infrastructure\ObjectExpand\XmlExpand;
 use Zodream\Infrastructure\Traits\EventTrait;
 use Zodream\Service\Config;
 use Zodream\Service\Factory;
@@ -38,7 +38,7 @@ class Notify extends MagicObject {
     protected $appId;
 
     public function __construct(array $config = array()) {
-        $config = array_merge(Config::getInstance()->get($this->configKey, array(
+            $config = array_merge(Factory::config($this->configKey, array(
             'aesKey' => '',
             'appId' => ''
         )), $config);
@@ -78,11 +78,11 @@ class Notify extends MagicObject {
 
     protected function getData() {
         Factory::log()->info('WECHAT NOTIFY: '.$this->xml);
-        $data = (array)XmlExpand::decode($this->xml, false);
+        $data = (array)Xml::decode($this->xml, false);
         $encryptStr = $data['Encrypt'];
         $aes = new Aes($this->aesKey, $this->appId);
         $this->xml = $aes->decrypt($encryptStr);
-        return (array)XmlExpand::decode($this->xml, false);
+        return (array)Xml::decode($this->xml, false);
     }
 
     public function setComponentVerifyTicket() {

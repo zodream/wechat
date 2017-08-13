@@ -7,7 +7,7 @@ namespace Zodream\ThirdParty\WeChat;
  * Date: 2016/8/23
  * Time: 17:57
  */
-use Zodream\Infrastructure\ObjectExpand\Enum;
+use Zodream\Helpers\Enum;
 
 class MessageEnum extends Enum {
     const Text = 'text';

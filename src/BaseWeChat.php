@@ -7,14 +7,14 @@ namespace Zodream\ThirdParty\WeChat;
  * Date: 2016/8/19
  * Time: 22:27
  */
-use Zodream\Domain\ThirdParty\ThirdParty;
-use Zodream\Infrastructure\ObjectExpand\JsonExpand;
+use Zodream\Helpers\Json;
+use Zodream\ThirdParty\ThirdParty;
 
 abstract class BaseWeChat extends ThirdParty  {
     protected $configKey = 'wechat';
 
     protected function getPostData($name, array $args) {
-        return JsonExpand::encode(parent::getPostData($name, $args));
+        return Json::encode(parent::getPostData($name, $args));
     }
 
     protected function getData(array $keys, array $args) {

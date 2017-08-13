@@ -7,8 +7,8 @@ namespace Zodream\ThirdParty\WeChat;
  * Date: 2016/8/22
  * Time: 19:33
  */
-use Zodream\Infrastructure\ObjectExpand\StringExpand;
-use Zodream\Infrastructure\ObjectExpand\XmlExpand;
+use Zodream\Helpers\Str;
+use Zodream\Helpers\Xml;
 use Zodream\Service\Factory;
 
 class MessageResponse {
@@ -241,19 +241,19 @@ class MessageResponse {
     }
 
     protected function makeXml() {
-        $xml = XmlExpand::encode($this->data, 'xml');
+        $xml = Xml::encode($this->data, 'xml');
         if ($this->encryptType != 'aes') {
             return $xml;
         }
         $aes = new Aes($this->aesKey, $this->appId);
         $encrypt = $aes->encrypt($xml);
         $timestamp = time();
-        $nonce = StringExpand::random();
+        $nonce = Str::random();
         $tmpArr = array($this->token, $timestamp, $nonce, $encrypt);//比普通公众平台多了一个加密的密文
         sort($tmpArr, SORT_STRING);
         $signature = implode($tmpArr);
         $signature = sha1($signature);
-        return XmlExpand::encode([
+        return Xml::encode([
             'Encrypt' => [
                 '@cdata' => $encrypt
             ],

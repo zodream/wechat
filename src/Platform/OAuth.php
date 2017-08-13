@@ -2,9 +2,9 @@
 namespace Zodream\ThirdParty\WeChat\Platform;
 
 
+use Zodream\Helpers\Str;
 use Zodream\Http\Uri;
 use Zodream\Service\Factory;
-use Zodream\Infrastructure\ObjectExpand\StringExpand;
 use Zodream\Infrastructure\Http\Request;
 
 /**
@@ -63,7 +63,7 @@ class OAuth extends BasePlatform {
      * @return Uri
      */
     public function login() {
-        $state = StringExpand::randomNumber(7);
+        $state = Str::randomNumber(7);
         Factory::session()->set('state', $state);
         $this->set('state', $state);
         return $this->getUrl('login')->setFragment('wechat_redirect');

@@ -7,7 +7,7 @@ namespace Zodream\ThirdParty\WeChat;
  * Date: 2016/12/6
  * Time: 19:37
  */
-use Zodream\Infrastructure\ObjectExpand\StringExpand;
+use Zodream\Helpers\Str;
 use Zodream\Infrastructure\Security\BaseSecurity;
 
 class Aes extends BaseSecurity {
@@ -34,7 +34,7 @@ class Aes extends BaseSecurity {
      */
     public function encrypt($data) {
         //获得16位随机字符串，填充到明文之前
-        $random = StringExpand::random(16);
+        $random = Str::random(16);
         $data = $random . pack("N", strlen($data)) . $data . $this->appId;
         // 网络字节序
         //$size = mcrypt_get_block_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);

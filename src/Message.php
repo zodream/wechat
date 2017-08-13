@@ -1,12 +1,11 @@
 <?php
 namespace Zodream\ThirdParty\WeChat;
 
+use Zodream\Helpers\Str;
+use Zodream\Helpers\Xml;
 use Zodream\Infrastructure\Base\MagicObject;
-use Zodream\Infrastructure\ObjectExpand\StringExpand;
-use Zodream\Infrastructure\ObjectExpand\XmlExpand;
 use Zodream\Infrastructure\Http\Request;
 use Zodream\Infrastructure\Traits\EventTrait;
-use Zodream\Service\Config;
 use Zodream\Service\Factory;
 
 /**
@@ -61,7 +60,7 @@ class Message extends MagicObject {
     protected $appId;
 
     public function __construct(array $config = array()) {
-        $config = array_merge(Config::getInstance()->get($this->configKey, array(
+        $config = array_merge(Factory::config($this->configKey, array(
             'aesKey' => '',
             'appId' => ''
         )), $config);
@@ -99,7 +98,7 @@ class Message extends MagicObject {
         // ADD SCAN SUBSCRIBE EVENT
         if ($this->event == EventEnum::Subscribe
             && strpos($this->eventKey, 'qrscene_') === 0) {
-            $this->eventKey = StringExpand::firstReplace($this->eventKey, 'qrscene_');
+            $this->eventKey = Str::firstReplace($this->eventKey, 'qrscene_');
             return EventEnum::ScanSubscribe;
         }
         return $this->event;
@@ -143,7 +142,7 @@ class Message extends MagicObject {
 
     protected function getData() {
         Factory::log()->info('WECHAT MESSAGE: '.$this->xml);
-        $data = (array)XmlExpand::decode($this->xml, false);
+        $data = (array)Xml::decode($this->xml, false);
         if ($this->encryptType != 'aes') {
             return $data;
         }
@@ -151,7 +150,7 @@ class Message extends MagicObject {
         $aes = new Aes($this->aesKey, $this->appId);
         $this->xml = $aes->decrypt($encryptStr);
         $this->appId = $aes->getAppId();
-        return (array)XmlExpand::decode($this->xml, false);
+        return (array)Xml::decode($this->xml, false);
     }
 
     /**
@@ -195,7 +194,7 @@ class Message extends MagicObject {
         }
         $encryptStr = '';
         if (Request::isPost()) {
-            $data = (array)XmlExpand::decode($this->xml, false);
+            $data = (array)Xml::decode($this->xml, false);
             if ($this->encryptType != 'aes') {
                 return $data;
             }

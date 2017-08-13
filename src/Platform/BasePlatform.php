@@ -1,7 +1,7 @@
 <?php
 namespace Zodream\ThirdParty\WeChat\Platform;
 
-use Zodream\Domain\ThirdParty\WeChat\BaseWeChat;
+use Zodream\ThirdParty\WeChat\BaseWeChat;
 
 abstract class BasePlatform extends BaseWeChat {
     protected $configKey = 'wechat.platform';

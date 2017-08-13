@@ -1,6 +1,7 @@
 <?php
 namespace Zodream\ThirdParty\WeChat;
-use Zodream\Infrastructure\ObjectExpand\StringExpand;
+
+use Zodream\Helpers\Str;
 use Zodream\Service\Factory;
 use Zodream\Service\Routing\Url;
 
@@ -55,7 +56,7 @@ class JsSDK extends BaseWeChat {
         Factory::view()->registerJsFile('http://res.wx.qq.com/open/js/jweixin-1.0.0.js');
         $appId = $this->get('appid');
         $data = [
-            'noncestr' => StringExpand::random(),
+            'noncestr' => Str::random(),
             'jsapi_ticket' => $this->getTicket(),
             'timestamp' => time(),
             'url' => (string)Url::to(null, null, true)
