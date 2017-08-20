@@ -1,13 +1,19 @@
 <?php
 namespace Zodream\ThirdParty\WeChat;
-/**
- * Created by PhpStorm.
- * User: zx648
- * Date: 2016/8/19
- * Time: 22:37
- */
+
+use Zodream\Helpers\Str;
 use Zodream\Infrastructure\Base\ZObject;
 
+/**
+ * Class MenuItem
+ * @package Zodream\ThirdParty\WeChat
+ * @method MenuItem type($type)
+ * @method MenuItem name($arg)
+ * @method MenuItem key($arg)
+ * @method MenuItem url($url)
+ * @method MenuItem mediaId($arg)
+ * @method MenuItem menu($arg)
+ */
 class MenuItem extends ZObject {
     const CLICK = 'click';
     const VIEW = 'view';
@@ -51,7 +57,7 @@ class MenuItem extends ZObject {
 
     public function setUrl($arg) {
         $this->setType(self::VIEW);
-        $this->url = $arg;
+        $this->url = (string)$arg;
         return $this;
     }
 
@@ -128,4 +134,8 @@ class MenuItem extends ZObject {
         return $data;
     }
 
+    public static function __callStatic($name, $arguments) {
+        $name = 'set'.Str::studly($name);
+        return call_user_func_array([new static(), $name], $arguments);
+    }
 }

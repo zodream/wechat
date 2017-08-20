@@ -91,6 +91,10 @@ class Message extends MagicObject {
         return $this;
     }
 
+    /**
+     * 分离扫码关注事件
+     * @return string
+     */
     public function getEvent() {
         if (!$this->isEvent()) {
             return EventEnum::Message;

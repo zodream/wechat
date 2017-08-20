@@ -1,5 +1,8 @@
 <?php
 namespace Zodream\ThirdParty\WeChat;
+
+use Zodream\Infrastructure\Interfaces\ArrayAble;
+
 /**
  * 自定义菜单
  * User: zx648
@@ -35,12 +38,12 @@ class Menu extends BaseWeChat {
 
     /**
      * CREATE MENU
-     * @param MenuItem $menu
+     * @param MenuItem|array $menu
      * @return bool
      * @throws \Exception
      */
-    public function create(MenuItem $menu) {
-        $args = $this->getJson('create', $menu->toArray());
+    public function create($menu) {
+        $args = $this->getJson('create', $menu instanceof ArrayAble ? $menu->toArray() : $menu);
         if ($args['errcode'] === 0) {
             return true;
         }
