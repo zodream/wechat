@@ -7,7 +7,6 @@ use Zodream\ThirdParty\WeChat\Aes;
 use Zodream\Infrastructure\Base\MagicObject;
 use Zodream\Infrastructure\Http\Request;
 use Zodream\Infrastructure\Traits\EventTrait;
-use Zodream\Service\Config;
 use Zodream\Service\Factory;
 
 /**
