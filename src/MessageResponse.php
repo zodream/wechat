@@ -233,7 +233,7 @@ class MessageResponse {
      */
     public function sendContent() {
         if ($this->isEmpty()) {
-            return Factory::response()->sendHtml('success')->send();
+            return Factory::response()->html('success')->send();
         }
         $xml = $this->makeXml();
 		Factory::log()->info('MESSAGE RESPONSE:'.$xml);

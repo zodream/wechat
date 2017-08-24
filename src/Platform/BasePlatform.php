@@ -8,8 +8,8 @@ abstract class BasePlatform extends BaseWeChat {
 
     public function __construct(array $config = array()) {
         parent::__construct($config);
-        $this->set('component_appid', $this->get('appId'));
-        $this->set('component_appsecret', $this->get('appSecret'));
+        $this->set('component_appid', $this->get('component_appid'));
+        $this->set('component_appsecret', $this->get('component_appsecret'));
     }
 
     protected function getData(array $keys, array $args) {

@@ -61,12 +61,12 @@ class Message extends MagicObject {
 
     public function __construct(array $config = array()) {
         $config = array_merge(Factory::config($this->configKey, array(
-            'aesKey' => '',
-            'appId' => ''
+            'aes_key' => '',
+            'appid' => ''
         )), $config);
         $this->token = $config['token'];
-        $this->aesKey = $config['aesKey'];
-        $this->appId = $config['appId'];
+        $this->aesKey = $config['aes_key'];
+        $this->appId = $config['appid'];
         $this->encryptType = Request::get('encrypt_type');
         $this->get();
     }

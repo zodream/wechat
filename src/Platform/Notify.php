@@ -38,11 +38,11 @@ class Notify extends MagicObject {
 
     public function __construct(array $config = array()) {
             $config = array_merge(Factory::config($this->configKey, array(
-            'aesKey' => '',
-            'appId' => ''
+            'aes_key' => '',
+            'component_appid' => ''
         )), $config);
-        $this->aesKey = $config['aesKey'];
-        $this->appId = $config['appId'];
+        $this->aesKey = $config['aes_key'];
+        $this->appId = $config['component_appid'];
         $this->get();
         $this->setComponentVerifyTicket();
     }
