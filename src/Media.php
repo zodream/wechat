@@ -8,6 +8,7 @@ namespace Zodream\ThirdParty\WeChat;
  * Time: 10:39
  */
 use Zodream\Disk\File;
+use Exception;
 
 class Media extends BaseWeChat {
     const IMAGE = 'image';
@@ -106,6 +107,103 @@ class Media extends BaseWeChat {
             ],
             'POST'
         ],
+        'openComment' => [
+            [
+                'https://api.weixin.qq.com/cgi-bin/comment/open',
+                '#access_token'
+            ],
+            [
+                '#msg_data_id',
+                'index'
+            ],
+            'POST'
+        ],
+        'closeComment' => [
+            [
+                'https://api.weixin.qq.com/cgi-bin/comment/close',
+                '#access_token'
+            ],
+            [
+                '#msg_data_id',
+                'index'
+            ],
+            'POST'
+        ],
+        'commentList' => [
+            [
+                'https://api.weixin.qq.com/cgi-bin/comment/list',
+                '#access_token'
+            ],
+            [
+                '#msg_data_id',
+                'index',
+                '#begin',
+                '#count',  //	获取数目（>=50会被拒绝）
+                '#type'   //type=0 普通评论&精选评论 type=1 普通评论 type=2 精选评论
+            ],
+            'POST'
+        ],
+        'markComment' => [
+            [
+                'https://api.weixin.qq.com/cgi-bin/comment/markelect',
+                '#access_token'
+            ],
+            [
+                '#msg_data_id',
+                'index',
+                '#user_comment_id'
+            ],
+            'POST'
+        ],
+        'unMarkComment' => [
+            [
+                'https://api.weixin.qq.com/cgi-bin/comment/unmarkelect',
+                '#access_token'
+            ],
+            [
+                '#msg_data_id',
+                'index',
+                '#user_comment_id'
+            ],
+            'POST'
+        ],
+        'addComment' => [
+            [
+                'https://api.weixin.qq.com/cgi-bin/comment/reply/add',
+                '#access_token'
+            ],
+            [
+                '#msg_data_id',
+                'index',
+                '#user_comment_id',
+                '#content'
+            ],
+            'POST'
+        ],
+        'deleteComment' => [
+            [
+                'https://api.weixin.qq.com/cgi-bin/comment/delete',
+                '#access_token'
+            ],
+            [
+                '#msg_data_id',
+                'index',
+                '#user_comment_id'
+            ],
+            'POST'
+        ],
+        'deleteReplyComment' => [
+            [
+                'https://api.weixin.qq.com/cgi-bin/comment/reply/delete',
+                '#access_token'
+            ],
+            [
+                '#msg_data_id',
+                'index',
+                '#user_comment_id'
+            ],
+            'POST'
+        ],
     ];
 
     /**
@@ -193,8 +291,20 @@ class Media extends BaseWeChat {
         return $args['errcode'] == 0;
     }
 
-    public function count() {
-        return $this->getJson('count');
+    /**
+     * 获取素材总数
+     * @return array [ "voice_count":COUNT,
+    "video_count":COUNT,
+    "image_count":COUNT,
+    "news_count":COUNT]
+     * @throws \Exception
+     */
+    public function materialCount() {
+        $args = $this->getJson('count');
+        if (array_key_exists('errcode', $args)) {
+            throw new Exception($args['errmsg']);
+        }
+        return $args;
     }
 
     /**
@@ -210,5 +320,116 @@ class Media extends BaseWeChat {
             'offset' => $offset,
             'count' => $count
         ]);
+    }
+
+    /**
+     * 打开已群发文章评论
+     * @param $msg_data_id
+     * @param null $index
+     * @return bool
+     */
+    public function openComment($msg_data_id, $index = null) {
+        $args = $this->getJson(__FUNCTION__,
+            compact('msg_data_id', 'user_comment_id', 'index'));
+        return $args['errcode'] == 0;
+    }
+
+    /**
+     * 关闭已群发文章评论
+     * @param $msg_data_id
+     * @param null $index
+     * @return bool
+     */
+    public function closeComment($msg_data_id, $index = null) {
+        $args = $this->getJson(__FUNCTION__,
+            compact('msg_data_id', 'user_comment_id', 'index'));
+        return $args['errcode'] == 0;
+    }
+
+    /**
+     * 查看指定文章的评论数据
+     * @param $msg_data_id
+     * @param $begin
+     * @param $count
+     * @param $type
+     * @param null $index
+     * @return bool
+     * @throws \Exception
+     */
+    public function commentList($msg_data_id, $begin, $count, $type, $index = null) {
+        if ($count > 50) {
+            $count = 50;
+        }
+        $args = $this->getJson(__FUNCTION__,
+            compact('msg_data_id', 'begin', 'count', 'type', 'index'));
+        if ($args['errcode'] != 0) {
+            throw new Exception($args['errmsg']);
+        }
+        return $args;
+    }
+
+    /**
+     * 将评论标记精选
+     * @param $msg_data_id
+     * @param $user_comment_id
+     * @param null $index
+     * @return bool
+     */
+    public function markComment($msg_data_id, $user_comment_id, $index = null) {
+        $args = $this->getJson(__FUNCTION__,
+            compact('msg_data_id', 'user_comment_id', 'index'));
+        return $args['errcode'] == 0;
+    }
+
+    /**
+     * 将评论取消精选
+     * @param $msg_data_id
+     * @param $user_comment_id
+     * @param null $index
+     * @return bool
+     */
+    public function unMarkComment($msg_data_id, $user_comment_id, $index = null) {
+        $args = $this->getJson(__FUNCTION__,
+            compact('msg_data_id', 'user_comment_id', 'index'));
+        return $args['errcode'] == 0;
+    }
+
+    /**
+     * 删除评论
+     * @param $msg_data_id
+     * @param $user_comment_id
+     * @param null $index
+     * @return bool
+     */
+    public function deleteComment($msg_data_id, $user_comment_id, $index = null) {
+        $args = $this->getJson(__FUNCTION__,
+            compact('msg_data_id', 'user_comment_id', 'index'));
+        return $args['errcode'] == 0;
+    }
+
+    /**
+     * 回复评论
+     * @param $msg_data_id
+     * @param $user_comment_id
+     * @param null $index
+     * @return bool
+     */
+    public function addComment($msg_data_id, $user_comment_id, $content, $index = null) {
+        $args = $this->getJson(__FUNCTION__,
+            compact('msg_data_id', 'user_comment_id', 'content', 'index'));
+        return $args['errcode'] == 0;
+    }
+
+    /**
+     *  删除回复
+     * @param $msg_data_id
+     * @param $user_comment_id
+     * @param null $index
+     * @return bool
+     */
+    public function deleteReplyComment($msg_data_id, $user_comment_id, $index = null) {
+        $args = $this->getJson(__FUNCTION__,
+            compact('msg_data_id', 'user_comment_id', 'index'));
+        return $args['errcode'] == 0;
     }
 }

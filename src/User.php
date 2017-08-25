@@ -7,7 +7,94 @@ namespace Zodream\ThirdParty\WeChat;
  * Time: 12:55
  */
 class User extends BaseWeChat {
+
+    protected $autoThrow = true;
+
     protected $apiMap = [
+        /** 标签 */
+        'createTag' => [
+            [
+                'https://api.weixin.qq.com/cgi-bin/tags/create',
+                '#access_token'
+            ],
+            [
+                '#tag' => [
+                    '#name'
+                ],
+            ],
+            'POST'
+        ],
+        'updateTag' => [
+            [
+                'https://api.weixin.qq.com/cgi-bin/tags/update',
+                '#access_token'
+            ],
+            [
+                '#tag' => [
+                    '#id',
+                    '#name'
+                ],
+            ],
+            'POST'
+        ],
+        'deleteTag' => [
+            [
+                'https://api.weixin.qq.com/cgi-bin/tags/delete',
+                '#access_token'
+            ],
+            [
+                '#tag' => [
+                    '#id',
+                ],
+            ],
+            'POST'
+        ],
+        'tags' => [
+            'https://api.weixin.qq.com/cgi-bin/tags/get',
+            '#access_token'
+        ],
+        'tagUsers' => [
+            [
+                'https://api.weixin.qq.com/cgi-bin/user/tag/get',
+                '#access_token'
+            ],
+            [
+                '#tagid',
+                'next_openid'
+            ],
+            'POST'
+        ],
+        'userAddTag' => [
+            [
+                'https://api.weixin.qq.com/cgi-bin/tags/members/batchtagging',
+                '#access_token'
+            ],
+            [
+                '#tagid',
+                '#openid_list'
+            ],
+            'POST'
+        ],
+        'userDeleteTag' => [
+            [
+                'https://api.weixin.qq.com/cgi-bin/tags/members/batchuntagging',
+                '#access_token'
+            ],
+            [
+                '#tagid',
+                '#openid_list'
+            ],
+            'POST'
+        ],
+        'userTags' => [
+            [
+                'https://api.weixin.qq.com/cgi-bin/tags/getidlist',
+                '#access_token'
+            ],
+            '#openid',
+            'POST'
+        ],
+
         'createGroup' => [
             [
                 'https://api.weixin.qq.com/cgi-bin/groups/create',
@@ -99,10 +186,36 @@ class User extends BaseWeChat {
                 '#access_token',
                 'next_openid'
             ]
-        ]
+        ],
+        /** 黑名单 */
+        'blackList' => [
+            [
+                'https://api.weixin.qq.com/cgi-bin/tags/members/getblacklist',
+                '#access_token'
+            ],
+            'begin_openid',
+            'POST'
+        ],
+        'addBlack' => [
+            [
+                'https://api.weixin.qq.com/cgi-bin/tags/members/batchblacklist',
+                '#access_token'
+            ],
+            '#openid_list',
+            'POST'
+        ],
+        'deleteBlack' => [
+            [
+                'https://api.weixin.qq.com/cgi-bin/tags/members/batchunblacklist',
+                '#access_token'
+            ],
+            '#openid_list',
+            'POST'
+        ],
     ];
 
     /**
+     *
      * @param string $name
      * @return bool|array ['id', 'name']
      */
@@ -177,6 +290,12 @@ class User extends BaseWeChat {
         return $args['errcode'] == 0;
     }
 
+    /**
+     * 设置用户备注名
+     * @param $openId
+     * @param $remark
+     * @return bool
+     */
     public function markUser($openId, $remark) {
         $args = $this->getJson('mark', [
                 'openid' => $openId,
@@ -202,6 +321,11 @@ class User extends BaseWeChat {
         return $user;
     }
 
+    /**
+     * 获取用户基本信息
+     * @param array $openId
+     * @return mixed|null|string
+     */
     public function usersInfo(array $openId) {
         $data = [];
         foreach ($openId as $item) {
@@ -219,6 +343,11 @@ class User extends BaseWeChat {
             ]);
     }
 
+    /**
+     * 获取用户列表
+     * @param null $nextOpenId
+     * @return array|mixed|null|string
+     */
     public function getUserList($nextOpenId = null) {
         return $this->getJson('userList', [
             'next_openid' => $nextOpenId
