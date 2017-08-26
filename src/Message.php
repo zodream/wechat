@@ -42,6 +42,11 @@ use Zodream\Service\Factory;
  * @property string $event
  * //自定义菜单
  * @property string $eventKey
+ * // 门店审核事件
+ * @property string $uniqId  //商户自己内部ID，即字段中的sid
+ * @property string $poiId  //微信的门店ID，微信内门店唯一标示ID
+ * @property string $result  //审核结果，成功succ 或失败fail
+ * @property string $msg //成功的通知信息，或审核失败的驳回理由
  */
 class Message extends MagicObject {
 

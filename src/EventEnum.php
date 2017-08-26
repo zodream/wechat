@@ -86,4 +86,9 @@ class EventEnum extends Enum {
      */
     const KFSwitchSession = 'kf_switch_session';
 
+    /**
+     * 门店审核事件推送
+     */
+    const poiCheckNotify = 'poi_check_notify';
+
 }
