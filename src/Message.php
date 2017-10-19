@@ -77,7 +77,7 @@ class Message extends MagicObject {
     }
 
     public function get($key = null, $default = null) {
-        if (empty($this->_data)) {
+        if (!$this->hasAttribute()) {
             $this->setData();
         }
         return parent::get(lcfirst($key), $default);
