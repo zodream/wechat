@@ -10,6 +10,7 @@ use Exception;
  * @property string $sessionKey
  */
 class BaseMiniProgram extends BaseWeChat {
+
     protected $configKey = 'wechat.mini';
 
     /**
