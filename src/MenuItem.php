@@ -17,6 +17,7 @@ use Zodream\Infrastructure\Base\ZObject;
 class MenuItem extends ZObject {
     const CLICK = 'click';
     const VIEW = 'view';
+    const MINI_PROGRAM = 'miniprogram'; // 小程序
     const SCAN_CODE_MSG = 'scancode_waitmsg';
     const SCAN_CODE_PUSH = 'scancode_push';
     const SYSTEM_PHOTO = 'pic_sysphoto';
@@ -31,6 +32,9 @@ class MenuItem extends ZObject {
     protected $key;
     protected $url;
     protected $mediaId;
+    protected $appid; // 小程序的appid
+    protected $pagepath; //小程序的页面路径
+
     /**
      * @var MenuItem[]
      */
@@ -56,7 +60,9 @@ class MenuItem extends ZObject {
     }
 
     public function setUrl($arg) {
-        $this->setType(self::VIEW);
+        if ($this->type != self::MINI_PROGRAM) {
+            $this->setType(self::VIEW);
+        }
         $this->url = (string)$arg;
         return $this;
     }
@@ -80,6 +86,21 @@ class MenuItem extends ZObject {
         } else {
             $this->menu[] = $arg;
         }
+        return $this;
+    }
+
+    /**
+     * 设置跳转小程序
+     * @param $appid
+     * @param $page
+     * @param string $url 不支持小程序的老版本客户端将打开本url
+     * @return $this
+     */
+    public function setMini($appid, $page, $url) {
+        $this->setType(self::MINI_PROGRAM);
+        $this->appid = $appid;
+        $this->pagepath = $page;
+        $this->url = $url;
         return $this;
     }
 
@@ -125,6 +146,12 @@ class MenuItem extends ZObject {
         }
         if (in_array($this->type, [self::VIEW])) {
             $data['url'] = $this->url;
+            return $data;
+        }
+        if (in_array($this->type, [self::MINI_PROGRAM])) {
+            $data['url'] = $this->url;
+            $data['appid'] = $this->appid;
+            $data['pagepath'] = $this->pagepath;
             return $data;
         }
         if (in_array($this->type, [self::MEDIA, self::VIEW_LIMITED])) {
