@@ -89,6 +89,54 @@ class EventEnum extends Enum {
     /**
      * 门店审核事件推送
      */
-    const poiCheckNotify = 'poi_check_notify';
+    const PoiCheckNotify = 'poi_check_notify';
+    /**
+     * 买单事件推送
+     */
+    const UserPayFromPayCell = 'user_pay_from_pay_cell';
+    /**
+     * 生成的卡券通过审核
+     */
+    const CardPassCheck = 'card_pass_check';
+    /**
+     * 用户在领取卡券时
+     */
+    const UserGetCard = 'user_get_card';
+    /**
+     * 用户在转赠卡券时
+     */
+    const UserGiftingCard = 'user_gifting_card';
+    /**
+     * 用户在删除卡券时
+     */
+    const UserDelCard = 'user_del_card';
+    /**
+     * 卡券被核销
+     */
+    const UserConsumeCard = 'user_consume_card';
+    /**
+     * 用户在进入会员卡时
+     */
+    const UserViewCard = 'user_view_card';
 
+    /**
+     * 从卡券进入公众号会话事件推送
+     */
+    const UserEnterSessionFromCard = 'user_enter_session_from_card';
+    /**
+     * 当用户的会员卡积分余额发生变动时
+     */
+    const UpdateMemberCard = 'update_member_card';
+    /**
+     * 当某个card_id的初始库存数大于200且当前库存小于等于100时，用户尝试领券会触发发送事件给商户
+     */
+    const CardSkuRemind = 'card_sku_remind';
+    /**
+     * 当商户朋友的券券点发生变动时
+     */
+    const CardPayOrder = 'card_pay_order';
+    /**
+     * 用户通过一键激活的方式提交信息并点击激活或者用户修改会员卡信息后
+     */
+    const SubmitMembercardUserInfo = 'submit_membercard_user_info';
 }
