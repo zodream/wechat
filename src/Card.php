@@ -81,12 +81,10 @@ class Card extends BaseWeChat {
             ],
             [
                 '#banner',
-                '#title',
+                '#page_title',
                 '#can_share',
                 '#scene',
-                '#card_list',
-                '#card_id',
-                '#thumb_url'
+                '#card_list', //['#card_id','#thumb_url']
             ],
             'POST'
         ],
@@ -271,9 +269,18 @@ class Card extends BaseWeChat {
      * @param array $status_list
      * @param int $offset
      * @param int $count
-     * @return mixed [  "card_id_list":["ph_gmt7cUVrlRk8swPwx7aDyF-pg"],"total_num":1]
+     * @return array [  "card_id_list":["ph_gmt7cUVrlRk8swPwx7aDyF-pg"],"total_num":1]
      */
     public function getList(array $status_list, $offset = 0, $count = 20) {
         return $this->getJson('cardList', compact('status_list', 'offset', 'count'));
+    }
+
+    /**
+     * 创建卡券货架
+     * @param array $card_list ['card_id' => '', 'thumb_url' => '']
+     * @return array
+     */
+    public function createLandingPage($banner, $page_title, array $card_list, $scene = 'SCENE_IVR', $can_share = false) {
+        return $this->getJson('landingpage', compact('banner', 'page_title', 'can_share', 'scene', 'card_list'));
     }
 }
