@@ -161,8 +161,12 @@ class MenuItem extends ZObject {
         return $data;
     }
 
-    public static function __callStatic($name, $arguments) {
+    public function __call($name, $arguments) {
         $name = 'set'.Str::studly($name);
+        return call_user_func_array([$this, $name], $arguments);
+    }
+
+    public static function __callStatic($name, $arguments) {
         return call_user_func_array([new static(), $name], $arguments);
     }
 }
