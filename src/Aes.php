@@ -57,6 +57,7 @@ class Aes extends BaseSecurity {
      * DECRYPT STRING
      * @param string $data
      * @return string
+     * @throws \Exception
      */
     public function decrypt($data) {
         //使用BASE64对需要解密的字符串进行解码

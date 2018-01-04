@@ -12,6 +12,12 @@ abstract class BasePlatform extends BaseWeChat {
         $this->set('component_appsecret', $this->get('component_appsecret'));
     }
 
+    /**
+     * @param array $keys
+     * @param array $args
+     * @return array
+     * @throws \Exception
+     */
     protected function getData(array $keys, array $args) {
         if ((in_array('#component_access_token', $keys)
                 || in_array('component_access_token', $keys))

@@ -106,6 +106,13 @@ class Mass extends BaseWeChat {
         return $args['errcode'] == 0;
     }
 
+    /**
+     * @param $data
+     * @param string $type
+     * @param null $groupId
+     * @return mixed
+     * @throws \Exception
+     */
     public function sendAll($data, $type = self::TEXT, $groupId = null) {
         $data = $this->parseData($data, $type);
         $data['filter'] =  empty($groupId) ? [
@@ -118,9 +125,16 @@ class Mass extends BaseWeChat {
         if ($args['errcode'] === 0) {
             return $args['msg_id'];
         }
-        throw  new \Exception($args['errmsg']);
+        throw new \Exception($args['errmsg']);
     }
 
+    /**
+     * @param array $openId
+     * @param $data
+     * @param string $type
+     * @return mixed
+     * @throws \Exception
+     */
     public function send(array $openId, $data, $type = self::TEXT) {
         $data = $this->parseData($data, $type);
         $data['touser'] = array_values($openId);
@@ -128,7 +142,7 @@ class Mass extends BaseWeChat {
         if ($args['errcode'] === 0) {
             return $args['msg_id'];
         }
-        throw  new \Exception($args['errmsg']);
+        throw new \Exception($args['errmsg']);
     }
 
     public function cancel($msgId) {

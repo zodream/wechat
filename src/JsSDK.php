@@ -23,6 +23,10 @@ class JsSDK extends BaseWeChat {
     ];
 
 
+    /**
+     * @return mixed
+     * @throws \Exception
+     */
     public function getTicket() {
         $key = 'jsApi_ticket'.$this->get('appid');
         if (Factory::cache()->has($key)) {
@@ -52,6 +56,11 @@ class JsSDK extends BaseWeChat {
         return sha1(implode('&', $arg));
     }
 
+    /**
+     * @param array $apiList
+     * @return string
+     * @throws \Exception
+     */
     public function apiConfig($apiList = array()) {
         Factory::view()->registerJsFile('http://res.wx.qq.com/open/js/jweixin-1.0.0.js');
         $appId = $this->get('appid');

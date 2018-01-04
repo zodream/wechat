@@ -1,8 +1,6 @@
 <?php
 namespace Zodream\ThirdParty\WeChat\MiniProgram;
 
-use Exception;
-
 class Template extends BaseMiniProgram {
 
     protected $apiMap = [

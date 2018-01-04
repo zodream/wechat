@@ -36,6 +36,11 @@ class Notify extends MagicObject {
 
     protected $appId;
 
+    /**
+     * Notify constructor.
+     * @param array $config
+     * @throws \Exception
+     */
     public function __construct(array $config = array()) {
             $config = array_merge(Factory::config($this->configKey, array(
             'aes_key' => '',
@@ -47,6 +52,12 @@ class Notify extends MagicObject {
         $this->setComponentVerifyTicket();
     }
 
+    /**
+     * @param null $key
+     * @param null $default
+     * @return mixed
+     * @throws \Exception
+     */
     public function get($key = null, $default = null) {
         if (empty($this->_data)) {
             $this->setData();
@@ -54,6 +65,10 @@ class Notify extends MagicObject {
         return parent::get(lcfirst($key), $default);
     }
 
+    /**
+     * @return $this
+     * @throws \Exception
+     */
     public function setData() {
         if (empty($this->xml)) {
             $this->xml = Request::input();
@@ -75,6 +90,10 @@ class Notify extends MagicObject {
         return $this->infoType;
     }
 
+    /**
+     * @return array
+     * @throws \Exception
+     */
     protected function getData() {
         Factory::log()->info('WECHAT NOTIFY: '.$this->xml);
         $data = (array)Xml::decode($this->xml, false);
@@ -84,6 +103,10 @@ class Notify extends MagicObject {
         return (array)Xml::decode($this->xml, false);
     }
 
+    /**
+     * @return $this
+     * @throws \Exception
+     */
     public function setComponentVerifyTicket() {
         if ($this->infoType != self::TYPE_ComponentVerifyTicket) {
             return $this;

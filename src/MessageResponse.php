@@ -230,6 +230,7 @@ class MessageResponse {
     /**
      * 自动回复内容
      * @return bool
+     * @throws \Exception
      */
     public function sendContent() {
         if ($this->isEmpty()) {

@@ -253,6 +253,7 @@ class Card extends BaseWeChat {
      * 获取卡券详细信息
      * @param $card_id
      * @return mixed
+     * @throws \Exception
      */
     public function getInfo($card_id) {
         $card = $this->getJson('cardInfo', [
@@ -261,7 +262,7 @@ class Card extends BaseWeChat {
         if ($card['errcode'] == 0) {
             return $card['card'];
         }
-        throw new Exception($card['errmsg']);
+        throw new \Exception($card['errmsg']);
     }
 
     /**

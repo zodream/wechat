@@ -62,6 +62,7 @@ class OAuth extends BaseWeChat {
 
     /**
      * @return Uri
+     * @throws \Exception
      */
     public function login() {
         $state = Str::randomNumber(7);
@@ -70,6 +71,10 @@ class OAuth extends BaseWeChat {
         return $this->getUrl('login')->setFragment('wechat_redirect');
     }
 
+    /**
+     * @return array|bool|mixed|null|string
+     * @throws \Exception
+     */
     public function callback() {
         Factory::log()
             ->info('WECHAT CALLBACK: '.var_export($_GET, true));

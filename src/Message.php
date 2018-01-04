@@ -64,6 +64,11 @@ class Message extends MagicObject {
 
     protected $appId;
 
+    /**
+     * Message constructor.
+     * @param array $config
+     * @throws \Exception
+     */
     public function __construct(array $config = array()) {
         $config = array_merge(Factory::config($this->configKey, array(
             'aes_key' => '',
@@ -76,6 +81,12 @@ class Message extends MagicObject {
         $this->get();
     }
 
+    /**
+     * @param null $key
+     * @param null $default
+     * @return mixed
+     * @throws \Exception
+     */
     public function get($key = null, $default = null) {
         if (!$this->hasAttribute()) {
             $this->setData();
@@ -83,6 +94,10 @@ class Message extends MagicObject {
         return parent::get(lcfirst($key), $default);
     }
 
+    /**
+     * @return $this
+     * @throws \Exception
+     */
     public function setData() {
         if (empty($this->xml)) {
             $this->xml = Request::input();
@@ -136,6 +151,7 @@ class Message extends MagicObject {
     /**
      * 来源者
      * @return string
+     * @throws \Exception
      */
     public function getFrom() {
         return $this->get('FromUserName');
@@ -144,11 +160,16 @@ class Message extends MagicObject {
     /**
      * 接收方
      * @return string
+     * @throws \Exception
      */
     public function getTo() {
         return $this->get('ToUserName');
     }
 
+    /**
+     * @return array
+     * @throws \Exception
+     */
     protected function getData() {
         Factory::log()->info('WECHAT MESSAGE: '.$this->xml);
         $data = (array)Xml::decode($this->xml, false);
@@ -192,6 +213,7 @@ class Message extends MagicObject {
 
     /**
      * 验证
+     * @throws \Exception
      */
     public function valid() {
         $echoStr = Request::get('echostr');
@@ -218,6 +240,7 @@ class Message extends MagicObject {
     /**
      * 无法回复时自动返回success
      * @return MessageResponse
+     * @throws \Exception
      */
     public function run() {
         $response = new MessageResponse($this->token,

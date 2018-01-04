@@ -8,9 +8,9 @@ namespace Zodream\ThirdParty\WeChat;
 class Store extends BaseWeChat {
 
     protected $apiMap = [
-        'update' => [
+        'add' => [
             [
-                'https://api.weixin.qq.com/cgi-bin/poi/updatepoi',
+                '	http://api.weixin.qq.com/cgi-bin/poi/addpoi',
                 '#access_token'
             ],
             [

@@ -157,12 +157,17 @@ class Manage extends BasePlatform {
     /**
      * 4.进入授权页面
      * @return Uri
+     * @throws \Exception
      */
     public function login() {
         $this->set('pre_auth_code', $this->getPreAuthCode());
         return $this->getUrl('login');
     }
 
+    /**
+     * @return mixed
+     * @throws \Exception
+     */
     public function callback() {
         $code = Request::get('auth_code');
         if (empty($code)) {
@@ -173,6 +178,10 @@ class Manage extends BasePlatform {
         return $this->getAccessToken();
     }
 
+    /**
+     * @return mixed
+     * @throws \Exception
+     */
     public function getAccessToken() {
         $data = $this->getJson('access_token');
         if (!array_key_exists('authorization_info', $data)) {
@@ -184,7 +193,7 @@ class Manage extends BasePlatform {
 
     /**
      *
-     * @param $appId 公众号的appid
+     * @param string $appId 公众号的appid
      * @param $token
      * @return mixed
      * @throws \Exception
@@ -203,8 +212,8 @@ class Manage extends BasePlatform {
 
     /**
      * 获取公众号的信息
-     * @param $appId 公众号的appid
-     * @return
+     * @param string $appId 公众号的appid
+     * @return array
      * @throws \Exception
      */
     public function getInfo($appId) {

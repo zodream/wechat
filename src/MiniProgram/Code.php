@@ -1,8 +1,6 @@
 <?php
 namespace Zodream\ThirdParty\WeChat\MiniProgram;
 
-use Exception;
-
 /**
  * 生成小程序码和二维码
  * @package Zodream\ThirdParty\WeChat\MiniProgram
