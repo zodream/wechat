@@ -9,6 +9,7 @@ namespace Zodream\ThirdParty\WeChat;
  */
 use Zodream\Disk\File;
 use Exception;
+use Zodream\Http\Http;
 
 class Media extends BaseWeChat {
     const IMAGE = 'image';
@@ -17,224 +18,272 @@ class Media extends BaseWeChat {
     const THUMB = 'thumb';
     const NEWS = 'news';
 
-    protected $apiMap = [
-        'uploadTemp' => [
-            [
-                'https://api.weixin.qq.com/cgi-bin/media/upload',
+    /**
+     * @return Http
+     * @throws Exception
+     */
+    public function getUploadTemp() {
+        return $this->getBaseHttp()
+            ->url('https://api.weixin.qq.com/cgi-bin/media/upload',
                 [
                     '#access_token',
                     '#type'
-                ]
-            ],
-            '#media',
-            'POST'
-        ],
-        'downloadTemp' => [
-            'https://api.weixin.qq.com/cgi-bin/media/get',
-            [
-                '#access_token',
-                '#media_id'
-            ]
-        ],
-        'addNews' => [
-            [
-                'https://api.weixin.qq.com/cgi-bin/material/add_news',
-                '#access_token'
-            ],
-            '#articles',
-            'POST'
-        ],
-        'uploadImg' => [
-            [
-                'https://api.weixin.qq.com/cgi-bin/media/uploadimg',
-                '#access_token'
-            ],
-            '#media',
-            'POST'
-        ],
-        'addMedia' => [
-            [
-                'https://api.weixin.qq.com/cgi-bin/material/add_material',
+                ])->maps([
+                '#media',
+            ]);
+    }
+
+    /**
+     * @return Http
+     * @throws Exception
+     */
+    public function getDownloadTemp() {
+        return $this->getBaseHttp()
+            ->url('https://api.weixin.qq.com/cgi-bin/media/get',
+                [
+                    '#access_token',
+                    '#media_id'
+                ]);
+    }
+
+    /**
+     * @return Http
+     * @throws Exception
+     */
+    public function getAddNews() {
+        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/material/add_news')
+            ->maps([
+                '#articles',
+            ]);
+    }
+
+    /**
+     * @return Http
+     * @throws Exception
+     */
+    public function getUploadImg() {
+        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/media/uploadimg')
+            ->maps([
+                '#media',
+            ]);
+    }
+
+    /**
+     * @return Http
+     * @throws Exception
+     */
+    public function getAddMedia() {
+        return $this->getBaseHttp()
+            ->url('https://api.weixin.qq.com/cgi-bin/material/add_material',
                 [
                     '#access_token',
                     '#type'
-                ],
-                '#media'
-            ],
-            'POST'
-        ],
-        'getMedia' => [
-            [
-                'https://api.weixin.qq.com/cgi-bin/material/get_material',
-                '#access_token'
-            ],
-            '#media_id',
-            'POST'
-        ],
-        'deleteMedia' => [
-            [
-                'https://api.weixin.qq.com/cgi-bin/material/del_material',
-                '#access_token'
-            ],
-            '#media_id',
-            'POST'
-        ],
-        'updateNews' => [
-            [
-                'https://api.weixin.qq.com/cgi-bin/material/update_news',
-                '#access_token'
-            ],
-            [
+                ])->maps([
+                '#media',
+                'description' // 上传以后再次提交
+            ]);
+    }
+
+    /**
+     * @return Http
+     * @throws Exception
+     */
+    public function getMedia() {
+        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/material/get_material')
+            ->maps([
+                '#media_id',
+            ]);
+    }
+
+    /**
+     * @return Http
+     * @throws Exception
+     */
+    public function getDeleteMedia() {
+        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/material/del_material')
+            ->maps([
+                '#media_id',
+            ]);
+    }
+
+    /**
+     * @return Http
+     * @throws Exception
+     */
+    public function getUpdateNews() {
+        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/material/update_news')
+            ->maps([
                 '#articles',
                 '#media_id',
                 'index'
-            ],
-            'POST'
-        ],
-        'count' => [
-            'https://api.weixin.qq.com/cgi-bin/material/get_materialcount',
-            '#access_token'
-        ],
-        'mediaList' => [
-            [
-                'https://api.weixin.qq.com/cgi-bin/material/batchget_material',
-                '#access_token'
-            ],
-            [
+            ]);
+    }
+
+    /**
+     * @return Http
+     * @throws Exception
+     */
+    public function getCount() {
+        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/material/get_materialcount');
+    }
+
+    /**
+     * @return Http
+     * @throws Exception
+     */
+    public function getMediaList() {
+        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/material/batchget_material')
+            ->maps([
                 '#type',
                 '#offset',
                 '#count'
-            ],
-            'POST'
-        ],
-        'openComment' => [
-            [
-                'https://api.weixin.qq.com/cgi-bin/comment/open',
-                '#access_token'
-            ],
-            [
+            ]);
+    }
+
+    /**
+     * @return Http
+     * @throws Exception
+     */
+    public function getOpenComment() {
+        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/comment/open')
+            ->maps([
                 '#msg_data_id',
                 'index'
-            ],
-            'POST'
-        ],
-        'closeComment' => [
-            [
-                'https://api.weixin.qq.com/cgi-bin/comment/close',
-                '#access_token'
-            ],
-            [
+            ]);
+    }
+
+    /**
+     * @return Http
+     * @throws Exception
+     */
+    public function getCloseComment() {
+        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/comment/close')
+            ->maps([
                 '#msg_data_id',
                 'index'
-            ],
-            'POST'
-        ],
-        'commentList' => [
-            [
-                'https://api.weixin.qq.com/cgi-bin/comment/list',
-                '#access_token'
-            ],
-            [
+            ]);
+    }
+
+    /**
+     * @return Http
+     * @throws Exception
+     */
+    public function getCommentList() {
+        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/comment/list')
+            ->maps([
                 '#msg_data_id',
                 'index',
                 '#begin',
                 '#count',  //	获取数目（>=50会被拒绝）
                 '#type'   //type=0 普通评论&精选评论 type=1 普通评论 type=2 精选评论
-            ],
-            'POST'
-        ],
-        'markComment' => [
-            [
-                'https://api.weixin.qq.com/cgi-bin/comment/markelect',
-                '#access_token'
-            ],
-            [
+            ]);
+    }
+
+    /**
+     * @return Http
+     * @throws Exception
+     */
+    public function getMarkComment() {
+        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/comment/markelect')
+            ->maps([
                 '#msg_data_id',
                 'index',
                 '#user_comment_id'
-            ],
-            'POST'
-        ],
-        'unMarkComment' => [
-            [
-                'https://api.weixin.qq.com/cgi-bin/comment/unmarkelect',
-                '#access_token'
-            ],
-            [
+            ]);
+    }
+
+    /**
+     * @return Http
+     * @throws Exception
+     */
+    public function getUnMarkComment() {
+        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/comment/unmarkelect')
+            ->maps([
                 '#msg_data_id',
                 'index',
                 '#user_comment_id'
-            ],
-            'POST'
-        ],
-        'addComment' => [
-            [
-                'https://api.weixin.qq.com/cgi-bin/comment/reply/add',
-                '#access_token'
-            ],
-            [
+            ]);
+    }
+
+    /**
+     * @return Http
+     * @throws Exception
+     */
+    public function getAddComment() {
+        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/comment/reply/add')
+            ->maps([
                 '#msg_data_id',
                 'index',
                 '#user_comment_id',
                 '#content'
-            ],
-            'POST'
-        ],
-        'deleteComment' => [
-            [
-                'https://api.weixin.qq.com/cgi-bin/comment/delete',
-                '#access_token'
-            ],
-            [
+            ]);
+    }
+
+
+    /**
+     * @return Http
+     * @throws Exception
+     */
+    public function getDeleteComment() {
+        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/comment/delete')
+            ->maps([
                 '#msg_data_id',
                 'index',
                 '#user_comment_id'
-            ],
-            'POST'
-        ],
-        'deleteReplyComment' => [
-            [
-                'https://api.weixin.qq.com/cgi-bin/comment/reply/delete',
-                '#access_token'
-            ],
-            [
+            ]);
+    }
+
+    /**
+     * @return Http
+     * @throws Exception
+     */
+    public function getDeleteReplyComment() {
+        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/comment/reply/delete')
+            ->maps([
                 '#msg_data_id',
                 'index',
                 '#user_comment_id'
-            ],
-            'POST'
-        ],
-    ];
+            ]);
+    }
 
     /**
      * @param string|File $file
      * @param string $type
      * @return array [type, media_id, created_at]
+     * @throws Exception
      */
     public function uploadTemp($file, $type) {
-        return $this->getJson('uploadTemp', [
+        return $this->getUploadTemp()->parameters([
             'media' => '@'.$file,
             'type' => $type
-        ]);
+        ])->json();
     }
 
+    /**
+     * @param $mediaId
+     * @param $file
+     * @param null $type
+     * @return string
+     * @throws Exception
+     */
     public function downloadTemp($mediaId, $file, $type = null) {
-        $url = $this->getUrl('downloadTemp', [
+        $http = $this->getDownloadTemp()->parameters([
             'media_id' => $mediaId
         ]);
         if ($type == self::VIDEO) {
-            $url->setScheme('http');
+            $http->url($http->getUrl()->setScheme('http'));
         }
-        return $this->http->download($url, $file);
+        return $http->save($file);
     }
 
     /**
      *
      * @param NewsItem $news
      * @return string|bool media_id
+     * @throws Exception
      */
     public function addNews(NewsItem $news) {
-        $args = $this->getJson('addNews', $news->toArray());
+        $args = $this->getAddNews()->parameters($news->toArray())->json();
         return array_key_exists('media_id', $args) ? $args['media_id'] : false;
     }
 
@@ -242,52 +291,71 @@ class Media extends BaseWeChat {
      *
      * @param $file
      * @return string|bool url
+     * @throws Exception
      */
     public function uploadImg($file) {
-        $args = $this->getJson('uploadImg', [
+        $args = $this->getUploadImg()->parameters([
             'media' => '@'.$file
-        ]);
+        ])->json();
         return array_key_exists('url', $args) ? $args['url'] : false;
     }
 
+    /**
+     * @param $file
+     * @param $type
+     * @param null $title
+     * @param null $introduction
+     * @return mixed
+     * @throws Exception
+     */
     public function addMedia($file, $type, $title = null, $introduction = null) {
-        $args = $this->getJson('addMedia', [
+        $http = $this->getAddMedia()->parameters([
             'type' => $type,
             'media' => '@'.$file
         ]);
+        $args = $http->json();
         if ($type == self::VIDEO) {
-            $args = $this->http->post([
+            $args = $http->maps([
                 'description' => json_encode([
                     'title' => $title,
                     'introduction' => $introduction
                 ])
-            ]);
+            ])->json();
         }
         return $args;
     }
 
-    public function getMedia($mediaId, $file = null) {
-        $args = $this->getByApi('getMedia', [
+    /**
+     * @param $mediaId
+     * @param null $file
+     * @return string
+     * @throws Exception
+     */
+    public function media($mediaId, $file = null) {
+        return $this->getMedia()->parameters([
             'media_id' => $mediaId
-        ]);
-        if (empty($file)) {
-            return $args;
-        }
-        if (!$file instanceof File) {
-            $file = new File($file);
-        }
-        return $file->write($args);
+        ])->save($file);
     }
 
+    /**
+     * @param $mediaId
+     * @return bool
+     * @throws Exception
+     */
     public function deleteMedia($mediaId) {
-        $args = $this->getJson('deleteMedia', [
+        $args = $this->getDeleteMedia()->parameters([
             'media_id' => $mediaId
-        ]);
+        ])->json();
         return $args['errcode'] == 0;
     }
 
+    /**
+     * @param NewsItem $news
+     * @return bool
+     * @throws Exception
+     */
     public function updateNews(NewsItem $news) {
-        $args = $this->getJson('updateNews', $news->toArray());
+        $args = $this->getUpdateNews()->parameters($news->toArray())->json();
         return $args['errcode'] == 0;
     }
 
@@ -300,7 +368,7 @@ class Media extends BaseWeChat {
      * @throws \Exception
      */
     public function materialCount() {
-        $args = $this->getJson('count');
+        $args = $this->getCount()->json();
         if (array_key_exists('errcode', $args)) {
             throw new Exception($args['errmsg']);
         }
@@ -313,13 +381,14 @@ class Media extends BaseWeChat {
      * @param int $offset
      * @param int $count
      * @return array
+     * @throws Exception
      */
     public function mediaList($type, $offset = 0, $count = 20) {
-        return $this->getJson('mediaList', [
+        return $this->getMediaList()->parameters([
             'type' => $type,
             'offset' => $offset,
             'count' => $count
-        ]);
+        ])->json();
     }
 
     /**
@@ -327,10 +396,11 @@ class Media extends BaseWeChat {
      * @param $msg_data_id
      * @param null $index
      * @return bool
+     * @throws Exception
      */
     public function openComment($msg_data_id, $index = null) {
-        $args = $this->getJson(__FUNCTION__,
-            compact('msg_data_id', 'user_comment_id', 'index'));
+        $args = $this->getOpenComment()->parameters(
+            compact('msg_data_id', 'user_comment_id', 'index'))->json();
         return $args['errcode'] == 0;
     }
 
@@ -339,10 +409,11 @@ class Media extends BaseWeChat {
      * @param $msg_data_id
      * @param null $index
      * @return bool
+     * @throws Exception
      */
     public function closeComment($msg_data_id, $index = null) {
-        $args = $this->getJson(__FUNCTION__,
-            compact('msg_data_id', 'user_comment_id', 'index'));
+        $args = $this->getCloseComment()->parameters(
+            compact('msg_data_id', 'user_comment_id', 'index'))->json();
         return $args['errcode'] == 0;
     }
 
@@ -360,8 +431,8 @@ class Media extends BaseWeChat {
         if ($count > 50) {
             $count = 50;
         }
-        $args = $this->getJson(__FUNCTION__,
-            compact('msg_data_id', 'begin', 'count', 'type', 'index'));
+        $args = $this->getCommentList()->parameters(
+            compact('msg_data_id', 'begin', 'count', 'type', 'index'))->json();
         if ($args['errcode'] != 0) {
             throw new Exception($args['errmsg']);
         }
@@ -374,10 +445,11 @@ class Media extends BaseWeChat {
      * @param $user_comment_id
      * @param null $index
      * @return bool
+     * @throws Exception
      */
     public function markComment($msg_data_id, $user_comment_id, $index = null) {
-        $args = $this->getJson(__FUNCTION__,
-            compact('msg_data_id', 'user_comment_id', 'index'));
+        $args = $this->getMarkComment()->parameters(
+            compact('msg_data_id', 'user_comment_id', 'index'))->json();
         return $args['errcode'] == 0;
     }
 
@@ -387,10 +459,11 @@ class Media extends BaseWeChat {
      * @param $user_comment_id
      * @param null $index
      * @return bool
+     * @throws Exception
      */
     public function unMarkComment($msg_data_id, $user_comment_id, $index = null) {
-        $args = $this->getJson(__FUNCTION__,
-            compact('msg_data_id', 'user_comment_id', 'index'));
+        $args = $this->getUnMarkComment()->parameters(
+            compact('msg_data_id', 'user_comment_id', 'index'))->json();
         return $args['errcode'] == 0;
     }
 
@@ -400,10 +473,11 @@ class Media extends BaseWeChat {
      * @param $user_comment_id
      * @param null $index
      * @return bool
+     * @throws Exception
      */
     public function deleteComment($msg_data_id, $user_comment_id, $index = null) {
-        $args = $this->getJson(__FUNCTION__,
-            compact('msg_data_id', 'user_comment_id', 'index'));
+        $args = $this->getDeleteComment()->parameters(
+            compact('msg_data_id', 'user_comment_id', 'index'))->json();
         return $args['errcode'] == 0;
     }
 
@@ -413,10 +487,11 @@ class Media extends BaseWeChat {
      * @param $user_comment_id
      * @param null $index
      * @return bool
+     * @throws Exception
      */
     public function addComment($msg_data_id, $user_comment_id, $content, $index = null) {
-        $args = $this->getJson(__FUNCTION__,
-            compact('msg_data_id', 'user_comment_id', 'content', 'index'));
+        $args = $this->getAddComment()->parameters(
+            compact('msg_data_id', 'user_comment_id', 'content', 'index'))->json();
         return $args['errcode'] == 0;
     }
 
@@ -426,10 +501,11 @@ class Media extends BaseWeChat {
      * @param $user_comment_id
      * @param null $index
      * @return bool
+     * @throws Exception
      */
     public function deleteReplyComment($msg_data_id, $user_comment_id, $index = null) {
-        $args = $this->getJson(__FUNCTION__,
-            compact('msg_data_id', 'user_comment_id', 'index'));
+        $args = $this->getDeleteReplyComment()->parameters(
+            compact('msg_data_id', 'user_comment_id', 'index'))->json();
         return $args['errcode'] == 0;
     }
 }

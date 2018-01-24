@@ -7,45 +7,32 @@ namespace Zodream\ThirdParty\WeChat\MiniProgram;
  */
 class Code extends BaseMiniProgram {
 
-    protected $apiMap = [
-        'getwxacode' => [
-            [
-                'https://api.weixin.qq.com/wxa/getwxacode',
-                '#access_token'
-            ],
-            [
+    public function getWxaCode() {
+        return $this->getBaseHttp('https://api.weixin.qq.com/wxa/getwxacode')
+            ->maps([
                 '#path',
                 'width',
                 'auto_color',
                 'line_color'
-            ],
-            'POST'
-        ],
-        'getwxacodeunlimit' => [
-            [
-                'https://api.weixin.qq.com/wxa/getwxacodeunlimit',
-                '#access_token'
-            ],
-            [
+            ]);
+    }
+
+    public function getWxaCodeUnlimit() {
+        return $this->getBaseHttp('https://api.weixin.qq.com/wxa/getwxacodeunlimit')
+            ->maps([
                 '#path',
                 '#scene',
                 'width',
                 'auto_color',
                 'line_color'
-            ],
-            'POST'
-        ],
+            ]);
+    }
 
-        'createwxaqrcode' => [
-            [
-                'https://api.weixin.qq.com/cgi-bin/wxaapp/createwxaqrcode',
-                '#access_token'
-            ],
-            [
+    public function getCreateWxaQrcode() {
+        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/wxaapp/createwxaqrcode')
+            ->maps([
                 '#path',
                 'width',
-            ],
-            'POST'
-        ],
-    ];
+            ]);
+    }
 }

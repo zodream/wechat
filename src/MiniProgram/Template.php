@@ -3,62 +3,47 @@ namespace Zodream\ThirdParty\WeChat\MiniProgram;
 
 class Template extends BaseMiniProgram {
 
-    protected $apiMap = [
-        'library_list' => [
-            [
-                'https://api.weixin.qq.com/cgi-bin/wxopen/template/library/list',
-                '#access_token'
-            ],
-            [
+    public function getLibraryList() {
+        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/wxopen/template/library/list')
+            ->maps([
                 'offset' => 0,
                 'count' => 20
-            ],
-            'POST'
-        ],
-        'query' => [
-            [
-                'https://api.weixin.qq.com/cgi-bin/wxopen/template/library/get',
-                '#access_token'
-            ],
-            '#id',
-            'POST'
-        ],
-        'add' => [
-            [
-                'https://api.weixin.qq.com/cgi-bin/wxopen/template/add',
-                '#access_token'
-            ],
-            [
+            ]);
+    }
+
+    public function getQuery() {
+        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/wxopen/template/library/get')
+            ->maps([
+                '#id',
+            ]);
+    }
+
+    public function getAdd() {
+        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/wxopen/template/add')
+            ->maps([
                 '#id',
                 '#keyword_id_list'
-            ],
-            'POST'
-        ],
-        'list' => [
-            [
-                'https://api.weixin.qq.com/cgi-bin/wxopen/template/list',
-                '#access_token'
-            ],
-            [
+            ]);
+    }
+
+    public function getList() {
+        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/wxopen/template/list')
+            ->maps([
                 'offset' => 0,
                 'count' => 20
-            ],
-            'POST'
-        ],
-        'del' => [
-            [
-                'https://api.weixin.qq.com/cgi-bin/wxopen/template/del',
-                '#access_token'
-            ],
-            '#template_id',
-            'POST'
-        ],
-        'send' => [
-            [
-                'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send',
-                '#access_token'
-            ],
-            [
+            ]);
+    }
+
+    public function getDel() {
+        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/wxopen/template/del')
+            ->maps([
+                '#template_id',
+            ]);
+    }
+
+    public function getSend() {
+        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send')
+            ->maps([
                 '#touser',
                 '#template_id',
                 'page',
@@ -66,8 +51,6 @@ class Template extends BaseMiniProgram {
                 '#data',
                 'color',
                 'emphasis_keyword'
-            ],
-            'POST'
-        ],
-    ];
+            ]);
+    }
 }

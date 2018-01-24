@@ -3,13 +3,9 @@ namespace Zodream\ThirdParty\WeChat\MiniProgram;
 
 class Service extends BaseMiniProgram {
 
-    protected $apiMap = [
-        'send' => [
-            [
-                'https://api.weixin.qq.com/cgi-bin/message/custom/send',
-                '#access_token'
-            ],
-            [
+    public function getSend() {
+        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/message/custom/send')
+            ->maps([
                 '#touser',
                 '#msgtype',
                 '#content',
@@ -20,9 +16,6 @@ class Service extends BaseMiniProgram {
                 '#picurl',
                 '#pagepath',
                 '#thumb_media_id'
-            ],
-            'POST'
-        ],
-
-    ];
+            ]);
+    }
 }

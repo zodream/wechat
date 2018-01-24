@@ -1,5 +1,9 @@
 <?php
 namespace Zodream\ThirdParty\WeChat;
+
+use Zodream\Http\Http;
+use Exception;
+
 /**
  * 帐号管理
  * User: zx648
@@ -7,45 +11,50 @@ namespace Zodream\ThirdParty\WeChat;
  * Time: 14:38
  */
 class Account extends BaseWeChat {
-    protected $apiMap = [
-        'qrCode' => [
-            [
-                'https://api.weixin.qq.com/cgi-bin/qrcode/create',
-                '#access_token'
-            ],
-            [
+
+    /**
+     * @return Http
+     * @throws Exception
+     */
+    public function getQrcode() {
+        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/qrcode/create')
+            ->maps([
                 '#action_info',
                 'expire_seconds',
                 'action_name'
-            ]
-        ],
-        'shortUrl' => [
-            [
-                'https://api.weixin.qq.com/cgi-bin/shorturl',
-                '#access_token'
-            ],
-            [
+            ]);
+    }
+
+    /**
+     * @return Http
+     * @throws Exception
+     */
+    public function getShortUrl() {
+        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/shorturl')
+            ->maps([
                 'action' => 'long2short',
                 '#long_url'
-            ],
-            'POST'
-        ],
-        'clear' => [
-            [
-                'https://api.weixin.qq.com/cgi-bin/clear_quota',
-                '#access_token'
-            ],
-            '#appid',
-            'POST'
-        ]
-    ];
+            ]);
+    }
+
+    /**
+     * @return Http
+     * @throws Exception
+     */
+    public function getClear() {
+        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/clear_quota')
+            ->maps([
+                '#appid',
+            ]);
+    }
 
     /**
      * @param integer|string $scene
      * @param bool|integer $time IF FALSE, QR_LIMIT_SCENE , OR INT, QR_SCENE
      * @return array [ticket, expire_seconds, url]
+     * @throws Exception
      */
-    public function getQrCode($scene, $time = false) {
+    public function qrCode($scene, $time = false) {
         $data = [
             'action_info' => [
                 'scene' => []
@@ -64,14 +73,19 @@ class Account extends BaseWeChat {
                 $data['action_info']['scene'] = ['scene_str' => $scene];
             }
         }
-        return $this->getJson('qrCode', $data);
+        return $this->getQrcode()->parameters($data)->json();
     }
 
+    /**
+     * @param $url
+     * @return bool
+     * @throws Exception
+     */
     public function shortUrl($url) {
-        $args = $this->getJson('shortUrl', [
+        $args = $this->getShortUrl()->parameters([
             'action' => 'long2short',
             'long_url' => $url
-        ]);
+        ])->json();
         return array_key_exists('short_url', $args) ? $args['short_url'] : false;
     }
 }

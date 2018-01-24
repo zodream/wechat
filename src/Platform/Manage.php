@@ -13,116 +13,97 @@ use Zodream\Service\Factory;
  */
 class Manage extends BasePlatform {
 
+    public function getLogin() {
+        return $this->getHttp()
+            ->url('https://mp.weixin.qq.com/cgi-bin/componentloginpage',
+                [
+                    '#component_appid',
+                    '#pre_auth_code',
+                    '#redirect_uri'
+                ]);
+    }
 
-    protected $apiMap = [
-        'login' => [
-            'https://mp.weixin.qq.com/cgi-bin/componentloginpage',
-            [
-                '#component_appid',
-                '#pre_auth_code',
-                '#redirect_uri'
-            ]
-        ],
-        'token' => [ //json
-            'https://api.weixin.qq.com/cgi-bin/component/api_component_token',
-            [
+    public function getToken() {
+        return $this->getHttp('https://api.weixin.qq.com/cgi-bin/component/api_component_token')
+            ->maps([
                 '#component_appid',
                 '#component_appsecret',
                 '#component_verify_ticket'
-            ],
-            'POST'
-        ],
-        'pre_auth_code' => [  //json
-            [
-                'https://api.weixin.qq.com/cgi-bin/component/api_create_preauthcode',
-                '#component_access_token'
-            ],
-            '#component_appid',
-            'POST'
-        ],
-        'access_token' => [ //json
-            [
-                'https://api.weixin.qq.com/cgi-bin/component/api_query_auth',
-                '#component_access_token'
-            ],
-            [
+            ]);
+    }
+
+    public function getPreAuthCode() {
+        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/component/api_create_preauthcode')
+            ->maps([
+                '#component_appid'
+            ]);
+    }
+
+    public function getAccessToken() {
+        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/component/api_query_auth')
+            ->maps([
                 '#component_appid',
                 '#authorization_code' // 在授权通知里接收
-            ],
-            'POST'
-        ],
-        'refresh_token' => [
-            [
-                'https://api.weixin.qq.com/cgi-bin/component/api_authorizer_token',
-                '#component_access_token'
-            ],
-            [
+            ]);
+    }
+
+    public function getRefreshToken() {
+        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/component/api_authorizer_token')
+            ->maps([
                 '#component_appid',
                 '#authorizer_appid',
                 '#authorizer_refresh_token',
-            ],
-            'POST'
-        ],
-        'info' => [
-            [
-                'https://api.weixin.qq.com/cgi-bin/component/api_get_authorizer_info',
-                '#component_access_token'
-            ],
-            [
+            ]);
+    }
+
+    public function getInfo() {
+        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/component/api_get_authorizer_info')
+            ->maps([
                 '#component_appid',
                 '#authorizer_appid',
-            ],
-            'POST'
-        ],
-        'getOption' => [
-            [
-                'https://api.weixin.qq.com/cgi-bin/component/api_get_authorizer_option',
-                '#component_access_token'
-            ],
-            [
+            ]);
+    }
+
+    public function getOption() {
+        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/component/api_get_authorizer_option')
+            ->maps([
                 '#component_appid',
                 '#authorizer_appid',
                 '#option_name'
-            ],
-            'POST'
-        ],
-        'setOption' => [
-            [
-                'https://api.weixin.qq.com/cgi-bin/component/api_set_authorizer_option',
-                '#component_access_token'
-            ],
-            [
+            ]);
+    }
+
+    public function getSetOption() {
+        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/component/api_set_authorizer_option')
+            ->maps([
                 '#component_appid',
                 '#authorizer_appid',
                 '#option_name',
                 '#option_value'
-            ],
-            'POST'
-        ],
-        'clear' => [
-            [
-                'https://api.weixin.qq.com/cgi-bin/component/clear_quota',
-                '#component_access_token'
-            ],
-            '#component_appid',
-            'POST'
-        ]
-    ];
+            ]);
+    }
+
+    public function getClear() {
+        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/component/clear_quota')
+            ->maps([
+                '#component_appid',
+            ]);
+    }
 
     /**
      * 2.获取令牌
      * @return mixed
      * @throws \Exception
      */
-    public function getToken() {
+    public function token() {
         $key = 'WeChatThirdToken';
         if (Factory::cache()->has($key)) {
             return Factory::cache()->get($key);
         }
-        $args = $this->getJson('token', [
+        $args = $this->getToken()->parameters($this->merge([
             'component_verify_ticket' => Factory::cache()
                 ->get('WeChatThirdComponentVerifyTicket')
-        ]);
+        ]))->json();
         if (!is_array($args)) {
             throw new \Exception('HTTP ERROR!');
         }
@@ -138,12 +119,12 @@ class Manage extends BasePlatform {
      * @return mixed
      * @throws \Exception
      */
-    public function getPreAuthCode() {
+    public function preAuthCode() {
         $key = 'WeChatThirdPreAuthCode';
         if (Factory::cache()->has($key)) {
             return Factory::cache()->get($key);
         }
-        $args = $this->getJson('pre_auth_code');
+        $args = $this->getPreAuthCode()->json();
         if (!is_array($args)) {
             throw new \Exception('HTTP ERROR!');
         }
@@ -160,8 +141,9 @@ class Manage extends BasePlatform {
      * @throws \Exception
      */
     public function login() {
-        $this->set('pre_auth_code', $this->getPreAuthCode());
-        return $this->getUrl('login');
+        return $this->getLogin()->parameters($this->merge([
+            'pre_auth_code' => $this->getPreAuthCode()
+        ]))->getUrl();
     }
 
     /**
@@ -175,15 +157,15 @@ class Manage extends BasePlatform {
         }
         Factory::log()->info('WECHAT AUTH CODE: '. $code);
         $this->set('authorization_code', $code);
-        return $this->getAccessToken();
+        return $this->accessToken();
     }
 
     /**
      * @return mixed
      * @throws \Exception
      */
-    public function getAccessToken() {
-        $data = $this->getJson('access_token');
+    public function accessToken() {
+        $data = $this->getAccessToken()->json();
         if (!array_key_exists('authorization_info', $data)) {
             throw new \Exception('ACCESS TOKEN ERROR!');
         }
@@ -199,10 +181,10 @@ class Manage extends BasePlatform {
      * @throws \Exception
      */
     public function refreshAccessToken($appId, $token) {
-        $data = $this->getJson('refresh_token', array(
+        $data = $this->getRefreshToken()->parameters([
             'authorizer_appid' => $appId,
             'authorizer_refresh_token' => $token
-        ));
+        ])->json();
         if (!array_key_exists('authorizer_access_token', $data)) {
             throw new \Exception('REFRESH ACCESS TOKEN ERROR!');
         }
@@ -216,10 +198,10 @@ class Manage extends BasePlatform {
      * @return array
      * @throws \Exception
      */
-    public function getInfo($appId) {
-        $data = $this->getJson('info', [
+    public function info($appId) {
+        $data = $this->getInfo()->parameters([
             'authorizer_appid' => $appId
-        ]);
+        ])->json();
         if (!array_key_exists('authorizer_info', $data)) {
             throw new \Exception('INFO ERROR!');
         }
@@ -227,19 +209,32 @@ class Manage extends BasePlatform {
         return $data['authorizer_info'];
     }
 
-    public function getOption($appId, $name) {
-        return $this->getJson('getOption', [
+    /**
+     * @param $appId
+     * @param $name
+     * @return mixed
+     * @throws \Exception
+     */
+    public function option($appId, $name) {
+        return $this->getOption()->parameters([
             'authorizer_appid' => $appId,
             'option_name' => $name
-        ]);
+        ])->json();
     }
 
+    /**
+     * @param $appId
+     * @param $name
+     * @param $value
+     * @return bool
+     * @throws \Exception
+     */
     public function setOption($appId, $name, $value) {
-        $data = $this->getJson('setOption', [
+        $data = $this->getSetOption()->parameters([
             'authorizer_appid' => $appId,
             'option_name' => $name,
             'option_value' => $value
-        ]);
+        ])->json();
         return $data['errcode'] === 0;
     }
 }

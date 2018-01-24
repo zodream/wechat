@@ -8,9 +8,11 @@ namespace Zodream\ThirdParty\WeChat;
  * Time: 10:23
  */
 use Zodream\Helpers\Str;
+use Zodream\Http\Http;
 use Zodream\Http\Uri;
 use Zodream\Service\Factory;
 use Zodream\Infrastructure\Http\Request;
+use Exception;
 
 /**
  * Class OAuth
@@ -21,44 +23,53 @@ use Zodream\Infrastructure\Http\Request;
  * @property string $avatar
  */
 class OAuth extends BaseWeChat {
-    protected $apiMap = [
-        'login' => [
-            'https://open.weixin.qq.com/connect/oauth2/authorize',
-            [
-                '#appid',
-                '#redirect_uri',
-                'response_type' => 'code',
-                'scope' => 'snsapi_userinfo', // snsapi_base （不弹出授权页面，直接跳转，只能获取用户openid），snsapi_userinfo （弹出授权页面，可通过openid拿到昵称、性别、所在地
-                'state',
-                //'#wechat_redirect'
-            ]
-        ],
-        'access' => [
-            'https://api.weixin.qq.com/sns/oauth2/access_token',
-            [
-                '#appid',
-                '#secret',
-                '#code',
-                'grant_type' => 'authorization_code'
-            ]
-        ],
-        'refresh_token' => [
-            'https://api.weixin.qq.com/sns/oauth2/refresh_token',
-            [
-                '#appid',
-                '#refresh_token',
-                'grant_type' => 'refresh_token',
-            ]
-        ],
-        'info' => [
-            'https://api.weixin.qq.com/sns/userinfo',
-            [
-                '#access_token',
-                '#openid',
-                'lang' => 'zh_CN'
-            ]
-        ]
-    ];
+
+    public function getLogin() {
+        return $this->getHttp()
+            ->url('https://open.weixin.qq.com/connect/oauth2/authorize', [
+                    '#appid',
+                    '#redirect_uri',
+                    'response_type' => 'code',
+                    'scope' => 'snsapi_userinfo', // snsapi_base （不弹出授权页面，直接跳转，只能获取用户openid），snsapi_userinfo （弹出授权页面，可通过openid拿到昵称、性别、所在地
+                    'state',
+                    //'#wechat_redirect'
+                ])->parameters($this->get());
+    }
+
+    public function getAccess() {
+        return $this->getHttp()
+            ->url('https://api.weixin.qq.com/sns/oauth2/access_token',
+                [
+                    '#appid',
+                    '#secret',
+                    '#code',
+                    'grant_type' => 'authorization_code'
+                ])->parameters($this->get());
+    }
+
+    public function getRefreshToken() {
+        return $this->getHttp()
+            ->url('https://api.weixin.qq.com/sns/oauth2/refresh_token',
+                [
+                    '#appid',
+                    '#refresh_token',
+                    'grant_type' => 'refresh_token',
+                ])->parameters($this->get());
+    }
+
+    /**
+     * @return Http
+     * @throws Exception
+     */
+    public function getInfo() {
+        return $this->getBaseHttp()
+            ->url('https://api.weixin.qq.com/sns/userinfo',
+                [
+                    '#access_token',
+                    '#openid',
+                    'lang' => 'zh_CN'
+                ]);
+    }
 
     /**
      * @return Uri
@@ -68,7 +79,7 @@ class OAuth extends BaseWeChat {
         $state = Str::randomNumber(7);
         Factory::session()->set('state', $state);
         $this->set('state', $state);
-        return $this->getUrl('login')->setFragment('wechat_redirect');
+        return $this->getLogin()->getUrl()->setFragment('wechat_redirect');
     }
 
     /**
@@ -86,9 +97,9 @@ class OAuth extends BaseWeChat {
         if (empty($code)) {
             return false;
         }
-        $access = $this->getJson('access', [
+        $access = $this->getAccess()->parameters([
             'code' => $code
-        ]);
+        ])->json();
         if (!is_array($access) || !array_key_exists('openid', $access)) {
             return false;
         }
@@ -97,8 +108,12 @@ class OAuth extends BaseWeChat {
         return $access;
     }
 
+    /**
+     * @return array|bool|mixed
+     * @throws \Exception
+     */
     public function info() {
-        $user = $this->getJson('info');
+        $user = $this->getInfo()->json();
         if (!is_array($user) || !array_key_exists('nickname', $user)) {
             return false;
         }
