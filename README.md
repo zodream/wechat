@@ -36,7 +36,7 @@
 
 获取菜单
 ```PHP
-(new Menu())->getMenu();
+(new Menu())->menuList();
 ```
 
 设置菜单
