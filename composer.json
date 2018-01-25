@@ -3,7 +3,7 @@
     "description": "wechat api client",
     "keywords": ["wechat api client", "zodream"],
     "homepage": "https://github.com/zodream/wechat",
-    "license": "MIT",
+    "license": "Apache Licence 2.0",
     "authors": [
         {
             "name" : "Jason Zou",

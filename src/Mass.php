@@ -1,8 +1,5 @@
 <?php
 namespace Zodream\ThirdParty\WeChat;
-
-use Zodream\Http\Http;
-use Exception;
 /**
  * 群发
  * @package Zodream\Domain\ThirdParty\WeChat
@@ -15,35 +12,29 @@ class Mass extends BaseWeChat {
     const VIDEO = 'mpvideo';
     const CARD = 'wxcard';
 
-    /**
-     * @return Http
-     * @throws Exception
-     */
-    public function getUploadImg() {
-        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/media/uploadimg')
-            ->maps([
-                '#media',
-            ]);
-    }
-
-    /**
-     * @return Http
-     * @throws Exception
-     */
-    public function getUploadNews() {
-        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/media/uploadnews')
-            ->maps([
-                '#articles',
-            ]);
-    }
-
-    /**
-     * @return Http
-     * @throws Exception
-     */
-    public function getSendAll() {
-        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/message/mass/sendall')
-            ->maps([
+    protected $apiMap = [
+        'uploadImg' => [
+            [
+                'https://api.weixin.qq.com/cgi-bin/media/uploadimg',
+                '#access_token'
+            ],
+            '#media',
+            'POST'
+        ],
+        'uploadNews' => [
+            [
+                'https://api.weixin.qq.com/cgi-bin/media/uploadnews',
+                '#access_token'
+            ],
+            '#articles',
+            'POST'
+        ],
+        'sendAll' => [
+            [
+                'https://api.weixin.qq.com/cgi-bin/message/mass/sendall',
+                '#access_token'
+            ],
+            [
                 '#filter',
                 '#msgtype',
                 'mpnews',
@@ -52,16 +43,15 @@ class Mass extends BaseWeChat {
                 'image',
                 'mpvideo',
                 'wxcard'
-            ]);
-    }
-
-    /**
-     * @return Http
-     * @throws Exception
-     */
-    public function getSend() {
-        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/message/mass/send')
-            ->maps([
+            ],
+            'POST'
+        ],
+        'send' => [
+            [
+                'https://api.weixin.qq.com/cgi-bin/message/mass/send',
+                '#access_token'
+            ],
+            [
                 '#touser',
                 '#msgtype',
                 'mpnews',
@@ -70,27 +60,21 @@ class Mass extends BaseWeChat {
                 'image',
                 'mpvideo',
                 'wxcard'
-            ]);
-    }
-
-    /**
-     * @return Http
-     * @throws Exception
-     */
-    public function getDelete() {
-        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/message/mass/delete')
-            ->maps([
-                '#msg_id'
-            ]);
-    }
-
-    /**
-     * @return Http
-     * @throws Exception
-     */
-    public function getPreview() {
-        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/message/mass/preview')
-            ->maps([
+            ]
+        ],
+        'delete' => [
+            [
+                'https://api.weixin.qq.com/cgi-bin/message/mass/delete',
+                '#access_token'
+            ],
+            '#msg_id'
+        ],
+        'preview' => [
+            [
+                'https://api.weixin.qq.com/cgi-bin/message/mass/preview',
+                '#access_token'
+            ],
+            [
                 '#touser',
                 '#msgtype',
                 'mpnews',
@@ -99,39 +83,26 @@ class Mass extends BaseWeChat {
                 'image',
                 'mpvideo',
                 'wxcard'
-            ]);
-    }
+            ]
+        ],
+        'query' => [
+            [
+                'https://api.weixin.qq.com/cgi-bin/message/mass/get',
+                '#access_token'
+            ],
+            '#msg_id'
+        ],
+    ];
 
-    /**
-     * @return Http
-     * @throws Exception
-     */
-    public function getQuery() {
-        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/message/mass/get')
-            ->maps([
-                '#msg_id'
-            ]);
-    }
-
-    /**
-     * @param $file
-     * @return bool
-     * @throws \Exception
-     */
     public function uploadImg($file) {
-        $args = $this->getUploadImg()->parameters([
+        $args = $this->getJson('uploadImg', [
             'media' => '@'.$file
-        ])->json();
+        ]);
         return array_key_exists('url', $args) ? $args['url'] : false;
     }
 
-    /**
-     * @param NewsItem $news
-     * @return bool
-     * @throws \Exception
-     */
     public function updateNews(NewsItem $news) {
-        $args = $this->getUploadNews()->parameters($news->toArray())->json();
+        $args = $this->getJson('updateNews', $news->toArray());
         return $args['errcode'] == 0;
     }
 
@@ -150,7 +121,7 @@ class Mass extends BaseWeChat {
             'is_to_all' => false,
             'group_id' => $groupId
         ];
-        $args = $this->getSendAll()->parameters($data)->json();
+        $args = $this->getJson('sendAll', $data);
         if ($args['errcode'] === 0) {
             return $args['msg_id'];
         }
@@ -167,52 +138,36 @@ class Mass extends BaseWeChat {
     public function send(array $openId, $data, $type = self::TEXT) {
         $data = $this->parseData($data, $type);
         $data['touser'] = array_values($openId);
-        $args = $this->getSend()->parameters($data)->json();
+        $args = $this->getJson('send', $data);
         if ($args['errcode'] === 0) {
             return $args['msg_id'];
         }
         throw new \Exception($args['errmsg']);
     }
 
-    /**
-     * @param $msgId
-     * @return bool
-     * @throws \Exception
-     */
     public function cancel($msgId) {
-        $args = $this->getDelete()->parameters([
+        $args = $this->getJson('delete', [
             'msg_id' => $msgId
         ]);
         if ($args['errcode'] === 0) {
             return true;
         }
-        throw new \Exception($args['errmsg']);
+        throw  new \Exception($args['errmsg']);
     }
 
-    /**
-     * @param $openId
-     * @param array $data
-     * @return bool
-     * @throws Exception
-     */
     public function preview($openId, array $data) {
         $data['touser'] = $openId;
-        $args = $this->getPreview()->parameters($data)->json();
+        $args = $this->getJson('query', $data);
         if ($args['errcode'] === 0) {
             return true;
         }
-        throw new \Exception($args['errmsg']);
+        throw  new \Exception($args['errmsg']);
     }
 
-    /**
-     * @param $msgId
-     * @return bool
-     * @throws \Exception
-     */
     public function query($msgId) {
-        $args = $this->getQuery()->parameters([
+        $args = $this->getJson('query', [
             'msg_id' => $msgId
-        ])->json();
+        ]);
         if (isset($args['msg_status'])) {
             return $args['msg_status'];
         }

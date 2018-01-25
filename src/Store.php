@@ -1,22 +1,19 @@
 <?php
 namespace Zodream\ThirdParty\WeChat;
 
-use Zodream\Http\Http;
-use Exception;
-
 /**
  * 门店
  * @package Zodream\ThirdParty\WeChat
  */
 class Store extends BaseWeChat {
 
-    /**
-     * @return Http
-     * @throws Exception
-     */
-    public function getAdd() {
-        return $this->getBaseHttp('http://api.weixin.qq.com/cgi-bin/poi/addpoi')
-            ->maps([
+    protected $apiMap = [
+        'add' => [
+            [
+                '	http://api.weixin.qq.com/cgi-bin/poi/addpoi',
+                '#access_token'
+            ],
+            [
                 '#business' => [
                     '#base_info' => [
                         'sid',  //商户自己的id，用于后续审核通过收到poi_id 的通知时，做对应关系。请商户自己保证唯一识别性
@@ -41,39 +38,34 @@ class Store extends BaseWeChat {
                         'avg_price',
                     ]
                 ]
-            ]);
-    }
-
-    /**
-     * @return Http
-     * @throws Exception
-     */
-    public function getQuery() {
-        return $this->getBaseHttp('http://api.weixin.qq.com/cgi-bin/poi/getpoi')
-            ->maps([
-                '#poi_id',
-            ]);
-    }
-
-    /**
-     * @return Http
-     * @throws Exception
-     */
-    public function getList() {
-        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/poi/getpoilist')
-            ->maps([
+            ],
+            'POST'
+        ],
+        'query' => [
+            [
+                'http://api.weixin.qq.com/cgi-bin/poi/getpoi',
+                '#access_token'
+            ],
+            '#poi_id',
+            'POST'
+        ],
+        'list' => [
+            [
+                'https://api.weixin.qq.com/cgi-bin/poi/getpoilist',
+                '#access_token'
+            ],
+            [
                 'begin' => 0,
                 'limit' => 20
-            ]);
-    }
-
-    /**
-     * @return Http
-     * @throws Exception
-     */
-    public function getUpdate() {
-        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/poi/updatepoi')
-            ->maps([
+            ],
+            'POST'
+        ],
+        'update' => [
+            [
+                'https://api.weixin.qq.com/cgi-bin/poi/updatepoi',
+                '#access_token'
+            ],
+            [
                 '#business' => [
                     '#base_info' => [
                         '#poi_id',
@@ -99,25 +91,20 @@ class Store extends BaseWeChat {
                         'avg_price',
                     ]
                 ]
-            ]);
-    }
-
-    /**
-     * @return Http
-     * @throws Exception
-     */
-    public function getDelete() {
-        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/poi/delpoi')
-            ->maps([
-                '#poi_id'
-            ]);
-    }
-
-    /**
-     * @return Http
-     * @throws Exception
-     */
-    public function getCategoryList() {
-        return $this->getBaseHttp('http://api.weixin.qq.com/cgi-bin/poi/getwxcategory');
-    }
+            ],
+            'POST'
+        ],
+        'delete' => [
+            [
+                'https://api.weixin.qq.com/cgi-bin/poi/delpoi',
+                '#access_token'
+            ],
+            '#poi_id', //
+            'POST'
+        ],
+        'categoryList' => [
+            'http://api.weixin.qq.com/cgi-bin/poi/getwxcategory',
+            '#access_token'
+        ]
+    ];
 }

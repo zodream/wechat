@@ -5,16 +5,17 @@ use Exception;
 
 class OAuth extends BaseMiniProgram {
 
-    public function getLogin() {
-        return $this->getHttp()
-            ->url('https://api.weixin.qq.com/sns/jscode2session',
-                [
-                    '#appid',
-                    '#secret',
-                    '#js_code',
-                    'grant_type' => 'authorization_code'
-                ]);
-    }
+    protected $apiMap = [
+        'login' => [
+            'https://api.weixin.qq.com/sns/jscode2session',
+            [
+                '#appid',
+                '#secret',
+                '#js_code',
+                'grant_type' => 'authorization_code'
+            ]
+        ],
+    ];
 
     /**
      * @param string $code
@@ -25,9 +26,9 @@ class OAuth extends BaseMiniProgram {
      * @throws Exception
      */
     public function login($code) {
-        $args = $this->getLogin()->parameters($this->merge([
+        $args = $this->getJson('login', [
             'js_code' => $code
-        ]))->json();
+        ]);
         if (array_key_exists('errcode', $args)) {
             throw new Exception($args['errmsg']);
         }

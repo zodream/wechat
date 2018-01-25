@@ -2,10 +2,8 @@
 namespace Zodream\ThirdParty\WeChat;
 
 use Zodream\Helpers\Str;
-use Zodream\Http\Http;
 use Zodream\Service\Factory;
 use Zodream\Service\Routing\Url;
-use Exception;
 
 /**
  * Created by PhpStorm.
@@ -14,30 +12,27 @@ use Exception;
  * Time: 13:46
  */
 class JsSDK extends BaseWeChat {
-
-    /**
-     * @return \Zodream\Http\Http
-     * @throws Exception
-     */
-    public function getTicket() {
-        return $this->getBaseHttp()
-            ->url('https://api.weixin.qq.com/cgi-bin/ticket/getticket', [
+    protected $apiMap = [
+        'ticket' => [
+            'https://api.weixin.qq.com/cgi-bin/ticket/getticket',
+            [
                 '#access_token',
                 'type' => 'jsapi'
-            ]);
-    }
+            ]
+        ]
+    ];
 
 
     /**
      * @return mixed
      * @throws \Exception
      */
-    public function ticket() {
+    public function getTicket() {
         $key = 'jsApi_ticket'.$this->get('appid');
         if (Factory::cache()->has($key)) {
             return Factory::cache()->get($key);
         }
-        $args = $this->getTicket()->json();
+        $args = $this->getJson('ticket');
         if (!is_array($args)) {
             throw new \Exception('HTTP ERROR!');
         }
@@ -53,7 +48,7 @@ class JsSDK extends BaseWeChat {
         reset($data);
         $arg = [];
         foreach ($data as $key => $item) {
-            if (Http::isEmpty($item) || $key == 'sign') {
+            if ($this->isEmpty($item) || $key == 'sign') {
                 continue;
             }
             $arg[] = $key.'='.$item;
@@ -71,7 +66,7 @@ class JsSDK extends BaseWeChat {
         $appId = $this->get('appid');
         $data = [
             'noncestr' => Str::random(),
-            'jsapi_ticket' => $this->ticket(),
+            'jsapi_ticket' => $this->getTicket(),
             'timestamp' => time(),
             'url' => (string)Url::to(null, null, true)
         ];

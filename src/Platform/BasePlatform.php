@@ -1,7 +1,6 @@
 <?php
 namespace Zodream\ThirdParty\WeChat\Platform;
 
-use Zodream\Http\Http;
 use Zodream\ThirdParty\WeChat\BaseWeChat;
 
 abstract class BasePlatform extends BaseWeChat {
@@ -14,19 +13,18 @@ abstract class BasePlatform extends BaseWeChat {
     }
 
     /**
-     * @param null $url
-     * @return Http
+     * @param array $keys
+     * @param array $args
+     * @return array
      * @throws \Exception
      */
-    public function getBaseHttp($url = null) {
-        $token = (new Manage($this->get()))->token();
-        return $this->getHttp()
-            ->url($url, [
-                '#component_access_token'
-            ])
-            ->parameters($this->merge([
-                'component_access_token' => $token
-            ]))
-            ->encode(Http::JSON);
+    protected function getData(array $keys, array $args) {
+        if ((in_array('#component_access_token', $keys)
+                || in_array('component_access_token', $keys))
+            && (!$this->has('component_access_token')
+                || !array_key_exists('component_access_token', $args))) {
+            $args['component_access_token'] = (new Manage())->getToken();
+        }
+        return parent::getData($keys, $args);
     }
 }
