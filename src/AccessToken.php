@@ -10,11 +10,6 @@ use Exception;
  * @package Zodream\Domain\ThirdParty\WeChat
  */
 class AccessToken extends BaseWeChat {
-    protected $apiMap = [
-        'token' => [
-
-        ]
-    ];
 
     public function getToken() {
         return $this->getHttp()
