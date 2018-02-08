@@ -62,13 +62,13 @@ class OAuth extends BaseWeChat {
      * @throws Exception
      */
     public function getInfo() {
-        return $this->getBaseHttp()
+        return $this->getHttp()
             ->url('https://api.weixin.qq.com/sns/userinfo',
                 [
                     '#access_token',
                     '#openid',
                     'lang' => 'zh_CN'
-                ]);
+                ])->parameters($this->get());
     }
 
     /**

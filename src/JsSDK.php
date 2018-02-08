@@ -67,7 +67,7 @@ class JsSDK extends BaseWeChat {
      * @throws \Exception
      */
     public function apiConfig($apiList = array()) {
-        Factory::view()->registerJsFile('http://res.wx.qq.com/open/js/jweixin-1.0.0.js');
+        Factory::view()->registerJsFile('http://res.wx.qq.com/open/js/jweixin-1.2.0.js');
         $appId = $this->get('appid');
         $data = [
             'noncestr' => Str::random(),
