@@ -53,12 +53,22 @@ class MenuItem extends ZObject {
         return $this;
     }
 
+    /**
+     * 设置点击事件及标记
+     * @param $arg
+     * @return $this
+     */
     public function setKey($arg) {
         $this->setType(self::CLICK);
         $this->key = $arg;
         return $this;
     }
 
+    /**
+     * 设置网址
+     * @param $arg
+     * @return $this
+     */
     public function setUrl($arg) {
         if ($this->type != self::MINI_PROGRAM) {
             $this->setType(self::VIEW);
@@ -67,6 +77,11 @@ class MenuItem extends ZObject {
         return $this;
     }
 
+    /**
+     * 设置资源
+     * @param $arg
+     * @return $this
+     */
     public function setMediaId($arg) {
         if (empty($this->type)) {
             $this->setType(self::MEDIA);
@@ -76,7 +91,7 @@ class MenuItem extends ZObject {
     }
 
     /**
-     *
+     * 设置或添加子菜单
      * @param MenuItem[]|MenuItem $arg
      * @return $this
      */
@@ -145,11 +160,11 @@ class MenuItem extends ZObject {
             return $data;
         }
         if (in_array($this->type, [self::VIEW])) {
-            $data['url'] = $this->url;
+            $data['url'] = (string)$this->url;
             return $data;
         }
         if (in_array($this->type, [self::MINI_PROGRAM])) {
-            $data['url'] = $this->url;
+            $data['url'] = (string)$this->url;
             $data['appid'] = $this->appid;
             $data['pagepath'] = $this->pagepath;
             return $data;
