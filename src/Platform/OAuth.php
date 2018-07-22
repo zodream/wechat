@@ -83,11 +83,11 @@ class OAuth extends BasePlatform {
     public function callback() {
         Factory::log()
             ->info('WECHAT CALLBACK: '.var_export($_GET, true));
-        $state = Request::get('state');
+        $state = app('request')->get('state');
         if (empty($state) || $state != Factory::session()->get('state')) {
             return false;
         }
-        $code = Request::get('code');
+        $code = app('request')->get('code');
         if (empty($code)) {
             return false;
         }

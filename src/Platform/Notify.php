@@ -71,7 +71,7 @@ class Notify extends MagicObject {
      */
     public function setData() {
         if (empty($this->xml)) {
-            $this->xml = Request::input();
+            $this->xml = app('request')->input();
         }
         if (!empty($this->xml)) {
             $args = $this->getData();

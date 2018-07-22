@@ -151,7 +151,7 @@ class Manage extends BasePlatform {
      * @throws \Exception
      */
     public function callback() {
-        $code = Request::get('auth_code');
+        $code = app('request')->get('auth_code');
         if (empty($code)) {
             throw new \Exception('AUTH CODE ERROR!');
         }

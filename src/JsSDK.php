@@ -4,7 +4,7 @@ namespace Zodream\ThirdParty\WeChat;
 use Zodream\Helpers\Str;
 use Zodream\Http\Http;
 use Zodream\Service\Factory;
-use Zodream\Service\Routing\Url;
+use Zodream\Infrastructure\Http\URL;
 use Exception;
 
 /**

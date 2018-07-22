@@ -77,7 +77,7 @@ class Message extends MagicObject {
         $this->token = $config['token'];
         $this->aesKey = $config['aes_key'];
         $this->appId = $config['appid'];
-        $this->encryptType = Request::get('encrypt_type');
+        $this->encryptType = app('request')->get('encrypt_type');
         $this->get();
     }
 
@@ -100,7 +100,7 @@ class Message extends MagicObject {
      */
     public function setData() {
         if (empty($this->xml)) {
-            $this->xml = Request::input();
+            $this->xml = app('request')->input();
         }
         if (!empty($this->xml)) {
             $args = $this->getData();
@@ -188,8 +188,8 @@ class Message extends MagicObject {
      * @return bool
      */
     public function isValid() {
-        return Request::get()->has('signature')
-            || Request::get()->has('msg_signature');
+        return app('request')->get()->has('signature')
+            || app('request')->get()->has('msg_signature');
     }
 
     /**
@@ -198,10 +198,10 @@ class Message extends MagicObject {
      * @return bool
      */
     protected function checkSignature($str = '') {
-        $signature = Request::get('signature');
-        $signature = Request::get('msg_signature', $signature); //如果存在加密验证则用加密验证段
-        $timestamp = Request::get('timestamp');
-        $nonce = Request::get('nonce');
+        $signature = app('request')->get('signature');
+        $signature = app('request')->get('msg_signature', $signature); //如果存在加密验证则用加密验证段
+        $timestamp = app('request')->get('timestamp');
+        $nonce = app('request')->get('nonce');
 
         $token = $this->token;
         $tmpArr = array($token, $timestamp, $nonce, $str);
@@ -216,7 +216,7 @@ class Message extends MagicObject {
      * @throws \Exception
      */
     public function valid() {
-        $echoStr = Request::get('echostr');
+        $echoStr = app('request')->get('echostr');
         if (!is_null($echoStr)) {
             if ($this->checkSignature()) {
                 exit($echoStr);
@@ -224,7 +224,7 @@ class Message extends MagicObject {
             throw new \Exception('no access');
         }
         $encryptStr = '';
-        if (Request::isPost()) {
+        if (app('request')->isPost()) {
             $data = (array)Xml::decode($this->xml, false);
             if ($this->encryptType != 'aes') {
                 return $data;
