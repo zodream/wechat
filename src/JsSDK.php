@@ -4,7 +4,7 @@ namespace Zodream\ThirdParty\WeChat;
 use Zodream\Helpers\Str;
 use Zodream\Http\Http;
 use Zodream\Service\Factory;
-use Zodream\Infrastructure\Http\URL;
+
 use Exception;
 
 /**
@@ -73,7 +73,7 @@ class JsSDK extends BaseWeChat {
             'noncestr' => Str::random(),
             'jsapi_ticket' => $this->ticket(),
             'timestamp' => time(),
-            'url' => (string)Url::to(null, null, true)
+            'url' => url()->current()
         ];
         $sign = $this->getJsSign($data);
         $apiList = implode("','", $apiList);
