@@ -239,6 +239,7 @@ class User extends BaseWeChat {
     public function getBlackList() {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/tags/members/getblacklist')
             ->maps([
+                'access_token',
                 'begin_openid',
             ]);
     }
@@ -251,6 +252,7 @@ class User extends BaseWeChat {
     public function getAddBlack() {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/tags/members/batchblacklist')
             ->maps([
+                'access_token',
                 '#openid_list',
             ]);
     }
@@ -262,6 +264,7 @@ class User extends BaseWeChat {
     public function getDeleteBlack() {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/tags/members/batchunblacklist')
             ->maps([
+                'access_token',
                 '#openid_list',
             ]);
     }
