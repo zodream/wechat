@@ -178,9 +178,9 @@ class Message extends MagicObject {
         }
         $encryptStr = $data['Encrypt'];
         $aes = new Aes($this->aesKey, $this->appId);
-        $this->xml = $aes->decrypt($encryptStr);
+        $xml = $aes->decrypt($encryptStr);
         $this->appId = $aes->getAppId();
-        return (array)Xml::decode($this->xml, false);
+        return (array)Xml::decode($xml, false);
     }
 
     /**
@@ -188,8 +188,8 @@ class Message extends MagicObject {
      * @return bool
      */
     public function isValid() {
-        return app('request')->get()->has('signature')
-            || app('request')->get()->has('msg_signature');
+        return app('request')->has('signature')
+            || app('request')->has('msg_signature');
     }
 
     /**

@@ -36,21 +36,12 @@ class Aes extends BaseSecurity {
         //获得16位随机字符串，填充到明文之前
         $random = Str::random(16);
         $data = $random . pack("N", strlen($data)) . $data . $this->appId;
-        // 网络字节序
-        //$size = mcrypt_get_block_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
-        $module = mcrypt_module_open(MCRYPT_RIJNDAEL_128, '', MCRYPT_MODE_CBC, '');
+
         $iv = substr($this->key, 0, 16);
         //使用自定义的填充方式对明文进行补位填充
         $data = $this->pkcs7Pad($data, $this->blockSize);
-        mcrypt_generic_init($module, $this->key, $iv);
-        //加密
-        $data = mcrypt_generic($module, $data);
-        mcrypt_generic_deinit($module);
-        mcrypt_module_close($module);
-
-        //			print(base64_encode($data));
-        //使用BASE64对加密后的字符串进行编码
-        return base64_encode($data);
+        return openssl_encrypt($data, 'AES-256-CBC',
+            substr($this->key, 0, 32), OPENSSL_ZERO_PADDING, $iv);
     }
 
     /**
@@ -60,15 +51,10 @@ class Aes extends BaseSecurity {
      * @throws \Exception
      */
     public function decrypt($data) {
-        //使用BASE64对需要解密的字符串进行解码
-        $cipherTextDec = base64_decode($data);
-        $module = mcrypt_module_open(MCRYPT_RIJNDAEL_128, '', MCRYPT_MODE_CBC, '');
         $iv = substr($this->key, 0, 16);
-        mcrypt_generic_init($module, $this->key, $iv);
-        //解密
-        $decrypted = mdecrypt_generic($module, $cipherTextDec);
-        mcrypt_generic_deinit($module);
-        mcrypt_module_close($module);
+        $decrypted = openssl_decrypt($data, 'AES-256-CBC',
+            substr($this->key, 0, 32), OPENSSL_ZERO_PADDING, $iv);
+
         //去除补位字符
         $result = $this->pkcs7UnPad($decrypted, $this->blockSize);
         //去除16位随机字符串,网络字节序和AppId
