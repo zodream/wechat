@@ -238,17 +238,26 @@ class Message extends MagicObject {
     }
 
     /**
+     * 获取响应
+     * @return MessageResponse
+     * @throws \Exception
+     */
+    public function getResponse() {
+        $response = new MessageResponse($this->token,
+            $this->aesKey,
+            $this->encryptType,
+            $this->appId);
+        return $response->setFromUseName($this->getTo())
+            ->setToUseName($this->getFrom());
+    }
+
+    /**
      * 无法回复时自动返回success
      * @return MessageResponse
      * @throws \Exception
      */
     public function run() {
-        $response = new MessageResponse($this->token,
-            $this->aesKey,
-            $this->encryptType,
-            $this->appId);
-        $response->setFromUseName($this->getTo())
-            ->setToUseName($this->getFrom());
+        $response = $this->getResponse();
         $this->invoke($this->getEvent(), [$this, $response]);
         return $response;
     }
