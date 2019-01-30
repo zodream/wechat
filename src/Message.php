@@ -4,7 +4,6 @@ namespace Zodream\ThirdParty\WeChat;
 use Zodream\Helpers\Str;
 use Zodream\Helpers\Xml;
 use Zodream\Infrastructure\Base\MagicObject;
-use Zodream\Infrastructure\Http\Request;
 use Zodream\Infrastructure\Traits\EventTrait;
 use Zodream\Service\Factory;
 
@@ -54,15 +53,15 @@ class Message extends MagicObject {
 
     protected $configKey = 'wechat';
 
+    protected $configs = [
+        'aes_key' => '',
+        'appid' => '',
+        'token' => ''
+    ];
+
     protected $xml;
 
-    protected $token;
-
-    protected $aesKey;
-
     protected $encryptType;
-
-    protected $appId;
 
     /**
      * Message constructor.
@@ -70,13 +69,9 @@ class Message extends MagicObject {
      * @throws \Exception
      */
     public function __construct(array $config = array()) {
-        $config = array_merge(Factory::config($this->configKey, array(
-            'aes_key' => '',
-            'appid' => ''
-        )), $config);
-        $this->token = $config['token'];
-        $this->aesKey = $config['aes_key'];
-        $this->appId = $config['appid'];
+        $this->configs = array_merge(Factory::config(
+            $this->configKey, $this->configs),
+            $config);
         $this->encryptType = app('request')->get('encrypt_type');
         $this->get();
     }
@@ -177,15 +172,16 @@ class Message extends MagicObject {
             return $data;
         }
         $encryptStr = $data['Encrypt'];
-        $aes = new Aes($this->aesKey, $this->appId);
+        $aes = new Aes($this->configs['aes_key'], $this->configs['appid']);
         $xml = $aes->decrypt($encryptStr);
-        $this->appId = $aes->getAppId();
+        $this->configs['appid'] = $aes->getAppId();
         return (array)Xml::decode($xml, false);
     }
 
     /**
      * 当前操作是否是验证
      * @return bool
+     * @throws \Exception
      */
     public function isValid() {
         return app('request')->has('signature')
@@ -196,6 +192,7 @@ class Message extends MagicObject {
      * 验证
      * @param string $str
      * @return bool
+     * @throws \Exception
      */
     protected function checkSignature($str = '') {
         $signature = app('request')->get('signature');
@@ -203,7 +200,7 @@ class Message extends MagicObject {
         $timestamp = app('request')->get('timestamp');
         $nonce = app('request')->get('nonce');
 
-        $token = $this->token;
+        $token = $this->configs['token'];
         $tmpArr = array($token, $timestamp, $nonce, $str);
         sort($tmpArr, SORT_STRING);
         $tmpStr = implode($tmpArr);
@@ -243,10 +240,10 @@ class Message extends MagicObject {
      * @throws \Exception
      */
     public function getResponse() {
-        $response = new MessageResponse($this->token,
-            $this->aesKey,
+        $response = new MessageResponse($this->configs['token'],
+            $this->configs['aes_key'],
             $this->encryptType,
-            $this->appId);
+            $this->configs['appid']);
         return $response->setFromUseName($this->getTo())
             ->setToUseName($this->getFrom());
     }
@@ -272,6 +269,6 @@ class Message extends MagicObject {
         if ($original !== $this->getTo()) {
             return false;
         }
-        return (new AccessToken())->verifyIp(app('request')->ip());
+        return (new AccessToken($this->configs))->verifyIp(app('request')->ip());
     }
 }
