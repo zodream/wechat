@@ -261,4 +261,17 @@ class Message extends MagicObject {
         $this->invoke($this->getEvent(), [$this, $response]);
         return $response;
     }
+
+    /**
+     * 验证消息来源
+     * @param string $original
+     * @return bool
+     * @throws \Exception
+     */
+    public function verifyServer($original) {
+        if ($original !== $this->getTo()) {
+            return false;
+        }
+        return (new AccessToken())->verifyIp(app('request')->ip());
+    }
 }

@@ -70,9 +70,10 @@ return $message->on([EventEnum::ScanSubscribe, EventEnum::Subscribe],
     $response->setText('取消关注');
 })->on(EventEnum::Click, function(Message $message, MessageResponse $response) {
     $response->setText(sprintf('您点击了 %s', $message->eventKey));
-})->run()->sendContent();
+})->run();
 ```
 
+最后返回  MessageResponse $response;
 
 <a name="platform"></a>
 ## 微信公众号第三方平台
