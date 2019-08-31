@@ -3,7 +3,6 @@ namespace Zodream\ThirdParty\WeChat\Platform;
 
 use Zodream\Http\Http;
 use Zodream\Http\Uri;
-use Zodream\Service\Factory;
 
 /**
  * 微信第三方平台管理公众号
@@ -91,15 +90,36 @@ class Manage extends BasePlatform {
     }
 
     /**
+     * 微信服务器 每隔10分钟会向第三方的消息接收地址推送一次component_verify_ticket
+     * @param null $ticket 为空则获取，否则设置
+     * @return $this|array|mixed|null
+     * @throws \Exception
+     */
+    public function ticket($ticket = null) {
+        $key = 'WeChatThirdComponentVerifyTicket';
+        if (!function_exists('cache')) {
+            if (empty($ticket)) {
+                return $this->get($key);
+            }
+            return $this->set($key, $ticket);
+        }
+        if (empty($ticket)) {
+            return cache($key);
+        }
+        return cache([
+            $key => $ticket
+        ]);
+    }
+
+    /**
      * 2.获取令牌
      * @return mixed
      * @throws \Exception
      */
     public function token() {
-        static::getOrSetCache('WeChatThirdToken', function (callable $next) {
+        return static::getOrSetCache('WeChatThirdToken', function (callable $next) {
             $args = $this->getToken()->parameters($this->merge([
-                'component_verify_ticket' => Factory::cache()
-                    ->get('WeChatThirdComponentVerifyTicket')
+                'component_verify_ticket' => $this->ticket()
             ]))->json();
             if (!is_array($args)) {
                 throw new \Exception('HTTP ERROR!');

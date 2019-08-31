@@ -3,9 +3,9 @@ namespace Zodream\ThirdParty\WeChat;
 
 use Zodream\Helpers\Str;
 use Zodream\Helpers\Xml;
-use Zodream\Infrastructure\Base\MagicObject;
-use Zodream\Infrastructure\Traits\EventTrait;
-use Zodream\Service\Factory;
+use Zodream\Http\Http;
+use Zodream\ThirdParty\Traits\Attributes;
+use Zodream\ThirdParty\Traits\EventTrait;
 
 /**
  * 消息管理
@@ -47,9 +47,9 @@ use Zodream\Service\Factory;
  * @property string $result  //审核结果，成功succ 或失败fail
  * @property string $msg //成功的通知信息，或审核失败的驳回理由
  */
-class Message extends MagicObject {
+class Message {
 
-    use EventTrait;
+    use EventTrait, Attributes;
 
     protected $configKey = 'wechat';
 
@@ -65,28 +65,20 @@ class Message extends MagicObject {
 
     /**
      * Message constructor.
-     * @param array $config
+     * @param array $configs
      * @throws \Exception
      */
-    public function __construct(array $config = array()) {
-        $this->configs = array_merge(Factory::config(
-            $this->configKey, $this->configs),
-            $config);
-        $this->encryptType = app('request')->get('encrypt_type');
-        $this->get();
-    }
-
-    /**
-     * @param null $key
-     * @param null $default
-     * @return mixed
-     * @throws \Exception
-     */
-    public function get($key = null, $default = null) {
-        if (!$this->hasAttribute()) {
-            $this->setData();
+    public function __construct(array $configs = []) {
+        if (function_exists('config')) {
+            $configs = array_merge(
+                config(
+                    $this->configKey, $this->configs
+                ),
+                $configs);
         }
-        return parent::get(lcfirst($key), $default);
+        $this->configs = $configs;
+        $this->encryptType = isset($_GET['encrypt_type']) ? $_GET['encrypt_type'] : null;
+        $this->setData();
     }
 
     /**
@@ -95,15 +87,16 @@ class Message extends MagicObject {
      */
     public function setData() {
         if (empty($this->xml)) {
-            $this->xml = app('request')->input();
+            $this->xml = file_get_contents('php://input');
         }
         if (!empty($this->xml)) {
-            $args = $this->getData();
-            foreach ($args as $key => $item) {
-                $this->set(lcfirst($key), $item);
-            }
+            $this->set($this->getData());
         }
         return $this;
+    }
+
+    protected function preProcessKey($key) {
+        return lcfirst($key);
     }
 
     /**
@@ -166,7 +159,7 @@ class Message extends MagicObject {
      * @throws \Exception
      */
     protected function getData() {
-        Factory::log()->info('WECHAT MESSAGE: '.$this->xml);
+        Http::log('WECHAT MESSAGE: '.$this->xml);
         $data = (array)Xml::decode($this->xml, false);
         if ($this->encryptType != 'aes') {
             return $data;

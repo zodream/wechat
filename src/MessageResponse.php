@@ -9,11 +9,9 @@ namespace Zodream\ThirdParty\WeChat;
  */
 use Zodream\Helpers\Str;
 use Zodream\Helpers\Xml;
-use Zodream\Infrastructure\Http\Response;
-use Zodream\Infrastructure\Interfaces\IPreResponse;
-use Zodream\Service\Factory;
+use Zodream\Http\Http;
 
-class MessageResponse implements IPreResponse {
+class MessageResponse {
 
     protected $data = [];
 
@@ -231,17 +229,26 @@ class MessageResponse implements IPreResponse {
 
     /**
      * 自动回复内容
-     * @param Response $response
-     * @return Response
+     * @param mixed $response
+     * @return string|mixed
      * @throws \Exception
      */
-    public function ready(Response $response) {
-        if ($this->isEmpty()) {
-            return $response->html('success');
+    public function ready($response = null) {
+        $res = 'success';
+        if (!$this->isEmpty()) {
+            $res = $this->makeXml();
         }
-        $xml = $this->makeXml();
-        Factory::log()->info('MESSAGE RESPONSE:'.$xml);
-        return $response->xml($xml);
+        Http::log('MESSAGE RESPONSE:'.$res);
+        if (empty($response)
+            || !is_object($response)
+            || !method_exists($response, 'html')
+         || !method_exists($response, 'xml')) {
+            return $res;
+        }
+        if ($this->isEmpty()) {
+            return $response->html($res);
+        }
+        return $response->xml($res);
     }
 
     protected function makeXml() {

@@ -3,11 +3,10 @@ namespace Zodream\ThirdParty\WeChat\Platform;
 
 
 use Zodream\Helpers\Xml;
+use Zodream\Http\Http;
+use Zodream\ThirdParty\Traits\Attributes;
 use Zodream\ThirdParty\WeChat\Aes;
-use Zodream\Infrastructure\Base\MagicObject;
-use Zodream\Infrastructure\Http\Request;
-use Zodream\Infrastructure\Traits\EventTrait;
-use Zodream\Service\Factory;
+use Zodream\ThirdParty\Traits\EventTrait;
 
 /**
  * 推送给平台授权相关通知
@@ -19,10 +18,10 @@ use Zodream\Service\Factory;
  * @property string $authorizationCode   授权码，可用于换取公众号的接口调用凭据
  * @property string $authorizationCodeExpiredTime  授权码过期时间
  */
-class Notify extends MagicObject {
+class Notify {
     protected $configKey = 'wechat.platform';
 
-    use EventTrait;
+    use EventTrait, Attributes;
     const TYPE_ComponentVerifyTicket = 'component_verify_ticket';
     const TYPE_Unauthorized = 'unauthorized';
     const TYPE_UpdateAuthorized = 'updateauthorized';
@@ -42,27 +41,18 @@ class Notify extends MagicObject {
      * @throws \Exception
      */
     public function __construct(array $config = array()) {
-            $config = array_merge(Factory::config($this->configKey, array(
-            'aes_key' => '',
-            'component_appid' => ''
-        )), $config);
+        if (function_exists('config')) {
+            $config = array_merge(config($this->configKey, array(
+                'aes_key' => '',
+                'component_appid' => ''
+            )), $config);
+        }
         $this->aesKey = $config['aes_key'];
         $this->appId = $config['component_appid'];
-        $this->get();
-        $this->setComponentVerifyTicket();
-    }
-
-    /**
-     * @param null $key
-     * @param null $default
-     * @return mixed
-     * @throws \Exception
-     */
-    public function get($key = null, $default = null) {
         if (empty($this->_data)) {
             $this->setData();
         }
-        return parent::get(lcfirst($key), $default);
+        $this->setComponentVerifyTicket();
     }
 
     /**
@@ -71,15 +61,16 @@ class Notify extends MagicObject {
      */
     public function setData() {
         if (empty($this->xml)) {
-            $this->xml = app('request')->input();
+            $this->xml = file_get_contents('php://input');
         }
         if (!empty($this->xml)) {
-            $args = $this->getData();
-            foreach ($args as $key => $item) {
-                $this->set(lcfirst($key), $item);
-            }
+            $this->set($this->getData());
         }
         return $this;
+    }
+
+    protected function preProcessKey($key) {
+        return lcfirst($key);
     }
 
     public function getXml() {
@@ -95,7 +86,7 @@ class Notify extends MagicObject {
      * @throws \Exception
      */
     protected function getData() {
-        Factory::log()->info('WECHAT NOTIFY: '.$this->xml);
+        Http::log('WECHAT NOTIFY: '.$this->xml);
         $data = (array)Xml::decode($this->xml, false);
         $encryptStr = $data['Encrypt'];
         $aes = new Aes($this->aesKey, $this->appId);
@@ -111,8 +102,7 @@ class Notify extends MagicObject {
         if ($this->infoType != self::TYPE_ComponentVerifyTicket) {
             return $this;
         }
-        Factory::cache()->set('WeChatThirdComponentVerifyTicket',
-            $this->componentVerifyTicket);
+        (new Manage())->ticket($this->componentVerifyTicket);
         return $this;
     }
 

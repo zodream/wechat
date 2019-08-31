@@ -10,8 +10,6 @@ namespace Zodream\ThirdParty\WeChat;
 use Zodream\Helpers\Str;
 use Zodream\Http\Http;
 use Zodream\Http\Uri;
-use Zodream\Service\Factory;
-use Zodream\Infrastructure\Http\Request;
 use Exception;
 
 /**
@@ -77,7 +75,11 @@ class OAuth extends BaseWeChat {
      */
     public function login() {
         $state = Str::randomNumber(7);
-        Factory::session()->set('state', $state);
+        if (function_exists('session')) {
+            session([
+                'state' => $state
+            ]);
+        }
         $this->set('state', $state);
         return $this->getLogin()->getUrl()->setFragment('wechat_redirect');
     }
@@ -87,13 +89,16 @@ class OAuth extends BaseWeChat {
      * @throws \Exception
      */
     public function callback() {
-        Factory::log()
-            ->info('WECHAT CALLBACK: '.var_export($_GET, true));
-        $state = app('request')->get('state');
-        if (empty($state) || $state != Factory::session()->get('state')) {
+        Http::log('WECHAT CALLBACK: '.var_export($_GET, true));
+        $state = isset($_GET['state']) ? $_GET['state'] : null;
+        if (empty($state)) {
             return false;
         }
-        $code = app('request')->get('code');
+        if (function_exists('session')
+            && $state !== session('state')) {
+            return false;
+        }
+        $code = isset($_GET['code']) ? $_GET['code'] : null;
         if (empty($code)) {
             return false;
         }
