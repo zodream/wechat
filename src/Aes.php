@@ -8,7 +8,7 @@ namespace Zodream\ThirdParty\WeChat;
  * Time: 19:37
  */
 use Zodream\Helpers\Str;
-use Zodream\Infrastructure\Security\BaseSecurity;
+use Zodream\Helpers\Security\BaseSecurity;
 
 class Aes extends BaseSecurity {
 

@@ -1,8 +1,8 @@
 <?php
 namespace Zodream\ThirdParty\WeChat\Platform;
 
+use Zodream\Http\Http;
 use Zodream\Http\Uri;
-use Zodream\Infrastructure\Http\Request;
 use Zodream\Service\Factory;
 
 /**
@@ -96,22 +96,19 @@ class Manage extends BasePlatform {
      * @throws \Exception
      */
     public function token() {
-        $key = 'WeChatThirdToken';
-        if (Factory::cache()->has($key)) {
-            return Factory::cache()->get($key);
-        }
-        $args = $this->getToken()->parameters($this->merge([
-            'component_verify_ticket' => Factory::cache()
-                ->get('WeChatThirdComponentVerifyTicket')
-        ]))->json();
-        if (!is_array($args)) {
-            throw new \Exception('HTTP ERROR!');
-        }
-        if (!array_key_exists('component_access_token', $args)) {
-            throw new \Exception(isset($args['errmsg']) ? $args['errmsg'] : 'GET ACCESS TOKEN ERROR!');
-        }
-        Factory::cache()->set($key, $args['component_access_token'], $args['expires_in']);
-        return $args['component_access_token'];
+        static::getOrSetCache('WeChatThirdToken', function (callable $next) {
+            $args = $this->getToken()->parameters($this->merge([
+                'component_verify_ticket' => Factory::cache()
+                    ->get('WeChatThirdComponentVerifyTicket')
+            ]))->json();
+            if (!is_array($args)) {
+                throw new \Exception('HTTP ERROR!');
+            }
+            if (!array_key_exists('component_access_token', $args)) {
+                throw new \Exception(isset($args['errmsg']) ? $args['errmsg'] : 'GET ACCESS TOKEN ERROR!');
+            }
+            return call_user_func($next, $args['component_access_token'], $args['expires_in']);
+        });
     }
 
     /**
@@ -120,19 +117,16 @@ class Manage extends BasePlatform {
      * @throws \Exception
      */
     public function preAuthCode() {
-        $key = 'WeChatThirdPreAuthCode';
-        if (Factory::cache()->has($key)) {
-            return Factory::cache()->get($key);
-        }
-        $args = $this->getPreAuthCode()->json();
-        if (!is_array($args)) {
-            throw new \Exception('HTTP ERROR!');
-        }
-        if (!array_key_exists('pre_auth_code', $args)) {
-            throw new \Exception(isset($args['errmsg']) ? $args['errmsg'] : 'GET ACCESS TOKEN ERROR!');
-        }
-        Factory::cache()->set($key, $args['pre_auth_code'], $args['expires_in']);
-        return $args['pre_auth_code'];
+        return static::getOrSetCache('WeChatThirdPreAuthCode', function (callable $next) {
+            $args = $this->getPreAuthCode()->json();
+            if (!is_array($args)) {
+                throw new \Exception('HTTP ERROR!');
+            }
+            if (!array_key_exists('pre_auth_code', $args)) {
+                throw new \Exception(isset($args['errmsg']) ? $args['errmsg'] : 'GET ACCESS TOKEN ERROR!');
+            }
+            return call_user_func($next, $args['pre_auth_code'], $args['expires_in']);
+        });
     }
 
     /**
@@ -151,11 +145,11 @@ class Manage extends BasePlatform {
      * @throws \Exception
      */
     public function callback() {
-        $code = app('request')->get('auth_code');
+        $code = isset($_GET['auth_code']) ? $_GET['auth_code'] : null;
         if (empty($code)) {
             throw new \Exception('AUTH CODE ERROR!');
         }
-        Factory::log()->info('WECHAT AUTH CODE: '. $code);
+        Http::log('WECHAT AUTH CODE: '. $code);
         $this->set('authorization_code', $code);
         return $this->accessToken();
     }

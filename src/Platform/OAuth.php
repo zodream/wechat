@@ -5,7 +5,6 @@ namespace Zodream\ThirdParty\WeChat\Platform;
 use Zodream\Helpers\Str;
 use Zodream\Http\Uri;
 use Zodream\Service\Factory;
-use Zodream\Infrastructure\Http\Request;
 
 /**
  * 网页授权

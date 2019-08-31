@@ -1,8 +1,6 @@
 <?php
 namespace Zodream\ThirdParty\WeChat;
 
-
-use Zodream\Service\Factory;
 use Exception;
 
 /**
@@ -32,20 +30,18 @@ class AccessToken extends BaseWeChat {
      * @throws \Exception
      */
     public function token() {
-        $key = 'WeChatToken'.$this->get('appid');
-        if (Factory::cache()->has($key)) {
-            return Factory::cache()->get($key);
-        }
-        $args = $this->getToken()->json();
-        if (!is_array($args)) {
-            throw new Exception('HTTP ERROR!');
-        }
-        if (!array_key_exists('access_token', $args)) {
-            throw new Exception(isset($args['errmsg']) ?
-                $args['errmsg'] : 'GET ACCESS TOKEN ERROR!');
-        }
-        Factory::cache()->set($key, $args['access_token'], $args['expires_in']);
-        return $args['access_token'];
+        return static::getOrSetCache('WeChatToken'.$this->get('appid'),
+            function (callable $next) {
+            $args = $this->getToken()->json();
+            if (!is_array($args)) {
+                throw new Exception('HTTP ERROR!');
+            }
+            if (!array_key_exists('access_token', $args)) {
+                throw new Exception(isset($args['errmsg']) ?
+                    $args['errmsg'] : 'GET ACCESS TOKEN ERROR!');
+            }
+           return call_user_func($next, $args['access_token'], $args['expires_in']);
+        });
     }
 
     /**
@@ -53,19 +49,16 @@ class AccessToken extends BaseWeChat {
      * @throws Exception
      */
     public function ip() {
-        $key = 'WeChatServerIp';
-        if (Factory::cache()->has($key)) {
-            return Factory::cache()->get($key);
-        }
-        $args = $this->getIp()->json();
-        if (!is_array($args)) {
-            throw new Exception('HTTP ERROR!');
-        }
-        if (!array_key_exists('ip_list', $args)) {
-            return false;
-        }
-        Factory::cache()->set($key, $args['ip_list'], 86400);
-        return $args['ip_list'];
+        return static::getOrSetCache('WeChatServerIp', function (callable $next) {
+            $args = $this->getIp()->json();
+            if (!is_array($args)) {
+                throw new Exception('HTTP ERROR!');
+            }
+            if (!array_key_exists('ip_list', $args)) {
+                return false;
+            }
+            return call_user_func($next, $args['ip_list'], 86400);
+        });
     }
 
     /**

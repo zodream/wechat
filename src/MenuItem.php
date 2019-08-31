@@ -2,7 +2,6 @@
 namespace Zodream\ThirdParty\WeChat;
 
 use Zodream\Helpers\Str;
-use Zodream\Infrastructure\Base\ZObject;
 
 /**
  * Class MenuItem
@@ -14,7 +13,7 @@ use Zodream\Infrastructure\Base\ZObject;
  * @method MenuItem mediaId($arg)
  * @method MenuItem menu($arg)
  */
-class MenuItem extends ZObject {
+class MenuItem {
     const CLICK = 'click';
     const VIEW = 'view';
     const MINI_PROGRAM = 'miniprogram'; // 小程序

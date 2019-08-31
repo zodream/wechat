@@ -3,7 +3,6 @@ namespace Zodream\ThirdParty\WeChat;
 
 use Zodream\Helpers\Str;
 use Zodream\Http\Http;
-use Zodream\Service\Factory;
 
 use Exception;
 
@@ -33,19 +32,17 @@ class JsSDK extends BaseWeChat {
      * @throws \Exception
      */
     public function ticket() {
-        $key = 'jsApi_ticket'.$this->get('appid');
-        if (Factory::cache()->has($key)) {
-            return Factory::cache()->get($key);
-        }
-        $args = $this->getTicket()->json();
-        if (!is_array($args)) {
-            throw new \Exception('HTTP ERROR!');
-        }
-        if (!array_key_exists('ticket', $args)) {
-            throw new \Exception(isset($args['errmsg']) ? $args['errmsg'] : 'GET JS API TICKET ERROR!');
-        }
-        Factory::cache()->set($key, $args['ticket'], $args['expires_in']);
-        return $args['ticket'];
+        return static::getOrSetCache('jsApi_ticket'.$this->get('appid'),
+            function (callable $next) {
+            $args = $this->getTicket()->json();
+            if (!is_array($args)) {
+                throw new \Exception('HTTP ERROR!');
+            }
+            if (!array_key_exists('ticket', $args)) {
+                throw new \Exception(isset($args['errmsg']) ? $args['errmsg'] : 'GET JS API TICKET ERROR!');
+            }
+            return call_user_func($next, $args['ticket'], $args['expires_in']);
+        });
     }
 
     protected function getJsSign(array $data) {
@@ -67,7 +64,9 @@ class JsSDK extends BaseWeChat {
      * @throws \Exception
      */
     public function apiConfig($apiList = array()) {
-        Factory::view()->registerJsFile('http://res.wx.qq.com/open/js/jweixin-1.2.0.js');
+        if (function_exists('view')) {
+            view()->registerJsFile('http://res.wx.qq.com/open/js/jweixin-1.2.0.js');
+        }
         $appId = $this->get('appid');
         $data = [
             'noncestr' => Str::random(),

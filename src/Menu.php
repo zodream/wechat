@@ -2,7 +2,6 @@
 namespace Zodream\ThirdParty\WeChat;
 
 use Zodream\Http\Http;
-use Zodream\Infrastructure\Interfaces\ArrayAble;
 use Exception;
 
 /**
@@ -57,7 +56,9 @@ class Menu extends BaseWeChat {
      * @throws \Exception
      */
     public function create($menu) {
-        $args = $this->getCreate()->parameters($menu instanceof ArrayAble ? $menu->toArray() : $menu)
+        $args = $this->getCreate()
+            ->parameters(is_object($menu) && method_exists($menu, 'toArray')
+                ? $menu->toArray() : $menu)
             ->json();
         if ($args['errcode'] === 0) {
             return true;
