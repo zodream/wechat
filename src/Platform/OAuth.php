@@ -13,6 +13,7 @@ use Zodream\Http\Uri;
  * @property string $username
  * @property string $sex
  * @property string $avatar
+ * @property string $unionid // 可选联合id
  */
 class OAuth extends BasePlatform {
 
@@ -128,7 +129,7 @@ class OAuth extends BasePlatform {
         $user['username'] = $user['nickname'];
         $user['avatar'] = $user['headimgurl'];
         $user['sex'] = $user['sex'] == 2 ? 'F' : 'M';;
-        $user['identity'] = isset($user['unionid']) ? $user['unionid'] : $user['openid'];
+        $user['identity'] = $user['openid'];
         $this->set($user);
         return $user;
     }
