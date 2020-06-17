@@ -53,4 +53,25 @@ class Template extends BaseMiniProgram {
                 'emphasis_keyword'
             ]);
     }
+
+    public function getUniformSend() {
+        return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send')
+            ->maps([
+                '#touser',
+                'weapp_template_msg' => [
+                    '#template_id',
+                    'page',
+                    '#form_id',
+                    '#data',
+                    'emphasis_keyword'
+                ],
+                'mp_template_msg' => [
+                    'appid',
+                    '#template_id',
+                    'url',
+                    '#miniprogram',
+                    '#data',
+                ]
+            ]);
+    }
 }
