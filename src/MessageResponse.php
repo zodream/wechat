@@ -13,7 +13,7 @@ use Zodream\Http\Http;
 
 class MessageResponse {
 
-    protected $data = [];
+    protected array $data = [];
 
     protected $aesKey;
 
