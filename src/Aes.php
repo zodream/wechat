@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Zodream\ThirdParty\WeChat;
 
 /**
@@ -12,13 +13,13 @@ use Zodream\Helpers\Security\BaseSecurity;
 
 class Aes extends BaseSecurity {
 
-    protected $key;
+    protected string $key;
 
-    protected $appId;
+    protected string $appId;
 
-    protected $blockSize = 32;
+    protected int $blockSize = 32;
 
-    public function __construct($key, $appId = null) {
+    public function __construct(string $key, string $appId = '') {
         $this->key = base64_decode($key . '=');
         $this->appId = $appId;
     }
@@ -32,7 +33,7 @@ class Aes extends BaseSecurity {
      * @param string $data
      * @return string
      */
-    public function encrypt($data) {
+    public function encrypt($data): string {
         //获得16位随机字符串，填充到明文之前
         $random = Str::random(16);
         $data = $random . pack("N", strlen($data)) . $data . $this->appId;
@@ -50,7 +51,7 @@ class Aes extends BaseSecurity {
      * @return string
      * @throws \Exception
      */
-    public function decrypt($data) {
+    public function decrypt(string $data) {
         $iv = substr($this->key, 0, 16);
         $decrypted = openssl_decrypt($data, 'AES-256-CBC',
             substr($this->key, 0, 32), OPENSSL_ZERO_PADDING, $iv);
