@@ -77,7 +77,7 @@ class Message {
                 $configs);
         }
         $this->configs = $configs;
-        $this->encryptType = isset($_GET['encrypt_type']) ? $_GET['encrypt_type'] : null;
+        $this->encryptType = $_GET['encrypt_type'] ?? null;
         $this->setData();
     }
 
@@ -109,7 +109,7 @@ class Message {
         }
         // ADD SCAN SUBSCRIBE EVENT
         if ($this->event == EventEnum::Subscribe
-            && strpos($this->eventKey, 'qrscene_') === 0) {
+            && str_starts_with($this->eventKey, 'qrscene_')) {
             $this->eventKey = Str::firstReplace($this->eventKey, 'qrscene_');
             return EventEnum::ScanSubscribe;
         }

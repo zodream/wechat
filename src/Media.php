@@ -400,7 +400,7 @@ class Media extends BaseWeChat {
      */
     public function openComment($msg_data_id, $index = null) {
         $args = $this->getOpenComment()->parameters(
-            compact('msg_data_id', 'user_comment_id', 'index'))->json();
+            compact('msg_data_id',  'index'))->json();
         return $args['errcode'] == 0;
     }
 
@@ -413,7 +413,7 @@ class Media extends BaseWeChat {
      */
     public function closeComment($msg_data_id, $index = null) {
         $args = $this->getCloseComment()->parameters(
-            compact('msg_data_id', 'user_comment_id', 'index'))->json();
+            compact('msg_data_id', 'index'))->json();
         return $args['errcode'] == 0;
     }
 

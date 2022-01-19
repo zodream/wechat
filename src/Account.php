@@ -61,11 +61,19 @@ class Account extends BaseWeChat {
             ]
         ];
         if ($time !== false) {
-            $data['action_name'] = 'QR_SCENE';
             $data['expire_seconds'] = intval($time);
-            $data['action_info']['scene'] = ['scene_id' => intval($scene)];
+            if (is_integer($scene)) {
+                $data['action_name'] = 'QR_SCENE';
+                $data['action_info']['scene'] = ['scene_id' => intval($scene)];
+            } else {
+                $data['action_name'] = 'QR_STR_SCENE';
+                $data['action_info']['scene'] = ['scene_str' => $scene];
+            }
         } else {
             if (is_integer($scene)) {
+                if ($scene > 100000) {
+                    throw new Exception('scene_id only in 1~100000');
+                }
                 $data['action_name'] = 'QR_LIMIT_SCENE';
                 $data['action_info']['scene'] = ['scene_id' => $scene];
             } else {

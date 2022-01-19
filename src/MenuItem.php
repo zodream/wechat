@@ -11,6 +11,7 @@ use Zodream\Helpers\Str;
  * @method MenuItem key($arg)
  * @method MenuItem url($url)
  * @method MenuItem mediaId($arg)
+ * @method MenuItem articleId($arg)
  * @method MenuItem menu($arg)
  */
 class MenuItem {
@@ -25,12 +26,15 @@ class MenuItem {
     const LOCATION = 'location_select';
     const MEDIA = 'media_id';
     const VIEW_LIMITED = 'view_limited';
+    const ARTICLE = 'article_id';
+    const ARTICLE_VIEW_LIMITED = 'article_view_limited';
 
     protected $type;
     protected $name;
     protected $key;
     protected $url;
     protected $mediaId;
+    protected $articleId;
     protected $appid; // 小程序的appid
     protected $pagepath; //小程序的页面路径
 
@@ -86,6 +90,14 @@ class MenuItem {
             $this->setType(self::MEDIA);
         }
         $this->mediaId = $arg;
+        return $this;
+    }
+
+    public function setArticleId($arg) {
+        if (empty($this->type)) {
+            $this->setType(self::ARTICLE);
+        }
+        $this->articleId = $arg;
         return $this;
     }
 
@@ -170,6 +182,10 @@ class MenuItem {
         }
         if (in_array($this->type, [self::MEDIA, self::VIEW_LIMITED])) {
             $data['media_id'] = $this->mediaId;
+            return $data;
+        }
+        if (in_array($this->type, [self::ARTICLE, self::ARTICLE_VIEW_LIMITED])) {
+            $data['article_id'] = $this->articleId;
             return $data;
         }
         return $data;
