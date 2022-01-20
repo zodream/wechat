@@ -70,7 +70,8 @@ class Template extends BaseWeChat {
             ->maps([
                 '#touser',
                 '#template_id',
-                '#url',
+                'url',
+                'miniprogram',
                 '#data'
             ]);
     }
@@ -136,25 +137,41 @@ class Template extends BaseWeChat {
      * @param string $openId
      * @param string $template
      * @param string $url 链接的网址
-     * @param array $data [key => [value, color]]
+     * @param array $data [key => [value: string, color: string]]
+     * @param array $miniProgram {appid: string, pagepath: string}
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
-    public function send($openId, $template, $url, array $data) {
-        foreach ($data as $key => &$item) {
+    public function send(string $openId, string $template, string $url, array $data, array $miniProgram = []) {
+        $items = [];
+        foreach ($data as $key => $item) {
             if (!is_array($item)) {
-                $item = [
+                $items[$key] = [
                     'value' => $item,
                     'color' => '#777'
                 ];
+                continue;
             }
+            if (isset($item['name']) && !empty($item['name'])) {
+                $key = $item['name'];
+            }
+            $items[$key] = [
+                'value' => $item['value'] ?? '',
+                'color' => $item['color'] ?? '#777'
+            ];
         }
-        $arg = $this->getSend()->parameters([
+        $data = [
             'touser' => $openId,
             'template_id' => $template,
-            'url' => $url,
-            'data' => $data
-        ])->json();
+            'data' => $items
+        ];
+        if (!empty($url)) {
+            $data['url'] = $url;
+        }
+        if (!empty($miniProgram)) {
+            $data['miniprogram'] = $miniProgram;
+        }
+        $arg = $this->getSend()->parameters($data)->json();
         return $arg['errcode'] == 0;
     }
 

@@ -148,7 +148,7 @@ class Mass extends BaseWeChat {
             'is_to_all' => true
         ] : [
             'is_to_all' => false,
-            'group_id' => $groupId
+            'tag_id' => $groupId
         ];
         $args = $this->getSendAll()->parameters($data)->json();
         if ($args['errcode'] === 0) {

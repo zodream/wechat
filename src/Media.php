@@ -30,7 +30,7 @@ class Media extends BaseWeChat {
                     '#type'
                 ])->maps([
                 '#media',
-            ]);
+            ])->encode(null, true);
     }
 
     /**
@@ -65,7 +65,7 @@ class Media extends BaseWeChat {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/media/uploadimg')
             ->maps([
                 '#media',
-            ]);
+            ])->encode(null, true);
     }
 
     /**
@@ -81,7 +81,7 @@ class Media extends BaseWeChat {
                 ])->maps([
                 '#media',
                 'description' // 上传以后再次提交
-            ]);
+            ])->encode(null, true);
     }
 
     /**
@@ -383,7 +383,7 @@ class Media extends BaseWeChat {
      * @return array
      * @throws Exception
      */
-    public function mediaList($type, $offset = 0, $count = 20) {
+    public function mediaList(string $type, int $offset = 0, int $count = 20) {
         return $this->getMediaList()->parameters([
             'type' => $type,
             'offset' => $offset,
