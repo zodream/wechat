@@ -74,6 +74,14 @@ class EventEnum extends Enum {
     const TemplateSendJobFinish = 'TEMPLATESENDJOBFINISH';
 
     /**
+     * 草稿发布结果，
+     * PublishEventInfo
+     * publish_id
+     * publish_status 发布状态，0:成功, 1:发布中，2:原创失败, 3: 常规失败, 4:平台审核不通过, 5:成功后用户删除所有文章, 6: 成功后系统封禁所有文章
+     */
+    const PublishJobFinish = 'PUBLISHJOBFINISH';
+
+    /**
      * 客服接入会话
      */
     const KFCreateSession = 'kf_create_session';

@@ -17,6 +17,10 @@ class NewsItem {
      */
     protected $showCover;
     protected $content;
+    /**
+     * 原文链接
+     * @var string
+     */
     protected $url;
 
     /**
@@ -170,6 +174,7 @@ class NewsItem {
         if (!empty($this->mediaId)) {
             $data['media_id'] = $this->mediaId;
             $data['index'] = $this->index;
+            $data['articles'] = current($data['articles']);
         }
         return $data;
     }
