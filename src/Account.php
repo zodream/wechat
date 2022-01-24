@@ -54,7 +54,7 @@ class Account extends BaseWeChat {
      * @return array [ticket, expire_seconds, url]
      * @throws Exception
      */
-    public function qrCode($scene, $time = false) {
+    public function qrCode(int|string $scene, bool|int $time = false) {
         $data = [
             'action_info' => [
                 'scene' => []
@@ -89,7 +89,7 @@ class Account extends BaseWeChat {
      * @return bool
      * @throws Exception
      */
-    public function shortUrl($url) {
+    public function shortUrl(string $url) {
         $args = $this->getShortUrl()->parameters([
             'action' => 'long2short',
             'long_url' => $url

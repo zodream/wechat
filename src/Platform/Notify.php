@@ -19,13 +19,13 @@ use Zodream\ThirdParty\Traits\EventTrait;
  * @property string $authorizationCodeExpiredTime  授权码过期时间
  */
 class Notify {
-    protected $configKey = 'wechat.platform';
-
     use EventTrait, Attributes;
     const TYPE_ComponentVerifyTicket = 'component_verify_ticket';
     const TYPE_Unauthorized = 'unauthorized';
     const TYPE_UpdateAuthorized = 'updateauthorized';
     const TYPE_Authorized = 'authorized';
+
+    protected string $configKey = 'wechat.platform';
 
     protected $xml;
 

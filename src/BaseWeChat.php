@@ -13,7 +13,7 @@ use Exception;
 
 abstract class BaseWeChat extends ThirdParty  {
 
-    protected $configKey = 'wechat';
+    protected string $configKey = 'wechat';
 
     /**
      * @param null $url

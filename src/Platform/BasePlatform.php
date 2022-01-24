@@ -5,7 +5,7 @@ use Zodream\Http\Http;
 use Zodream\ThirdParty\WeChat\BaseWeChat;
 
 abstract class BasePlatform extends BaseWeChat {
-    protected $configKey = 'wechat.platform';
+    protected string $configKey = 'wechat.platform';
 
     public function __construct(array $config = array()) {
         parent::__construct($config);

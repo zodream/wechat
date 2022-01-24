@@ -91,7 +91,7 @@ class OAuth extends BaseWeChat {
      */
     public function callback() {
         Http::log('WECHAT CALLBACK: '.var_export($_GET, true));
-        $state = isset($_GET['state']) ? $_GET['state'] : null;
+        $state = $_GET['state'] ?? '';
         if (empty($state)) {
             return false;
         }
@@ -99,7 +99,7 @@ class OAuth extends BaseWeChat {
             && $state !== session('state')) {
             return false;
         }
-        $code = isset($_GET['code']) ? $_GET['code'] : null;
+        $code = $_GET['code'] ?? '';
         if (empty($code)) {
             return false;
         }

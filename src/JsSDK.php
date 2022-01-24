@@ -39,7 +39,7 @@ class JsSDK extends BaseWeChat {
                 throw new \Exception('HTTP ERROR!');
             }
             if (!array_key_exists('ticket', $args)) {
-                throw new \Exception(isset($args['errmsg']) ? $args['errmsg'] : 'GET JS API TICKET ERROR!');
+                throw new \Exception($args['errmsg'] ?? 'GET JS API TICKET ERROR!');
             }
             return call_user_func($next, $args['ticket'], $args['expires_in']);
         });
@@ -63,7 +63,7 @@ class JsSDK extends BaseWeChat {
      * @return string
      * @throws \Exception
      */
-    public function apiConfig($apiList = array()) {
+    public function apiConfig(array $apiList = []) {
         if (function_exists('view')) {
             view()->registerJsFile('http://res.wx.qq.com/open/js/jweixin-1.2.0.js');
         }

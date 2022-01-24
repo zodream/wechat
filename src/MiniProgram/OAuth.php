@@ -24,7 +24,7 @@ class OAuth extends BaseMiniProgram {
     unionid	用户在开放平台的唯一标识符。本字段在满足一定条件的情况下才返回]
      * @throws Exception
      */
-    public function login($code) {
+    public function login(string $code) {
         $args = $this->getLogin()->parameters($this->merge([
             'js_code' => $code
         ]))->json();

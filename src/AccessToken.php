@@ -37,8 +37,7 @@ class AccessToken extends BaseWeChat {
                 throw new Exception('HTTP ERROR!');
             }
             if (!array_key_exists('access_token', $args)) {
-                throw new Exception(isset($args['errmsg']) ?
-                    $args['errmsg'] : 'GET ACCESS TOKEN ERROR!');
+                throw new Exception($args['errmsg'] ?? 'GET ACCESS TOKEN ERROR!');
             }
            return call_user_func($next, $args['access_token'], $args['expires_in']);
         });
@@ -67,7 +66,7 @@ class AccessToken extends BaseWeChat {
      * @return bool
      * @throws Exception
      */
-    public function verifyIp($ip) {
+    public function verifyIp(string $ip) {
         $data = $this->ip();
         return $data === false || in_array($ip, $data);
     }

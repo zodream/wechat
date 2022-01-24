@@ -11,7 +11,7 @@ use Exception;
  */
 class BaseMiniProgram extends BaseWeChat {
 
-    protected $configKey = 'wechat.mini';
+    protected string $configKey = 'wechat.mini';
 
     /**
      * 解密数据

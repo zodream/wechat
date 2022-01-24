@@ -142,7 +142,7 @@ class Mass extends BaseWeChat {
      * @return mixed
      * @throws \Exception
      */
-    public function sendAll($data, $type = self::TEXT, $groupId = null) {
+    public function sendAll($data, string $type = self::TEXT, $groupId = null) {
         $data = $this->parseData($data, $type);
         $data['filter'] =  empty($groupId) ? [
             'is_to_all' => true
@@ -164,7 +164,7 @@ class Mass extends BaseWeChat {
      * @return mixed
      * @throws \Exception
      */
-    public function send(array $openId, $data, $type = self::TEXT) {
+    public function send(array $openId, $data, string $type = self::TEXT) {
         $data = $this->parseData($data, $type);
         $data['touser'] = array_values($openId);
         $args = $this->getSend()->parameters($data)->json();
@@ -225,7 +225,7 @@ class Mass extends BaseWeChat {
      * @param string $type
      * @return array
      */
-    protected function parseData($arg, $type = self::TEXT) {
+    protected function parseData($arg, string $type = self::TEXT) {
         $data = [
             $type => [],
             'msgtype' => $type

@@ -143,7 +143,7 @@ class Manage extends BasePlatform {
                 throw new \Exception('HTTP ERROR!');
             }
             if (!array_key_exists('pre_auth_code', $args)) {
-                throw new \Exception(isset($args['errmsg']) ? $args['errmsg'] : 'GET ACCESS TOKEN ERROR!');
+                throw new \Exception($args['errmsg'] ?? 'GET ACCESS TOKEN ERROR!');
             }
             return call_user_func($next, $args['pre_auth_code'], $args['expires_in']);
         });
@@ -165,7 +165,7 @@ class Manage extends BasePlatform {
      * @throws \Exception
      */
     public function callback() {
-        $code = isset($_GET['auth_code']) ? $_GET['auth_code'] : null;
+        $code = $_GET['auth_code'] ?? '';
         if (empty($code)) {
             throw new \Exception('AUTH CODE ERROR!');
         }
@@ -212,7 +212,7 @@ class Manage extends BasePlatform {
      * @return array
      * @throws \Exception
      */
-    public function info($appId) {
+    public function info(string $appId) {
         $data = $this->getInfo()->parameters([
             'authorizer_appid' => $appId
         ])->json();
@@ -229,7 +229,7 @@ class Manage extends BasePlatform {
      * @return mixed
      * @throws \Exception
      */
-    public function option($appId, $name) {
+    public function option(string $appId, string $name) {
         return $this->getOption()->parameters([
             'authorizer_appid' => $appId,
             'option_name' => $name
@@ -243,7 +243,7 @@ class Manage extends BasePlatform {
      * @return bool
      * @throws \Exception
      */
-    public function setOption($appId, $name, $value) {
+    public function setOption(string $appId, string $name, $value) {
         $data = $this->getSetOption()->parameters([
             'authorizer_appid' => $appId,
             'option_name' => $name,
