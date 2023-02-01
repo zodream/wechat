@@ -14,9 +14,9 @@
     ],
     "require": {
         "php": ">=8.1",
-        "zodream/thirdparty": "^5.0",
-        "zodream/helpers": "^5.0",
-        "zodream/disk": "^5.0"
+        "zodream/thirdparty": "dev-master",
+        "zodream/helpers": "dev-master",
+        "zodream/disk": "dev-master"
     },
     "autoload": {
         "psr-4": {
