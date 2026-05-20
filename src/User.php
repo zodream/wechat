@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Zodream\ThirdParty\WeChat;
 
 use Zodream\Http\Http;
@@ -17,7 +18,7 @@ class User extends BaseWeChat {
      * @return Http
      * @throws \Exception
      */
-    public function getCreateTag() {
+    public function getCreateTag(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/tags/create')
             ->maps([
                 '#tag' => [
@@ -30,7 +31,7 @@ class User extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getUpdateTag() {
+    public function getUpdateTag(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/tags/update')
             ->maps([
                 '#tag' => [
@@ -44,7 +45,7 @@ class User extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getDeleteTag() {
+    public function getDeleteTag(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/tags/delete')
             ->maps([
                 '#tag' => [
@@ -57,7 +58,7 @@ class User extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getTags() {
+    public function getTags(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/tags/get');
     }
 
@@ -65,7 +66,7 @@ class User extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getTagUsers() {
+    public function getTagUsers(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/user/tag/get')
             ->maps([
                 '#tagid',
@@ -77,7 +78,7 @@ class User extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getUserAddTag() {
+    public function getUserAddTag(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/tags/members/batchtagging')
             ->maps([
                 '#tagid',
@@ -89,7 +90,7 @@ class User extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getUserDeleteTag() {
+    public function getUserDeleteTag(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/tags/members/batchuntagging')
             ->maps([
                 '#tagid',
@@ -101,7 +102,7 @@ class User extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getUserTags() {
+    public function getUserTags(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/tags/getidlist')
             ->maps([
                 '#openid',
@@ -112,7 +113,7 @@ class User extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getCreateGroup() {
+    public function getCreateGroup(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/groups/create')
             ->maps([
                 '#group',
@@ -123,7 +124,7 @@ class User extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getGroup() {
+    public function getGroup(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/groups/get');
     }
 
@@ -131,7 +132,7 @@ class User extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getGroupId() {
+    public function getGroupId(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/groups/getid')
             ->maps([
                 'openid',
@@ -142,7 +143,7 @@ class User extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getUpdateGroup() {
+    public function getUpdateGroup(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/groups/update')
             ->maps([
                 '#group',
@@ -153,7 +154,7 @@ class User extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getMoveUser() {
+    public function getMoveUser(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/groups/members/update')
             ->maps([
                 '#openid',
@@ -165,7 +166,7 @@ class User extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getMoveUsers() {
+    public function getMoveUsers(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/groups/members/batchupdate')
             ->maps([
                 '#openid_list',
@@ -177,7 +178,7 @@ class User extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getDeleteGroup() {
+    public function getDeleteGroup(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/groups/delete')
             ->maps([
                 '#group',
@@ -188,7 +189,7 @@ class User extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getMark() {
+    public function getMark(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/user/info/updateremark')
             ->maps([
                 '#openid',
@@ -200,7 +201,7 @@ class User extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getInfo() {
+    public function getInfo(): Http {
         return $this->getBaseHttp()
             ->url('https://api.weixin.qq.com/cgi-bin/user/info', [
                     '#access_token',
@@ -213,7 +214,7 @@ class User extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getUsersInfo() {
+    public function getUsersInfo(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/user/info/batchget')
             ->maps([
                 '#user_list',
@@ -224,7 +225,7 @@ class User extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getUserList() {
+    public function getUserList(): Http {
         return $this->getBaseHttp()
             ->url('https://api.weixin.qq.com/cgi-bin/user/get', [
                     '#access_token',
@@ -236,7 +237,7 @@ class User extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getBlackList() {
+    public function getBlackList(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/tags/members/getblacklist')
             ->maps([
                 'access_token',
@@ -249,7 +250,7 @@ class User extends BaseWeChat {
      * @return Http
      * @throws \Exception
      */
-    public function getAddBlack() {
+    public function getAddBlack(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/tags/members/batchblacklist')
             ->maps([
                 'access_token',
@@ -261,7 +262,7 @@ class User extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getDeleteBlack() {
+    public function getDeleteBlack(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/tags/members/batchunblacklist')
             ->maps([
                 'access_token',
@@ -275,7 +276,7 @@ class User extends BaseWeChat {
      * @return bool|array ['id', 'name']
      * @throws \Exception
      */
-    public function createGroup($name) {
+    public function createGroup(string $name) {
         $args = $this->getCreateGroup()->parameters([
                 'group' => ['name' => $name]
             ])->json();

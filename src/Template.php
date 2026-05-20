@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Zodream\ThirdParty\WeChat;
 
 use Zodream\Http\Http;
@@ -15,7 +16,7 @@ class Template extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getSetIndustry() {
+    public function getSetIndustry(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/template/api_set_industry')
             ->maps([
                 '#industry_id1',
@@ -27,7 +28,7 @@ class Template extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getIndustry() {
+    public function getIndustry(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/template/get_industry');
     }
 
@@ -35,7 +36,7 @@ class Template extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getAddTemplate() {
+    public function getAddTemplate(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/template/api_add_template')
             ->maps([
                 '#template_id_short',
@@ -46,7 +47,7 @@ class Template extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getAll() {
+    public function getAll(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/template/get_all_private_template');
     }
 
@@ -54,7 +55,7 @@ class Template extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getDelete() {
+    public function getDelete(): Http {
         return $this->getBaseHttp('https://api,weixin.qq.com/cgi-bin/template/del_private_template')
             ->maps([
                 '#template_id',
@@ -65,7 +66,7 @@ class Template extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getSend() {
+    public function getSend(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/message/template/send')
             ->maps([
                 '#touser',

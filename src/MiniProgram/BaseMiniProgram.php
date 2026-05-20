@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Zodream\ThirdParty\WeChat\MiniProgram;
 
 use Zodream\ThirdParty\WeChat\BaseWeChat;
@@ -20,7 +21,7 @@ class BaseMiniProgram extends BaseWeChat {
      * @return array
      * @throws Exception
      */
-    public function decrypt($data, $iv) {
+    public function decrypt(string $data, string $iv): array {
         if (strlen($this->sessionKey) != 24) {
             throw new Exception('sessionkey 错误');
         }

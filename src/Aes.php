@@ -24,7 +24,7 @@ class Aes extends BaseSecurity {
         $this->appId = $appId;
     }
 
-    public function getAppId() {
+    public function getAppId(): string {
         return $this->appId;
     }
 
@@ -33,7 +33,7 @@ class Aes extends BaseSecurity {
      * @param string $data
      * @return string
      */
-    public function encrypt($data): string {
+    public function encrypt(string $data): string {
         //获得16位随机字符串，填充到明文之前
         $random = Str::random(16);
         $data = $random . pack("N", strlen($data)) . $data . $this->appId;
@@ -51,7 +51,7 @@ class Aes extends BaseSecurity {
      * @return string
      * @throws \Exception
      */
-    public function decrypt(string $data) {
+    public function decrypt(string $data): string {
         $iv = substr($this->key, 0, 16);
         $decrypted = openssl_decrypt($data, 'AES-256-CBC',
             substr($this->key, 0, 32), OPENSSL_ZERO_PADDING, $iv);

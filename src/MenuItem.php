@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Zodream\ThirdParty\WeChat;
 
 use Zodream\Helpers\Str;
@@ -29,14 +30,14 @@ class MenuItem {
     const ARTICLE = 'article_id';
     const ARTICLE_VIEW_LIMITED = 'article_view_limited';
 
-    protected $type;
-    protected $name;
-    protected $key;
-    protected $url;
-    protected $mediaId;
-    protected $articleId;
-    protected $appid; // 小程序的appid
-    protected $pagepath; //小程序的页面路径
+    protected string $type = '';
+    protected mixed $name;
+    protected mixed $key;
+    protected mixed $url;
+    protected mixed $mediaId;
+    protected mixed $articleId;
+    protected mixed $appid; // 小程序的appid
+    protected mixed $pagepath; //小程序的页面路径
 
     /**
      * @var MenuItem[]
@@ -46,12 +47,12 @@ class MenuItem {
     public function __construct() {
     }
 
-    public function setType($type) {
+    public function setType(string $type) {
         $this->type = $type;
         return $this;
     }
 
-    public function setName($arg) {
+    public function setName(mixed $arg) {
         $this->name = $arg;
         return $this;
     }
@@ -61,7 +62,7 @@ class MenuItem {
      * @param $arg
      * @return $this
      */
-    public function setKey($arg) {
+    public function setKey(mixed $arg) {
         $this->setType(self::CLICK);
         $this->key = $arg;
         return $this;
@@ -72,7 +73,7 @@ class MenuItem {
      * @param $arg
      * @return $this
      */
-    public function setUrl($arg) {
+    public function setUrl(mixed $arg) {
         if ($this->type != self::MINI_PROGRAM) {
             $this->setType(self::VIEW);
         }
@@ -85,7 +86,7 @@ class MenuItem {
      * @param $arg
      * @return $this
      */
-    public function setMediaId($arg) {
+    public function setMediaId(mixed $arg) {
         if (empty($this->type)) {
             $this->setType(self::MEDIA);
         }
@@ -93,7 +94,7 @@ class MenuItem {
         return $this;
     }
 
-    public function setArticleId($arg) {
+    public function setArticleId(mixed $arg) {
         if (empty($this->type)) {
             $this->setType(self::ARTICLE);
         }
@@ -106,7 +107,7 @@ class MenuItem {
      * @param MenuItem[]|MenuItem $arg
      * @return $this
      */
-    public function setMenu($arg) {
+    public function setMenu(mixed $arg) {
         if (is_array($arg)) {
             $this->menu = $arg;
         } else {
@@ -122,7 +123,7 @@ class MenuItem {
      * @param string $url 不支持小程序的老版本客户端将打开本url
      * @return $this
      */
-    public function setMini($appid, $page, $url) {
+    public function setMini(mixed $appid, mixed $page, mixed $url) {
         $this->setType(self::MINI_PROGRAM);
         $this->appid = $appid;
         $this->pagepath = $page;
@@ -191,12 +192,12 @@ class MenuItem {
         return $data;
     }
 
-    public function __call($name, $arguments) {
+    public function __call(string $name, array $arguments) {
         $name = 'set'.Str::studly($name);
         return call_user_func_array([$this, $name], $arguments);
     }
 
-    public static function __callStatic($name, $arguments) {
+    public static function __callStatic(string $name, array $arguments) {
         return call_user_func_array([new static(), $name], $arguments);
     }
 }

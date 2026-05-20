@@ -1,11 +1,13 @@
 <?php
+declare(strict_types=1);
 namespace Zodream\ThirdParty\WeChat\MiniProgram;
 
 use Exception;
+use Zodream\Http\Http;
 
 class OAuth extends BaseMiniProgram {
 
-    public function getLogin() {
+    public function getLogin(): Http {
         return $this->getHttp()
             ->url('https://api.weixin.qq.com/sns/jscode2session',
                 [

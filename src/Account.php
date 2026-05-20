@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Zodream\ThirdParty\WeChat;
 
 use Zodream\Http\Http;
@@ -16,7 +17,7 @@ class Account extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getQrcode() {
+    public function getQrcode(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/qrcode/create')
             ->maps([
                 '#action_info',
@@ -29,7 +30,7 @@ class Account extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getShortUrl() {
+    public function getShortUrl(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/shorturl')
             ->maps([
                 'action' => 'long2short',
@@ -41,7 +42,7 @@ class Account extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getClear() {
+    public function getClear(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/clear_quota')
             ->maps([
                 '#appid',

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Zodream\ThirdParty\WeChat;
 
 /**
@@ -15,18 +16,18 @@ class MessageResponse {
 
     protected array $data = [];
 
-    protected $aesKey;
+    protected mixed $aesKey;
 
-    protected $encryptType;
+    protected mixed $encryptType;
 
-    protected $appId;
+    protected mixed $appId;
 
-    protected $token;
+    protected mixed $token;
 
-    public function __construct($token = null,
-                                $aesKey = null,
-                                $encryptType = null,
-                                $appId = null) {
+    public function __construct(mixed $token = null,
+                                mixed $aesKey = null,
+                                mixed $encryptType = null,
+                                mixed $appId = null) {
         $this->setCreateTime(time());
         $this->aesKey = $aesKey;
         $this->appId = $appId;
@@ -34,7 +35,7 @@ class MessageResponse {
         $this->token = $token;
     }
 
-    public function setData($name, $value, $isCData = true) {
+    public function setData(mixed $name, mixed $value, bool $isCData = true) {
         if ($isCData && !is_array($value)) {
             $value = [
                 '@cdata' => $value
@@ -44,7 +45,7 @@ class MessageResponse {
         return $this;
     }
 
-    public function addData($name, $value) {
+    public function addData(mixed $name, mixed $value) {
         if (!array_key_exists($name, $this->data)) {
             $this->data[$name] = ['item' => []];
         }
@@ -53,15 +54,15 @@ class MessageResponse {
     }
 
 
-    public function setType($arg) {
+    public function setType(mixed $arg) {
         return $this->setData('MsgType', $arg);
     }
 
-    public function setText($arg) {
+    public function setText(mixed $arg) {
         return $this->setType(MessageEnum::Text)->setData('Content', $arg);
     }
 
-    public function setImage($mediaId) {
+    public function setImage(mixed $mediaId) {
         return $this->setType(MessageEnum::Image)->setData('Image', [
             'MediaId' => [
                 '@cdata' => $mediaId
@@ -69,7 +70,7 @@ class MessageResponse {
         ]);
     }
 
-    public function setVoice($mediaId) {
+    public function setVoice(mixed $mediaId) {
         return $this->setType(MessageEnum::Voice)->setData('Voice', [
             'MediaId' => [
                 '@cdata' => $mediaId
@@ -77,7 +78,7 @@ class MessageResponse {
         ]);
     }
 
-    public function setVideo($mediaId, $title = null, $description = null) {
+    public function setVideo(mixed $mediaId, mixed $title = null, mixed $description = null) {
         $data = [
             'MediaId' => [
                 '@cdata' => $mediaId
@@ -96,12 +97,12 @@ class MessageResponse {
         return $this->setType(MessageEnum::Video)->setData('Video', $data);
     }
 
-    public function setMusic($mediaId,
-                             $title = null,
-                             $description = null,
-                             $musicUrl = null,
-                             $hQMusicUrl = null,
-                             $thumbMediaId = null) {
+    public function setMusic(mixed $mediaId,
+                             mixed $title = null,
+                             mixed $description = null,
+                             mixed $musicUrl = null,
+                             mixed $hQMusicUrl = null,
+                             mixed $thumbMediaId = null) {
         $data = [
             'MediaId' => [
                 '@cdata' => $mediaId
@@ -158,10 +159,10 @@ class MessageResponse {
             ->setData('Articles', $arg);
     }
 
-    public function addNews($title = null,
-                            $description = null,
-                            $picUrl = null,
-                            $url = null) {
+    public function addNews(mixed $title = null,
+                            mixed $description = null,
+                            mixed $picUrl = null,
+                            mixed $url = null) {
         if (!array_key_exists('ArticleCount', $this->data)) {
             $this->setType(MessageEnum::News)
                 ->setData('ArticleCount', 0, false);
@@ -196,7 +197,7 @@ class MessageResponse {
      * @param string $account
      * @return MessageResponse
      */
-    public function setService($account = null) {
+    public function setService(mixed $account = null) {
         if (!empty($account)) {
             $this->setData('TransInfo', [
                 'KfAccount' => [
@@ -207,15 +208,15 @@ class MessageResponse {
         return $this->setType(MessageEnum::Service);
     }
 
-    public function setToUseName($arg) {
+    public function setToUseName(mixed $arg) {
         return $this->setData('ToUserName', $arg);
     }
 
-    public function setFromUseName($arg) {
+    public function setFromUseName(mixed $arg) {
         return $this->setData('FromUserName', $arg);
     }
 
-    public function setCreateTime($arg) {
+    public function setCreateTime(mixed $arg) {
         return $this->setData('CreateTime', $arg, false);
     }
 

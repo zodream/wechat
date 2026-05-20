@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Zodream\ThirdParty\WeChat;
 
 use Zodream\Helpers\Str;
@@ -18,7 +19,7 @@ class JsSDK extends BaseWeChat {
      * @return \Zodream\Http\Http
      * @throws Exception
      */
-    public function getTicket() {
+    public function getTicket(): Http {
         return $this->getBaseHttp()
             ->url('https://api.weixin.qq.com/cgi-bin/ticket/getticket', [
                 '#access_token',

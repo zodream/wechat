@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Zodream\ThirdParty\WeChat\Platform;
 
 
@@ -40,7 +41,7 @@ class Notify {
      * @param array $config
      * @throws \Exception
      */
-    public function __construct(array $config = array()) {
+    public function __construct(array $config = []) {
         if (function_exists('config')) {
             $config = array_merge(config($this->configKey, array(
                 'aes_key' => '',
@@ -69,7 +70,7 @@ class Notify {
         return $this;
     }
 
-    protected function preProcessKey($key) {
+    protected function preProcessKey(string $key) {
         return lcfirst($key);
     }
 

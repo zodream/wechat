@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Zodream\ThirdParty\WeChat;
 
 use Zodream\Http\Http;
@@ -16,7 +17,7 @@ class Service extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getList() {
+    public function getList(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/customservice/getkflist');
     }
 
@@ -24,7 +25,7 @@ class Service extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getOnline() {
+    public function getOnline(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/customservice/getonlinekflist');
     }
 
@@ -32,7 +33,7 @@ class Service extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getAdd() {
+    public function getAdd(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/customservice/kfaccount/add')
             ->maps([
                 '#kf_account',
@@ -45,7 +46,7 @@ class Service extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getUpdate() {
+    public function getUpdate(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/customservice/kfaccount/update')
             ->maps([
                 '#kf_account',
@@ -58,7 +59,7 @@ class Service extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getUpload() {
+    public function getUpload(): Http {
         return $this->getBaseHttp()
             ->url('http://api.weixin.qq.com/customservice/kfaccount/uploadheadimg', [
                 '#access_token',
@@ -72,7 +73,7 @@ class Service extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getDelete() {
+    public function getDelete(): Http {
         return $this->getBaseHttp()
             ->url('https://api.weixin.qq.com/customservice/kfaccount/del', [
                     '#access_token',
@@ -85,7 +86,7 @@ class Service extends BaseWeChat {
      * @return Http
      * @throws \Exception
      */
-    public function getCreate() {
+    public function getCreate(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/customservice/kfsession/create')
             ->maps([
                 '#openid',
@@ -98,7 +99,7 @@ class Service extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getClose() {
+    public function getClose(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/customservice/kfsession/close')
             ->maps([
                 '#openid',
@@ -112,7 +113,7 @@ class Service extends BaseWeChat {
      * @return Http
      * @throws \Exception
      */
-    public function getSession() {
+    public function getSession(): Http {
         return $this->getBaseHttp()
             ->url('https://api.weixin.qq.com/customservice/kfsession/getsession', [
                     '#access_token',
@@ -125,7 +126,7 @@ class Service extends BaseWeChat {
      * @return Http
      * @throws \Exception
      */
-    public function getKfSession() {
+    public function getKfSession(): Http {
         return $this->getBaseHttp()
             ->url('https://api.weixin.qq.com/customservice/kfsession/getsessionlist',
                 [
@@ -139,7 +140,7 @@ class Service extends BaseWeChat {
      * @return Http
      * @throws \Exception
      */
-    public function getWait() {
+    public function getWait(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/customservice/kfsession/getwaitcase');
     }
 
@@ -147,7 +148,7 @@ class Service extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getRecord() {
+    public function getRecord(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/customservice/msgrecord/getrecord')
             ->maps([
                 '#access_token',

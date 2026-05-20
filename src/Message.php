@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Zodream\ThirdParty\WeChat;
 
 use Zodream\Helpers\Str;
@@ -51,17 +52,17 @@ class Message {
 
     use EventTrait, Attributes;
 
-    protected $configKey = 'wechat';
+    protected string $configKey = 'wechat';
 
-    protected $configs = [
+    protected array $configs = [
         'aes_key' => '',
         'appid' => '',
         'token' => ''
     ];
 
-    protected $xml;
+    protected mixed $xml;
 
-    protected $encryptType;
+    protected mixed $encryptType;
 
     /**
      * Message constructor.
@@ -95,7 +96,7 @@ class Message {
         return $this;
     }
 
-    protected function preProcessKey($key) {
+    protected function preProcessKey(string $key) {
         return lcfirst($key);
     }
 

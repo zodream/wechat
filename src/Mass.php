@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Zodream\ThirdParty\WeChat;
 
 use Zodream\Http\Http;
@@ -19,7 +20,7 @@ class Mass extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getUploadImg() {
+    public function getUploadImg(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/media/uploadimg')
             ->maps([
                 '#media',
@@ -30,7 +31,7 @@ class Mass extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getUploadNews() {
+    public function getUploadNews(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/media/uploadnews')
             ->maps([
                 '#articles',
@@ -41,7 +42,7 @@ class Mass extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getSendAll() {
+    public function getSendAll(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/message/mass/sendall')
             ->maps([
                 '#filter',
@@ -59,7 +60,7 @@ class Mass extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getSend() {
+    public function getSend(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/message/mass/send')
             ->maps([
                 '#touser',
@@ -77,7 +78,7 @@ class Mass extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getDelete() {
+    public function getDelete(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/message/mass/delete')
             ->maps([
                 '#msg_id'
@@ -88,7 +89,7 @@ class Mass extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getPreview() {
+    public function getPreview(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/message/mass/preview')
             ->maps([
                 '#touser',
@@ -106,7 +107,7 @@ class Mass extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getQuery() {
+    public function getQuery(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/message/mass/get')
             ->maps([
                 '#msg_id'

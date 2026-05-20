@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Zodream\ThirdParty\WeChat;
 
 /**
@@ -23,7 +24,7 @@ use Exception;
  */
 class OAuth extends BaseWeChat {
 
-    public function getLogin() {
+    public function getLogin(): Http {
         return $this->getHttp()
             ->url('https://open.weixin.qq.com/connect/oauth2/authorize', [
                     '#appid',
@@ -35,7 +36,7 @@ class OAuth extends BaseWeChat {
                 ])->parameters($this->get());
     }
 
-    public function getAccess() {
+    public function getAccess(): Http {
         return $this->getHttp()
             ->url('https://api.weixin.qq.com/sns/oauth2/access_token',
                 [
@@ -46,7 +47,7 @@ class OAuth extends BaseWeChat {
                 ])->parameters($this->get());
     }
 
-    public function getRefreshToken() {
+    public function getRefreshToken(): Http {
         return $this->getHttp()
             ->url('https://api.weixin.qq.com/sns/oauth2/refresh_token',
                 [
@@ -60,7 +61,7 @@ class OAuth extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getInfo() {
+    public function getInfo(): Http {
         return $this->getHttp()
             ->url('https://api.weixin.qq.com/sns/userinfo',
                 [

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Zodream\ThirdParty\WeChat;
 
 /**
@@ -20,7 +21,7 @@ abstract class BaseWeChat extends ThirdParty  {
      * @return Http
      * @throws Exception
      */
-    public function getBaseHttp($url = null) {
+    public function getBaseHttp(mixed $url = null): Http {
         $token = (new AccessToken($this->get()))->token();
         return $this->getHttp()
             ->url($url, [

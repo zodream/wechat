@@ -1,9 +1,13 @@
 <?php
+declare(strict_types=1);
 namespace Zodream\ThirdParty\WeChat\MiniProgram;
+
+
+use Zodream\Http\Http;
 
 class Template extends BaseMiniProgram {
 
-    public function getLibraryList() {
+    public function getLibraryList(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/wxopen/template/library/list')
             ->maps([
                 'offset' => 0,
@@ -11,14 +15,14 @@ class Template extends BaseMiniProgram {
             ]);
     }
 
-    public function getQuery() {
+    public function getQuery(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/wxopen/template/library/get')
             ->maps([
                 '#id',
             ]);
     }
 
-    public function getAdd() {
+    public function getAdd(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/wxopen/template/add')
             ->maps([
                 '#id',
@@ -26,7 +30,7 @@ class Template extends BaseMiniProgram {
             ]);
     }
 
-    public function getList() {
+    public function getList(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/wxopen/template/list')
             ->maps([
                 'offset' => 0,
@@ -34,14 +38,14 @@ class Template extends BaseMiniProgram {
             ]);
     }
 
-    public function getDel() {
+    public function getDel(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/wxopen/template/del')
             ->maps([
                 '#template_id',
             ]);
     }
 
-    public function getSend() {
+    public function getSend(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send')
             ->maps([
                 '#touser',
@@ -54,7 +58,7 @@ class Template extends BaseMiniProgram {
             ]);
     }
 
-    public function getUniformSend() {
+    public function getUniformSend(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send')
             ->maps([
                 '#touser',

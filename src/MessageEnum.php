@@ -1,37 +1,31 @@
 <?php
+declare(strict_types=1);
 namespace Zodream\ThirdParty\WeChat;
 
-/**
- * Created by PhpStorm.
- * User: zx648
- * Date: 2016/8/23
- * Time: 17:57
- */
-use Zodream\Helpers\Enum;
 
-class MessageEnum extends Enum {
-    const Text = 'text';
-    const Image = 'image';
-    const Voice = 'voice';
-    const Video = 'video';
-    const Music = 'music';
-    const News = 'news';
+enum MessageEnum: string {
+    case Text = 'text';
+    case Image = 'image';
+    case Voice = 'voice';
+    case Video = 'video';
+    case Music = 'music';
+    case News = 'news';
 
     /**
      * 小视频
      */
-    const ShortVideo = 'shortvideo';
+    case ShortVideo = 'shortvideo';
     /**
      * 位置
      */
-    const Location = 'location';
+    case Location = 'location';
     /**
      * 链接
      */
-    const Link = 'link';
+    case Link = 'link';
 
     /**
      * 转发客服
      */
-    const Service = 'transfer_customer_service';
+    case Service = 'transfer_customer_service';
 }

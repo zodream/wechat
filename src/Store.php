@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Zodream\ThirdParty\WeChat;
 
 use Zodream\Http\Http;
@@ -14,7 +15,7 @@ class Store extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getAdd() {
+    public function getAdd(): Http {
         return $this->getBaseHttp('http://api.weixin.qq.com/cgi-bin/poi/addpoi')
             ->maps([
                 '#business' => [
@@ -48,7 +49,7 @@ class Store extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getQuery() {
+    public function getQuery(): Http {
         return $this->getBaseHttp('http://api.weixin.qq.com/cgi-bin/poi/getpoi')
             ->maps([
                 '#poi_id',
@@ -59,7 +60,7 @@ class Store extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getList() {
+    public function getList(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/poi/getpoilist')
             ->maps([
                 'begin' => 0,
@@ -71,7 +72,7 @@ class Store extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getUpdate() {
+    public function getUpdate(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/poi/updatepoi')
             ->maps([
                 '#business' => [
@@ -106,7 +107,7 @@ class Store extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getDelete() {
+    public function getDelete(): Http {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/poi/delpoi')
             ->maps([
                 '#poi_id'
@@ -117,7 +118,7 @@ class Store extends BaseWeChat {
      * @return Http
      * @throws Exception
      */
-    public function getCategoryList() {
+    public function getCategoryList(): Http {
         return $this->getBaseHttp('http://api.weixin.qq.com/cgi-bin/poi/getwxcategory');
     }
 }

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Zodream\ThirdParty\WeChat;
 /**
  * Created by PhpStorm.
@@ -15,45 +16,45 @@ class PersonalMenuItem extends MenuItem {
     const MALE = 1;
     const FEMALE = 2;
 
-    protected $groupId;
-    protected $sex;
-    protected $os;
-    protected $country;
-    protected $province;
-    protected $city;
-    protected $language;
+    protected mixed $groupId;
+    protected int $sex;
+    protected int $os;
+    protected mixed $country;
+    protected mixed $province;
+    protected mixed $city;
+    protected mixed $language;
 
-    public function setGroupId($arg) {
+    public function setGroupId(mixed $arg) {
         $this->groupId = $arg;
         return $this;
     }
 
-    public function setSex($arg) {
+    public function setSex(int $arg) {
         $this->sex = $arg;
         return $this;
     }
 
-    public function setOs($arg) {
+    public function setOs(int $arg) {
         $this->os = $arg;
         return $this;
     }
 
-    public function setCountry($arg) {
+    public function setCountry(mixed $arg) {
         $this->country = $arg;
         return $this;
     }
 
-    public function setProvince($arg) {
+    public function setProvince(mixed $arg) {
         $this->province = $arg;
         return $this;
     }
 
-    public function setCity($arg) {
+    public function setCity(mixed $arg) {
         $this->city = $arg;
         return $this;
     }
 
-    public function setLanguage($arg) {
+    public function setLanguage(mixed $arg) {
         $this->language = $arg;
         return $this;
     }

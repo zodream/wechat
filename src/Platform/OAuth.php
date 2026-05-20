@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Zodream\ThirdParty\WeChat\Platform;
 
 
@@ -17,7 +18,7 @@ use Zodream\Http\Uri;
  */
 class OAuth extends BasePlatform {
 
-    public function getLogin() {
+    public function getLogin(): Http {
         return $this->getHttp()
             ->url('https://open.weixin.qq.com/connect/oauth2/authorize',
                 [
@@ -35,7 +36,7 @@ class OAuth extends BasePlatform {
      * @return Http
      * @throws \Exception
      */
-    public function getAccess() {
+    public function getAccess(): Http {
         return $this->getBaseHttp()
             ->url('https://api.weixin.qq.com/sns/oauth2/component/access_token',
                 [
@@ -51,7 +52,7 @@ class OAuth extends BasePlatform {
      * @return Http
      * @throws \Exception
      */
-    public function getRefreshToken() {
+    public function getRefreshToken(): Http {
         return $this->getBaseHttp()
             ->url('https://api.weixin.qq.com/sns/oauth2/component/refresh_token',
                 [
@@ -63,7 +64,7 @@ class OAuth extends BasePlatform {
                 ]);
     }
 
-    public function getInfo() {
+    public function getInfo(): Http {
         return $this->getHttp()
             ->url('https://api.weixin.qq.com/sns/userinfo',
                 [
