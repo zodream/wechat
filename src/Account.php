@@ -63,7 +63,7 @@ class Account extends BaseWeChat {
         ];
         if ($time !== false) {
             $data['expire_seconds'] = intval($time);
-            if (is_integer($scene)) {
+            if (is_int($scene)) {
                 $data['action_name'] = 'QR_SCENE';
                 $data['action_info']['scene'] = ['scene_id' => intval($scene)];
             } else {
@@ -71,7 +71,7 @@ class Account extends BaseWeChat {
                 $data['action_info']['scene'] = ['scene_str' => $scene];
             }
         } else {
-            if (is_integer($scene)) {
+            if (is_int($scene)) {
                 if ($scene > 100000) {
                     throw new Exception('scene_id only in 1~100000');
                 }
