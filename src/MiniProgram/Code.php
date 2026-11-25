@@ -2,14 +2,14 @@
 declare(strict_types=1);
 namespace Zodream\ThirdParty\WeChat\MiniProgram;
 
-use Zodream\Http\Http;
+use Zodream\Http\HttpClient;
 /**
  * 生成小程序码和二维码
  * @package Zodream\ThirdParty\WeChat\MiniProgram
  */
 class Code extends BaseMiniProgram {
 
-    public function getWxaCode(): Http {
+    public function getWxaCode(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/wxa/getwxacode')
             ->maps([
                 '#path',
@@ -19,7 +19,7 @@ class Code extends BaseMiniProgram {
             ]);
     }
 
-    public function getWxaCodeUnlimit(): Http {
+    public function getWxaCodeUnlimit(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/wxa/getwxacodeunlimit')
             ->maps([
                 '#path',
@@ -30,7 +30,7 @@ class Code extends BaseMiniProgram {
             ]);
     }
 
-    public function getCreateWxaQrcode(): Http {
+    public function getCreateWxaQrcode(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/wxaapp/createwxaqrcode')
             ->maps([
                 '#path',

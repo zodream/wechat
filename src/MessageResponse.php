@@ -10,7 +10,7 @@ namespace Zodream\ThirdParty\WeChat;
  */
 use Zodream\Helpers\Str;
 use Zodream\Helpers\Xml;
-use Zodream\Http\Http;
+use Zodream\Http\HttpClient;
 
 class MessageResponse {
 
@@ -239,7 +239,7 @@ class MessageResponse {
         if (!$this->isEmpty()) {
             $res = $this->makeXml();
         }
-        Http::log('MESSAGE RESPONSE:'.$res);
+        HttpClient::log('MESSAGE RESPONSE:'.$res);
         if (empty($response)
             || !is_object($response)
             || !method_exists($response, 'html')

@@ -2,11 +2,11 @@
 declare(strict_types=1);
 namespace Zodream\ThirdParty\WeChat\MiniProgram;
 
-use Zodream\Http\Http;
+use Zodream\Http\HttpClient;
 
 class Service extends BaseMiniProgram {
 
-    public function getSend(): Http {
+    public function getSend(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/message/custom/send')
             ->maps([
                 '#touser',

@@ -10,7 +10,7 @@ namespace Zodream\ThirdParty\WeChat;
  */
 use Zodream\Disk\File;
 use Exception;
-use Zodream\Http\Http;
+use Zodream\Http\HttpClient;
 
 class Media extends BaseWeChat {
     const IMAGE = 'image';
@@ -20,10 +20,10 @@ class Media extends BaseWeChat {
     const NEWS = 'news';
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getUploadTemp(): Http {
+    public function getUploadTemp(): HttpClient {
         return $this->getBaseHttp()
             ->url('https://api.weixin.qq.com/cgi-bin/media/upload',
                 [
@@ -35,10 +35,10 @@ class Media extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getDownloadTemp(): Http {
+    public function getDownloadTemp(): HttpClient {
         return $this->getBaseHttp()
             ->url('https://api.weixin.qq.com/cgi-bin/media/get',
                 [
@@ -48,10 +48,10 @@ class Media extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getAddNews(): Http {
+    public function getAddNews(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/material/add_news')
             ->maps([
                 '#articles',
@@ -59,10 +59,10 @@ class Media extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getUploadImg(): Http {
+    public function getUploadImg(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/media/uploadimg')
             ->maps([
                 '#media',
@@ -70,10 +70,10 @@ class Media extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getAddMedia(): Http {
+    public function getAddMedia(): HttpClient {
         return $this->getBaseHttp()
             ->url('https://api.weixin.qq.com/cgi-bin/material/add_material',
                 [
@@ -86,10 +86,10 @@ class Media extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getMedia(): Http {
+    public function getMedia(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/material/get_material')
             ->maps([
                 '#media_id',
@@ -97,10 +97,10 @@ class Media extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getDeleteMedia(): Http {
+    public function getDeleteMedia(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/material/del_material')
             ->maps([
                 '#media_id',
@@ -108,10 +108,10 @@ class Media extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getUpdateNews(): Http {
+    public function getUpdateNews(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/material/update_news')
             ->maps([
                 '#articles',
@@ -121,18 +121,18 @@ class Media extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getCount(): Http {
+    public function getCount(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/material/get_materialcount');
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getMediaList(): Http {
+    public function getMediaList(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/material/batchget_material')
             ->maps([
                 '#type',
@@ -142,10 +142,10 @@ class Media extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getOpenComment(): Http {
+    public function getOpenComment(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/comment/open')
             ->maps([
                 '#msg_data_id',
@@ -154,10 +154,10 @@ class Media extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getCloseComment(): Http {
+    public function getCloseComment(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/comment/close')
             ->maps([
                 '#msg_data_id',
@@ -166,10 +166,10 @@ class Media extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getCommentList(): Http {
+    public function getCommentList(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/comment/list')
             ->maps([
                 '#msg_data_id',
@@ -181,10 +181,10 @@ class Media extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getMarkComment(): Http {
+    public function getMarkComment(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/comment/markelect')
             ->maps([
                 '#msg_data_id',
@@ -194,10 +194,10 @@ class Media extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getUnMarkComment(): Http {
+    public function getUnMarkComment(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/comment/unmarkelect')
             ->maps([
                 '#msg_data_id',
@@ -207,10 +207,10 @@ class Media extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getAddComment(): Http {
+    public function getAddComment(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/comment/reply/add')
             ->maps([
                 '#msg_data_id',
@@ -222,10 +222,10 @@ class Media extends BaseWeChat {
 
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getDeleteComment(): Http {
+    public function getDeleteComment(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/comment/delete')
             ->maps([
                 '#msg_data_id',
@@ -235,10 +235,10 @@ class Media extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getDeleteReplyComment(): Http {
+    public function getDeleteReplyComment(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/comment/reply/delete')
             ->maps([
                 '#msg_data_id',

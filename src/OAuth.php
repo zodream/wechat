@@ -9,7 +9,7 @@ namespace Zodream\ThirdParty\WeChat;
  * Time: 10:23
  */
 use Zodream\Helpers\Str;
-use Zodream\Http\Http;
+use Zodream\Http\HttpClient;
 use Zodream\Http\Uri;
 use Exception;
 
@@ -24,7 +24,7 @@ use Exception;
  */
 class OAuth extends BaseWeChat {
 
-    public function getLogin(): Http {
+    public function getLogin(): HttpClient {
         return $this->getHttp()
             ->url('https://open.weixin.qq.com/connect/oauth2/authorize', [
                     '#appid',
@@ -36,7 +36,7 @@ class OAuth extends BaseWeChat {
                 ])->parameters($this->get());
     }
 
-    public function getAccess(): Http {
+    public function getAccess(): HttpClient {
         return $this->getHttp()
             ->url('https://api.weixin.qq.com/sns/oauth2/access_token',
                 [
@@ -47,7 +47,7 @@ class OAuth extends BaseWeChat {
                 ])->parameters($this->get());
     }
 
-    public function getRefreshToken(): Http {
+    public function getRefreshToken(): HttpClient {
         return $this->getHttp()
             ->url('https://api.weixin.qq.com/sns/oauth2/refresh_token',
                 [
@@ -58,10 +58,10 @@ class OAuth extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getInfo(): Http {
+    public function getInfo(): HttpClient {
         return $this->getHttp()
             ->url('https://api.weixin.qq.com/sns/userinfo',
                 [
@@ -91,7 +91,7 @@ class OAuth extends BaseWeChat {
      * @throws \Exception
      */
     public function callback() {
-        Http::log('WECHAT CALLBACK: '.var_export($_GET, true));
+        HttpClient::log('WECHAT CALLBACK: '.var_export($_GET, true));
         $state = $_GET['state'] ?? '';
         if (empty($state)) {
             return false;

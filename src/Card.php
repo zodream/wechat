@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Zodream\ThirdParty\WeChat;
 
-use Zodream\Http\Http;
+use Zodream\Http\HttpClient;
 use Exception;
 
 /**
@@ -12,10 +12,10 @@ use Exception;
 class Card extends BaseWeChat {
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getCreate(): Http {
+    public function getCreate(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/card/create')
             ->maps([
                 '#card' => [
@@ -47,10 +47,10 @@ class Card extends BaseWeChat {
 
     /**
      * 设置买单接口
-     * @return Http
+     * @return HttpClient
      * @throws \Exception
      */
-    public function getPaycell(): Http {
+    public function getPaycell(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/card/paycell/set')
             ->maps([
                 '#card_id',
@@ -60,10 +60,10 @@ class Card extends BaseWeChat {
 
     /**
      * 设置自助核销接口
-     * @return Http
+     * @return HttpClient
      * @throws \Exception
      */
-    public function getSelfconsumecell(): Http {
+    public function getSelfconsumecell(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/card/selfconsumecell/set')
             ->maps([
                 '#card_id',
@@ -73,7 +73,7 @@ class Card extends BaseWeChat {
             ]);
     }
 
-    public function getCreateQr(): Http {
+    public function getCreateQr(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/card/qrcode/create')
             ->maps([
                 'action_name' => 'QR_CARD',
@@ -84,10 +84,10 @@ class Card extends BaseWeChat {
 
     /**
      * 创建货架接口
-     * @return Http
+     * @return HttpClient
      * @throws \Exception
      */
-    public function getLandingpage(): Http {
+    public function getLandingpage(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/card/landingpage/create')
             ->maps([
                 '#banner',
@@ -98,7 +98,7 @@ class Card extends BaseWeChat {
             ]);
     }
 
-    public function getCode(): Http {
+    public function getCode(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/card/code/get')
             ->maps([
                 '#code',
@@ -107,7 +107,7 @@ class Card extends BaseWeChat {
             ]);
     }
 
-    public function getUserCards(): Http {
+    public function getUserCards(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/card/user/getcardlist')
             ->maps([
                 '#openid',
@@ -115,14 +115,14 @@ class Card extends BaseWeChat {
             ]);
     }
 
-    public function getCardInfo(): Http {
+    public function getCardInfo(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/card/get')
             ->maps([
                 '#card_id'
             ]);
     }
 
-    public function getCardList(): Http {
+    public function getCardList(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/card/batchget')
             ->maps([
                 'offset' => 0,
@@ -131,7 +131,7 @@ class Card extends BaseWeChat {
             ]);
     }
 
-    public function getUpdateCard(): Http {
+    public function getUpdateCard(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/card/update')
             ->maps([
                 '#card_id',
@@ -139,7 +139,7 @@ class Card extends BaseWeChat {
             ]);
     }
 
-    public function getModifystock(): Http {
+    public function getModifystock(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/card/modifystock')
             ->maps([
                 '#card_id',
@@ -148,7 +148,7 @@ class Card extends BaseWeChat {
             ]);
     }
 
-    public function getUpdateCode(): Http {
+    public function getUpdateCode(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/card/code/update')
             ->maps([
                 '#card_id',
@@ -157,14 +157,14 @@ class Card extends BaseWeChat {
             ]);
     }
 
-    public function getDelCard(): Http {
+    public function getDelCard(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/card/delete')
             ->maps([
                 '#card_id',
             ]);
     }
 
-    public function getDelCode(): Http {
+    public function getDelCode(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/card/code/unavailable')
             ->maps([
                 '#card_id',
@@ -173,7 +173,7 @@ class Card extends BaseWeChat {
             ]);
     }
 
-    public function getQuery(): Http {
+    public function getQuery(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/datacube/getcardbizuininfo')
             ->maps([
                 '#begin_date',
@@ -182,7 +182,7 @@ class Card extends BaseWeChat {
             ]);
     }
 
-    public function getQueryFree(): Http {
+    public function getQueryFree(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/datacube/getcardcardinfo')
             ->maps([
                 '#begin_date',
@@ -192,7 +192,7 @@ class Card extends BaseWeChat {
             ]);
     }
 
-    public function getCardMemberCardInfo(): Http {
+    public function getCardMemberCardInfo(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/datacube/getcardmembercardinfo')
             ->maps([
                 '#begin_date',
@@ -201,7 +201,7 @@ class Card extends BaseWeChat {
             ]);
     }
 
-    public function getCardMemberCardDetail(): Http {
+    public function getCardMemberCardDetail(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/datacube/getcardmembercarddetail')
             ->maps([
                 '#begin_date',

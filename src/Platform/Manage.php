@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Zodream\ThirdParty\WeChat\Platform;
 
-use Zodream\Http\Http;
+use Zodream\Http\HttpClient;
 use Zodream\Http\Uri;
 
 /**
@@ -13,7 +13,7 @@ use Zodream\Http\Uri;
  */
 class Manage extends BasePlatform {
 
-    public function getLogin(): Http {
+    public function getLogin(): HttpClient {
         return $this->getHttp()
             ->url('https://mp.weixin.qq.com/cgi-bin/componentloginpage',
                 [
@@ -23,7 +23,7 @@ class Manage extends BasePlatform {
                 ]);
     }
 
-    public function getToken(): Http {
+    public function getToken(): HttpClient {
         return $this->getHttp('https://api.weixin.qq.com/cgi-bin/component/api_component_token')
             ->maps([
                 '#component_appid',
@@ -32,14 +32,14 @@ class Manage extends BasePlatform {
             ]);
     }
 
-    public function getPreAuthCode(): Http {
+    public function getPreAuthCode(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/component/api_create_preauthcode')
             ->maps([
                 '#component_appid'
             ]);
     }
 
-    public function getAccessToken(): Http {
+    public function getAccessToken(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/component/api_query_auth')
             ->maps([
                 '#component_appid',
@@ -47,7 +47,7 @@ class Manage extends BasePlatform {
             ]);
     }
 
-    public function getRefreshToken(): Http {
+    public function getRefreshToken(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/component/api_authorizer_token')
             ->maps([
                 '#component_appid',
@@ -56,7 +56,7 @@ class Manage extends BasePlatform {
             ]);
     }
 
-    public function getInfo(): Http {
+    public function getInfo(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/component/api_get_authorizer_info')
             ->maps([
                 '#component_appid',
@@ -64,7 +64,7 @@ class Manage extends BasePlatform {
             ]);
     }
 
-    public function getOption(): Http {
+    public function getOption(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/component/api_get_authorizer_option')
             ->maps([
                 '#component_appid',
@@ -73,7 +73,7 @@ class Manage extends BasePlatform {
             ]);
     }
 
-    public function getSetOption(): Http {
+    public function getSetOption(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/component/api_set_authorizer_option')
             ->maps([
                 '#component_appid',
@@ -83,7 +83,7 @@ class Manage extends BasePlatform {
             ]);
     }
 
-    public function getClear(): Http {
+    public function getClear(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/component/clear_quota')
             ->maps([
                 '#component_appid',
@@ -170,7 +170,7 @@ class Manage extends BasePlatform {
         if (empty($code)) {
             throw new \Exception('AUTH CODE ERROR!');
         }
-        Http::log('WECHAT AUTH CODE: '. $code);
+        HttpClient::log('WECHAT AUTH CODE: '. $code);
         $this->set('authorization_code', $code);
         return $this->accessToken();
     }

@@ -3,7 +3,7 @@ declare(strict_types=1);
 namespace Zodream\ThirdParty\WeChat;
 
 use Zodream\Helpers\Str;
-use Zodream\Http\Http;
+use Zodream\Http\HttpClient;
 
 use Exception;
 
@@ -16,10 +16,10 @@ use Exception;
 class JsSDK extends BaseWeChat {
 
     /**
-     * @return \Zodream\Http\Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getTicket(): Http {
+    public function getTicket(): HttpClient {
         return $this->getBaseHttp()
             ->url('https://api.weixin.qq.com/cgi-bin/ticket/getticket', [
                 '#access_token',
@@ -51,7 +51,7 @@ class JsSDK extends BaseWeChat {
         reset($data);
         $arg = [];
         foreach ($data as $key => $item) {
-            if (Http::isEmpty($item) || $key == 'sign') {
+            if (HttpClient::isEmpty($item) || $key == 'sign') {
                 continue;
             }
             $arg[] = $key.'='.$item;

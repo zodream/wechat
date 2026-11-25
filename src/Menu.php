@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Zodream\ThirdParty\WeChat;
 
-use Zodream\Http\Http;
+use Zodream\Http\HttpClient;
 use Exception;
 
 /**
@@ -14,10 +14,10 @@ use Exception;
 class Menu extends BaseWeChat {
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getCreate(): Http {
+    public function getCreate(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/menu/create')
             ->maps([
                 '#button',
@@ -25,27 +25,27 @@ class Menu extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getList(): Http {
+    public function getList(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/menu/get');
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getDelete(): Http {
+    public function getDelete(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/menu/delete');
     }
 
     /**
      * 获取自定义菜单配置接口
-     * @return Http
+     * @return HttpClient
      * @throws \Exception
      */
-    public function getInfo(): Http {
+    public function getInfo(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/get_current_selfmenu_info');
     }
 

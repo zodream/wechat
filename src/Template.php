@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Zodream\ThirdParty\WeChat;
 
-use Zodream\Http\Http;
+use Zodream\Http\HttpClient;
 use Exception;
 /**
  * 模板消息
@@ -13,10 +13,10 @@ use Exception;
 class Template extends BaseWeChat {
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getSetIndustry(): Http {
+    public function getSetIndustry(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/template/api_set_industry')
             ->maps([
                 '#industry_id1',
@@ -25,18 +25,18 @@ class Template extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getIndustry(): Http {
+    public function getIndustry(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/template/get_industry');
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getAddTemplate(): Http {
+    public function getAddTemplate(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/template/api_add_template')
             ->maps([
                 '#template_id_short',
@@ -44,18 +44,18 @@ class Template extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getAll(): Http {
+    public function getAll(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/template/get_all_private_template');
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getDelete(): Http {
+    public function getDelete(): HttpClient {
         return $this->getBaseHttp('https://api,weixin.qq.com/cgi-bin/template/del_private_template')
             ->maps([
                 '#template_id',
@@ -63,10 +63,10 @@ class Template extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getSend(): Http {
+    public function getSend(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/message/template/send')
             ->maps([
                 '#touser',

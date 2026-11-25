@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Zodream\ThirdParty\WeChat;
 
-use Zodream\Http\Http;
+use Zodream\Http\HttpClient;
 use Exception;
 /**
  * 群发
@@ -17,10 +17,10 @@ class Mass extends BaseWeChat {
     const CARD = 'wxcard';
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getUploadImg(): Http {
+    public function getUploadImg(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/media/uploadimg')
             ->maps([
                 '#media',
@@ -28,10 +28,10 @@ class Mass extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getUploadNews(): Http {
+    public function getUploadNews(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/media/uploadnews')
             ->maps([
                 '#articles',
@@ -39,10 +39,10 @@ class Mass extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getSendAll(): Http {
+    public function getSendAll(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/message/mass/sendall')
             ->maps([
                 '#filter',
@@ -57,10 +57,10 @@ class Mass extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getSend(): Http {
+    public function getSend(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/message/mass/send')
             ->maps([
                 '#touser',
@@ -75,10 +75,10 @@ class Mass extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getDelete(): Http {
+    public function getDelete(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/message/mass/delete')
             ->maps([
                 '#msg_id'
@@ -86,10 +86,10 @@ class Mass extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getPreview(): Http {
+    public function getPreview(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/message/mass/preview')
             ->maps([
                 '#touser',
@@ -104,10 +104,10 @@ class Mass extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getQuery(): Http {
+    public function getQuery(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/message/mass/get')
             ->maps([
                 '#msg_id'

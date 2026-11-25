@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Zodream\ThirdParty\WeChat;
 
-use Zodream\Http\Http;
+use Zodream\Http\HttpClient;
 use Exception;
 
 /**
@@ -14,26 +14,26 @@ use Exception;
 class Service extends BaseWeChat {
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getList(): Http {
+    public function getList(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/customservice/getkflist');
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getOnline(): Http {
+    public function getOnline(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/customservice/getonlinekflist');
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getAdd(): Http {
+    public function getAdd(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/customservice/kfaccount/add')
             ->maps([
                 '#kf_account',
@@ -43,10 +43,10 @@ class Service extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getUpdate(): Http {
+    public function getUpdate(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/customservice/kfaccount/update')
             ->maps([
                 '#kf_account',
@@ -56,10 +56,10 @@ class Service extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getUpload(): Http {
+    public function getUpload(): HttpClient {
         return $this->getBaseHttp()
             ->url('http://api.weixin.qq.com/customservice/kfaccount/uploadheadimg', [
                 '#access_token',
@@ -70,10 +70,10 @@ class Service extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getDelete(): Http {
+    public function getDelete(): HttpClient {
         return $this->getBaseHttp()
             ->url('https://api.weixin.qq.com/customservice/kfaccount/del', [
                     '#access_token',
@@ -83,10 +83,10 @@ class Service extends BaseWeChat {
 
     /**
      * 客服会话控制
-     * @return Http
+     * @return HttpClient
      * @throws \Exception
      */
-    public function getCreate(): Http {
+    public function getCreate(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/customservice/kfsession/create')
             ->maps([
                 '#openid',
@@ -96,10 +96,10 @@ class Service extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getClose(): Http {
+    public function getClose(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/customservice/kfsession/close')
             ->maps([
                 '#openid',
@@ -110,10 +110,10 @@ class Service extends BaseWeChat {
 
     /**
      * 获取客户的会话状态
-     * @return Http
+     * @return HttpClient
      * @throws \Exception
      */
-    public function getSession(): Http {
+    public function getSession(): HttpClient {
         return $this->getBaseHttp()
             ->url('https://api.weixin.qq.com/customservice/kfsession/getsession', [
                     '#access_token',
@@ -123,10 +123,10 @@ class Service extends BaseWeChat {
 
     /**
      * 获取客服的会话列表
-     * @return Http
+     * @return HttpClient
      * @throws \Exception
      */
-    public function getKfSession(): Http {
+    public function getKfSession(): HttpClient {
         return $this->getBaseHttp()
             ->url('https://api.weixin.qq.com/customservice/kfsession/getsessionlist',
                 [
@@ -137,18 +137,18 @@ class Service extends BaseWeChat {
 
     /**
      * 获取未接入会话列表
-     * @return Http
+     * @return HttpClient
      * @throws \Exception
      */
-    public function getWait(): Http {
+    public function getWait(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/customservice/kfsession/getwaitcase');
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getRecord(): Http {
+    public function getRecord(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/customservice/msgrecord/getrecord')
             ->maps([
                 '#access_token',

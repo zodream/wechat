@@ -2,27 +2,27 @@
 declare(strict_types=1);
 namespace Zodream\ThirdParty\WeChat;
 
-use Zodream\Http\Http;
+use Zodream\Http\HttpClient;
 /**
  * 草稿
  */
 class Article extends BaseWeChat {
 
-    public function getAdd(): Http {
+    public function getAdd(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/draft/add')
             ->maps([
                 '#articles',
             ]);
     }
 
-    public function getArticle(): Http {
+    public function getArticle(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/draft/get')
             ->maps([
                 '#media_id',
             ]);
     }
 
-    public function getUpdate(): Http {
+    public function getUpdate(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/draft/update')
             ->maps([
                 '#media_id',
@@ -31,18 +31,18 @@ class Article extends BaseWeChat {
             ]);
     }
 
-    public function getRemove(): Http {
+    public function getRemove(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/draft/delete')
             ->maps([
                 '#media_id',
             ]);
     }
 
-    public function getTotal(): Http {
+    public function getTotal(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/draft/count');
     }
 
-    public function getList(): Http {
+    public function getList(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/draft/batchget')
             ->maps([
                 '#offset',
@@ -51,21 +51,21 @@ class Article extends BaseWeChat {
             ]);
     }
 
-    public function getPublish(): Http {
+    public function getPublish(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/freepublish/submit')
             ->maps([
                 '#media_id',
             ]);
     }
 
-    public function getQueryPublish(): Http {
+    public function getQueryPublish(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/freepublish/get')
             ->maps([
                 '#publish_id',
             ]);
     }
 
-    public function getDeletePublish(): Http {
+    public function getDeletePublish(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/freepublish/delete')
             ->maps([
                 '#article_id',
@@ -73,7 +73,7 @@ class Article extends BaseWeChat {
             ]);
     }
 
-    public function getPublishList(): Http {
+    public function getPublishList(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/freepublish/batchget')
             ->maps([
                 '#offset',

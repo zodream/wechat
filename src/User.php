@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Zodream\ThirdParty\WeChat;
 
-use Zodream\Http\Http;
+use Zodream\Http\HttpClient;
 use Exception;
 
 /**
@@ -15,10 +15,10 @@ class User extends BaseWeChat {
 
     /**
      * 标签
-     * @return Http
+     * @return HttpClient
      * @throws \Exception
      */
-    public function getCreateTag(): Http {
+    public function getCreateTag(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/tags/create')
             ->maps([
                 '#tag' => [
@@ -28,10 +28,10 @@ class User extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getUpdateTag(): Http {
+    public function getUpdateTag(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/tags/update')
             ->maps([
                 '#tag' => [
@@ -42,10 +42,10 @@ class User extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getDeleteTag(): Http {
+    public function getDeleteTag(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/tags/delete')
             ->maps([
                 '#tag' => [
@@ -55,18 +55,18 @@ class User extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getTags(): Http {
+    public function getTags(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/tags/get');
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getTagUsers(): Http {
+    public function getTagUsers(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/user/tag/get')
             ->maps([
                 '#tagid',
@@ -75,10 +75,10 @@ class User extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getUserAddTag(): Http {
+    public function getUserAddTag(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/tags/members/batchtagging')
             ->maps([
                 '#tagid',
@@ -87,10 +87,10 @@ class User extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getUserDeleteTag(): Http {
+    public function getUserDeleteTag(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/tags/members/batchuntagging')
             ->maps([
                 '#tagid',
@@ -99,10 +99,10 @@ class User extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getUserTags(): Http {
+    public function getUserTags(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/tags/getidlist')
             ->maps([
                 '#openid',
@@ -110,10 +110,10 @@ class User extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getCreateGroup(): Http {
+    public function getCreateGroup(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/groups/create')
             ->maps([
                 '#group',
@@ -121,18 +121,18 @@ class User extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getGroup(): Http {
+    public function getGroup(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/groups/get');
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getGroupId(): Http {
+    public function getGroupId(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/groups/getid')
             ->maps([
                 'openid',
@@ -140,10 +140,10 @@ class User extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getUpdateGroup(): Http {
+    public function getUpdateGroup(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/groups/update')
             ->maps([
                 '#group',
@@ -151,10 +151,10 @@ class User extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getMoveUser(): Http {
+    public function getMoveUser(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/groups/members/update')
             ->maps([
                 '#openid',
@@ -163,10 +163,10 @@ class User extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getMoveUsers(): Http {
+    public function getMoveUsers(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/groups/members/batchupdate')
             ->maps([
                 '#openid_list',
@@ -175,10 +175,10 @@ class User extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getDeleteGroup(): Http {
+    public function getDeleteGroup(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/groups/delete')
             ->maps([
                 '#group',
@@ -186,10 +186,10 @@ class User extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getMark(): Http {
+    public function getMark(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/user/info/updateremark')
             ->maps([
                 '#openid',
@@ -198,10 +198,10 @@ class User extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getInfo(): Http {
+    public function getInfo(): HttpClient {
         return $this->getBaseHttp()
             ->url('https://api.weixin.qq.com/cgi-bin/user/info', [
                     '#access_token',
@@ -211,10 +211,10 @@ class User extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getUsersInfo(): Http {
+    public function getUsersInfo(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/user/info/batchget')
             ->maps([
                 '#user_list',
@@ -222,10 +222,10 @@ class User extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getUserList(): Http {
+    public function getUserList(): HttpClient {
         return $this->getBaseHttp()
             ->url('https://api.weixin.qq.com/cgi-bin/user/get', [
                     '#access_token',
@@ -234,10 +234,10 @@ class User extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getBlackList(): Http {
+    public function getBlackList(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/tags/members/getblacklist')
             ->maps([
                 'access_token',
@@ -247,10 +247,10 @@ class User extends BaseWeChat {
 
     /**
      * 黑名单
-     * @return Http
+     * @return HttpClient
      * @throws \Exception
      */
-    public function getAddBlack(): Http {
+    public function getAddBlack(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/tags/members/batchblacklist')
             ->maps([
                 'access_token',
@@ -259,10 +259,10 @@ class User extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getDeleteBlack(): Http {
+    public function getDeleteBlack(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/tags/members/batchunblacklist')
             ->maps([
                 'access_token',

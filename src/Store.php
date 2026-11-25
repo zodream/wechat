@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Zodream\ThirdParty\WeChat;
 
-use Zodream\Http\Http;
+use Zodream\Http\HttpClient;
 use Exception;
 
 /**
@@ -12,10 +12,10 @@ use Exception;
 class Store extends BaseWeChat {
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getAdd(): Http {
+    public function getAdd(): HttpClient {
         return $this->getBaseHttp('http://api.weixin.qq.com/cgi-bin/poi/addpoi')
             ->maps([
                 '#business' => [
@@ -46,10 +46,10 @@ class Store extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getQuery(): Http {
+    public function getQuery(): HttpClient {
         return $this->getBaseHttp('http://api.weixin.qq.com/cgi-bin/poi/getpoi')
             ->maps([
                 '#poi_id',
@@ -57,10 +57,10 @@ class Store extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getList(): Http {
+    public function getList(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/poi/getpoilist')
             ->maps([
                 'begin' => 0,
@@ -69,10 +69,10 @@ class Store extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getUpdate(): Http {
+    public function getUpdate(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/poi/updatepoi')
             ->maps([
                 '#business' => [
@@ -104,10 +104,10 @@ class Store extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getDelete(): Http {
+    public function getDelete(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/poi/delpoi')
             ->maps([
                 '#poi_id'
@@ -115,10 +115,10 @@ class Store extends BaseWeChat {
     }
 
     /**
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getCategoryList(): Http {
+    public function getCategoryList(): HttpClient {
         return $this->getBaseHttp('http://api.weixin.qq.com/cgi-bin/poi/getwxcategory');
     }
 }

@@ -3,11 +3,11 @@ declare(strict_types=1);
 namespace Zodream\ThirdParty\WeChat\MiniProgram;
 
 
-use Zodream\Http\Http;
+use Zodream\Http\HttpClient;
 
 class Template extends BaseMiniProgram {
 
-    public function getLibraryList(): Http {
+    public function getLibraryList(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/wxopen/template/library/list')
             ->maps([
                 'offset' => 0,
@@ -15,14 +15,14 @@ class Template extends BaseMiniProgram {
             ]);
     }
 
-    public function getQuery(): Http {
+    public function getQuery(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/wxopen/template/library/get')
             ->maps([
                 '#id',
             ]);
     }
 
-    public function getAdd(): Http {
+    public function getAdd(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/wxopen/template/add')
             ->maps([
                 '#id',
@@ -30,7 +30,7 @@ class Template extends BaseMiniProgram {
             ]);
     }
 
-    public function getList(): Http {
+    public function getList(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/wxopen/template/list')
             ->maps([
                 'offset' => 0,
@@ -38,14 +38,14 @@ class Template extends BaseMiniProgram {
             ]);
     }
 
-    public function getDel(): Http {
+    public function getDel(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/wxopen/template/del')
             ->maps([
                 '#template_id',
             ]);
     }
 
-    public function getSend(): Http {
+    public function getSend(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send')
             ->maps([
                 '#touser',
@@ -58,7 +58,7 @@ class Template extends BaseMiniProgram {
             ]);
     }
 
-    public function getUniformSend(): Http {
+    public function getUniformSend(): HttpClient {
         return $this->getBaseHttp('https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send')
             ->maps([
                 '#touser',

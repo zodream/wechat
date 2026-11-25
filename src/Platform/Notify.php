@@ -4,7 +4,7 @@ namespace Zodream\ThirdParty\WeChat\Platform;
 
 
 use Zodream\Helpers\Xml;
-use Zodream\Http\Http;
+use Zodream\Http\HttpClient;
 use Zodream\ThirdParty\Traits\Attributes;
 use Zodream\ThirdParty\WeChat\Aes;
 use Zodream\ThirdParty\Traits\EventTrait;
@@ -87,7 +87,7 @@ class Notify {
      * @throws \Exception
      */
     protected function getData() {
-        Http::log('WECHAT NOTIFY: '.$this->xml);
+        HttpClient::log('WECHAT NOTIFY: '.$this->xml);
         $data = (array)Xml::decode($this->xml, false);
         $encryptStr = $data['Encrypt'];
         $aes = new Aes($this->aesKey, $this->appId);

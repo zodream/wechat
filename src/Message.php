@@ -4,7 +4,7 @@ namespace Zodream\ThirdParty\WeChat;
 
 use Zodream\Helpers\Str;
 use Zodream\Helpers\Xml;
-use Zodream\Http\Http;
+use Zodream\Http\HttpClient;
 use Zodream\ThirdParty\Traits\Attributes;
 use Zodream\ThirdParty\Traits\EventTrait;
 
@@ -160,7 +160,7 @@ class Message {
      * @throws \Exception
      */
     protected function getData() {
-        Http::log('WECHAT MESSAGE: '.$this->xml);
+        HttpClient::log('WECHAT MESSAGE: '.$this->xml);
         $data = (array)Xml::decode($this->xml, false);
         if ($this->encryptType != 'aes') {
             return $data;

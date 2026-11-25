@@ -8,7 +8,7 @@ namespace Zodream\ThirdParty\WeChat;
  * Date: 2016/8/19
  * Time: 22:27
  */
-use Zodream\Http\Http;
+use Zodream\Http\HttpClient;
 use Zodream\ThirdParty\ThirdParty;
 use Exception;
 
@@ -18,10 +18,10 @@ abstract class BaseWeChat extends ThirdParty  {
 
     /**
      * @param null $url
-     * @return Http
+     * @return HttpClient
      * @throws Exception
      */
-    public function getBaseHttp(mixed $url = null): Http {
+    public function getBaseHttp(mixed $url = null): HttpClient {
         $token = (new AccessToken($this->get()))->token();
         return $this->getHttp()
             ->url($url, [
@@ -30,6 +30,6 @@ abstract class BaseWeChat extends ThirdParty  {
             ->parameters($this->merge([
                 'access_token' => $token
             ]))
-            ->encode(Http::JSON);
+            ->encode(HttpClient::JSON);
     }
 }

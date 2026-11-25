@@ -3,7 +3,7 @@ declare(strict_types=1);
 namespace Zodream\ThirdParty\WeChat;
 
 use Exception;
-use Zodream\Http\Http;
+use Zodream\Http\HttpClient;
 
 /**
  * AccessToken
@@ -11,7 +11,7 @@ use Zodream\Http\Http;
  */
 class AccessToken extends BaseWeChat {
 
-    public function getToken(): Http {
+    public function getToken(): HttpClient {
         return $this->getHttp()
             ->url('https://api.weixin.qq.com/cgi-bin/token', [
                     'grant_type' => 'client_credential',
@@ -20,7 +20,7 @@ class AccessToken extends BaseWeChat {
                 ])->parameters($this->get());
     }
 
-    public function getIp(): Http {
+    public function getIp(): HttpClient {
         return $this->getBaseHttp()
             ->url('https://api.weixin.qq.com/cgi-bin/getcallbackip', [
                 '#access_token'
